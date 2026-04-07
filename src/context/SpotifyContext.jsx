@@ -5,6 +5,7 @@ export const SpotifyContext = createContext();
 const CLIENT_ID = '19e5002ef9a94dadac0c46cd82c61307';
 // Note: We use the local dev callback URL that matches the Dashboard perfectly.
 const REDIRECT_URI = 'http://127.0.0.1:5173/callback'; 
+const RESUME_STORAGE_KEY = 'spotify_resume_state';
 const SCOPES = [
   'streaming',
   'user-read-email',
@@ -28,6 +29,7 @@ export const SpotifyProvider = ({ children }) => {
   const [duration, setDuration] = useState(0);
 
   const playerRef = useRef(null);
+  const resumeAttemptedRef = useRef(false);
 
   // PKCE Helpers
   const generateRandomString = (length) => {
@@ -73,7 +75,6 @@ export const SpotifyProvider = ({ children }) => {
           const expireTime = new Date().getTime() + data.expires_in * 1000;
           window.localStorage.setItem('spotify_token', data.access_token);
           window.localStorage.setItem('spotify_token_expires', expireTime);
-          window.localStorage.setItem('spotify_refresh_token', data.refresh_token);
           window.history.replaceState({}, document.title, window.location.pathname); // Clean URL
           setToken(data.access_token);
         }
@@ -131,6 +132,16 @@ export const SpotifyProvider = ({ children }) => {
         setCurrentTrack(state.track_window.current_track);
         setPosition(state.position);
         setDuration(state.duration);
+
+        const currentUri = state.track_window?.current_track?.uri;
+        if (currentUri) {
+          window.localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify({
+            uri: currentUri,
+            position_ms: state.position || 0,
+            shouldPlay: !state.paused,
+            savedAt: Date.now(),
+          }));
+        }
       });
 
       _player.connect().then(success => {
@@ -150,6 +161,82 @@ export const SpotifyProvider = ({ children }) => {
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
+
+  useEffect(() => {
+    const persistResumeState = () => {
+      if (!currentTrack?.uri) return;
+      window.localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify({
+        uri: currentTrack.uri,
+        position_ms: position || 0,
+        shouldPlay: isPlaying,
+        savedAt: Date.now(),
+      }));
+    };
+
+    window.addEventListener('beforeunload', persistResumeState);
+    return () => window.removeEventListener('beforeunload', persistResumeState);
+  }, [currentTrack, position, isPlaying]);
+
+  useEffect(() => {
+    if (!token || !isReady || !deviceId || resumeAttemptedRef.current) return;
+
+    resumeAttemptedRef.current = true;
+    const rawState = window.localStorage.getItem(RESUME_STORAGE_KEY);
+    if (!rawState) return;
+
+    let savedState;
+    try {
+      savedState = JSON.parse(rawState);
+    } catch {
+      window.localStorage.removeItem(RESUME_STORAGE_KEY);
+      return;
+    }
+
+    if (!savedState?.uri || !savedState?.shouldPlay) {
+      window.localStorage.removeItem(RESUME_STORAGE_KEY);
+      return;
+    }
+
+    const isStale = savedState.savedAt && (Date.now() - savedState.savedAt > 2 * 60 * 60 * 1000);
+    if (isStale) {
+      window.localStorage.removeItem(RESUME_STORAGE_KEY);
+      return;
+    }
+
+    const resumePlayback = async () => {
+      try {
+        await fetch('https://api.spotify.com/v1/me/player', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            device_ids: [deviceId],
+            play: false,
+          }),
+        });
+
+        await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            uris: [savedState.uri],
+            position_ms: Math.max(0, Number(savedState.position_ms) || 0),
+          }),
+        });
+
+        window.localStorage.removeItem(RESUME_STORAGE_KEY);
+      } catch (err) {
+        console.error('Auto-resume failed', err);
+      }
+    };
+
+    resumePlayback();
+  }, [token, isReady, deviceId]);
 
   // Auth Methods
   const login = async () => {
@@ -175,8 +262,8 @@ export const SpotifyProvider = ({ children }) => {
     setToken(null);
     window.localStorage.removeItem('spotify_token');
     window.localStorage.removeItem('spotify_token_expires');
-    window.localStorage.removeItem('spotify_refresh_token');
     window.localStorage.removeItem('code_verifier');
+    window.localStorage.removeItem(RESUME_STORAGE_KEY);
     if (player) player.disconnect();
   };
 

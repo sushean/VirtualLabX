@@ -10,12 +10,17 @@ export default function AdminDashboard() {
   const [questions, setQuestions] = useState([]);
   const [certificates, setCertificates] = useState([]);
   
+  const [collections, setCollections] = useState([]);
+  const [newCollection, setNewCollection] = useState({ title: '', examType: '', description: '', status: 'ACTIVE' });
+  
   const [loading, setLoading] = useState(true);
   const [selectedExam, setSelectedExam] = useState(null);
   
   // Questions states
   const [examTypeFilter, setExamTypeFilter] = useState('FULL_STACK');
   const [newQuestion, setNewQuestion] = useState({ questionType: 'MCQ', questionText: '', options: '', correctAnswer: '', difficulty: 'easy', topic: '' });
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editQuestionId, setEditQuestionId] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -27,15 +32,17 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [examsRes, usersRes, certsRes] = await Promise.all([
+      const [examsRes, usersRes, certsRes, collectionsRes] = await Promise.all([
         axios.get('http://localhost:5000/api/exam/all', { headers }).catch(() => ({ data: [] })),
         axios.get('http://localhost:5000/api/auth/users', { headers }).catch(() => ({ data: [] })),
-        axios.get('http://localhost:5000/api/certificates/all', { headers }).catch(() => ({ data: [] }))
+        axios.get('http://localhost:5000/api/certificates/all', { headers }).catch(() => ({ data: [] })),
+        axios.get('http://localhost:5000/api/examCollections').catch(() => ({ data: [] }))
       ]);
       
       setExams(examsRes.data || []);
       setUsers(usersRes.data || []);
       setCertificates(certsRes.data || []);
+      setCollections(collectionsRes.data || []);
       
       await fetchQuestions();
     } catch (err) {
@@ -68,7 +75,57 @@ export default function AdminDashboard() {
     }
   };
 
-  const addQuestion = async (e) => {
+  const addCollection = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/api/examCollections', newCollection, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Collection added!');
+      setNewCollection({ title: '', examType: '', description: '', status: 'ACTIVE' });
+      fetchDashboardData();
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Error adding collection');
+    }
+  };
+
+  const toggleCollectionStatus = async () => {
+    const col = collections.find(c => c.examType === examTypeFilter);
+    if (!col) return;
+    try {
+      const newStatus = col.status === 'ACTIVE' ? 'UPCOMING' : 'ACTIVE';
+      await axios.put(`http://localhost:5000/api/examCollections/${col._id}`, { status: newStatus }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDashboardData();
+    } catch (err) {
+      alert('Error updating status');
+    }
+  };
+
+  const deleteCollection = async () => {
+    const col = collections.find(c => c.examType === examTypeFilter);
+    if (!col) return;
+    if (!window.confirm(`Are you sure you want to delete the ${col.title} collection?`)) return;
+    
+    try {
+      await axios.delete(`http://localhost:5000/api/examCollections/${col._id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      const newCollections = collections.filter(c => c._id !== col._id);
+      if (newCollections.length > 0) {
+        setExamTypeFilter(newCollections[0].examType);
+      } else {
+        setExamTypeFilter('');
+      }
+      fetchDashboardData();
+    } catch (err) {
+      alert('Error deleting collection');
+    }
+  };
+
+  const submitQuestion = async (e) => {
     e.preventDefault();
     try {
       const payload = {
@@ -77,15 +134,37 @@ export default function AdminDashboard() {
         options: newQuestion.questionType === 'NUMERICAL' ? [] : newQuestion.options.split(',').map(s => s.trim()),
         correctAnswer: newQuestion.correctAnswer.split(',').map(s => s.trim())
       };
-      await axios.post('http://localhost:5000/api/questions', payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      alert('Question added!');
+      if (isEditMode) {
+        await axios.put(`http://localhost:5000/api/questions/${editQuestionId}`, payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert('Question updated!');
+      } else {
+        await axios.post('http://localhost:5000/api/questions', payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert('Question added!');
+      }
       setNewQuestion({ questionType: 'MCQ', questionText: '', options: '', correctAnswer: '', difficulty: 'easy', topic: '' });
+      setIsEditMode(false);
+      setEditQuestionId(null);
       fetchQuestions();
     } catch (err) {
-      alert(err.response?.data?.msg || 'Error adding question');
+      alert(err.response?.data?.msg || 'Error saving question');
     }
+  };
+
+  const handleEditQuestion = (q) => {
+    setNewQuestion({
+      questionType: q.questionType,
+      questionText: q.questionText,
+      options: q.options ? q.options.join(', ') : '',
+      correctAnswer: q.correctAnswer ? q.correctAnswer.join(', ') : '',
+      difficulty: q.difficulty,
+      topic: q.topic
+    });
+    setIsEditMode(true);
+    setEditQuestionId(q._id);
   };
 
   const deleteQuestion = async (id) => {
@@ -298,16 +377,35 @@ export default function AdminDashboard() {
                    onChange={(e) => setExamTypeFilter(e.target.value)}
                    className="w-full bg-black border border-white/10 rounded-lg px-4 py-2 text-white outline-none focus:border-[#00e5ff] transition"
                  >
-                   <option value="FULL_STACK">Full Stack Web Dev</option>
-                   <option value="DSA">Data Structures & Algo</option>
-                   <option value="PYTHON">Python Programming</option>
-                   <option value="REACT">React Cert</option>
+                   {collections.length === 0 && <option value="FULL_STACK">Full Stack Web Dev (Default)</option>}
+                   {collections.map(col => (
+                     <option key={col._id} value={col.examType}>{col.title}</option>
+                   ))}
                  </select>
+                 {collections.find(c => c.examType === examTypeFilter) && (
+                   <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
+                     <button 
+                       onClick={toggleCollectionStatus}
+                       className="flex-1 text-[10px] uppercase font-bold tracking-widest py-2 rounded border border-white/10 hover:bg-white/5 transition text-gray-300"
+                     >
+                       {collections.find(c => c.examType === examTypeFilter).status === 'ACTIVE' ? 'Set as Upcoming' : 'Set as Active'}
+                     </button>
+                     <button 
+                       onClick={deleteCollection}
+                       className="flex-1 text-[10px] uppercase font-bold tracking-widest py-2 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
+                     >
+                       Delete Exam
+                     </button>
+                   </div>
+                 )}
                </div>
                
                <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
-                 <h2 className="text-xl font-bold mb-4 border-b border-gray-800 pb-2">Add New Question</h2>
-                 <form onSubmit={addQuestion} className="space-y-4">
+                 <h2 className="text-xl font-bold mb-4 border-b border-gray-800 pb-2 flex justify-between items-center">
+                    <span>{isEditMode ? 'Edit Question' : 'Add New Question'}</span>
+                    {isEditMode && <button type="button" onClick={() => { setIsEditMode(false); setNewQuestion({ questionType: 'MCQ', questionText: '', options: '', correctAnswer: '', difficulty: 'easy', topic: '' }); }} className="text-xs text-gray-400 hover:text-white">Cancel</button>}
+                 </h2>
+                 <form onSubmit={submitQuestion} className="space-y-4">
                     <div>
                       <select required value={newQuestion.questionType} onChange={e => setNewQuestion({...newQuestion, questionType: e.target.value})} className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none">
                         <option value="MCQ">MCQ (Single)</option>
@@ -332,7 +430,30 @@ export default function AdminDashboard() {
                       </select>
                       <input type="text" placeholder="Topic Tag" required value={newQuestion.topic} onChange={e => setNewQuestion({...newQuestion, topic: e.target.value})} className="w-1/2 bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none" />
                     </div>
-                    <button type="submit" className="w-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] py-2 rounded-lg font-bold text-sm hover:opacity-80 transition shadow-[0_0_15px_rgba(108,43,217,0.3)]">Publish Resource</button>
+                    <button type="submit" className="w-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] py-2 rounded-lg font-bold text-sm hover:opacity-80 transition shadow-[0_0_15px_rgba(108,43,217,0.3)]">{isEditMode ? 'Update Resource' : 'Publish Resource'}</button>
+                 </form>
+               </div>
+
+               {/* Add Collection Section */}
+               <div className="bg-white/5 border border-white/10 p-6 rounded-xl mt-6">
+                 <h2 className="text-xl font-bold mb-4 border-b border-gray-800 pb-2">Add Exam Collection</h2>
+                 <form onSubmit={addCollection} className="space-y-4">
+                   <div>
+                     <input type="text" placeholder="Title (e.g. AWS Certified)" required value={newCollection.title} onChange={e => setNewCollection({...newCollection, title: e.target.value})} className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none" />
+                   </div>
+                   <div>
+                     <input type="text" placeholder="Exam Type (Unique Code e.g. AWS_CLOUD)" required value={newCollection.examType} onChange={e => setNewCollection({...newCollection, examType: e.target.value})} className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none" />
+                   </div>
+                   <div>
+                     <textarea placeholder="Description" required value={newCollection.description} onChange={e => setNewCollection({...newCollection, description: e.target.value})} className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none h-16 resize-none"></textarea>
+                   </div>
+                   <div>
+                      <select required value={newCollection.status} onChange={e => setNewCollection({...newCollection, status: e.target.value})} className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none">
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="UPCOMING">UPCOMING</option>
+                      </select>
+                   </div>
+                   <button type="submit" className="w-full bg-white/10 hover:bg-white/20 py-2 rounded-lg font-bold text-sm text-white transition">Create Collection</button>
                  </form>
                </div>
             </div>
@@ -347,15 +468,24 @@ export default function AdminDashboard() {
                    <div key={q._id} className="bg-black/40 border border-white/5 rounded-xl p-4 group">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-bold text-white pr-8"><span className="text-gray-500 mr-2">Q{idx+1}.</span>{q.questionText}</h4>
-                        <button onClick={() => deleteQuestion(q._id)} className="text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 px-2 py-1 rounded transition text-xs font-bold shrink-0">DELETE</button>
+                        <div className="flex gap-2">
+                           <button onClick={() => handleEditQuestion(q)} className="text-blue-500 opacity-0 group-hover:opacity-100 hover:bg-blue-500/20 px-2 py-1 rounded transition text-xs font-bold shrink-0">EDIT</button>
+                           <button onClick={() => deleteQuestion(q._id)} className="text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 px-2 py-1 rounded transition text-xs font-bold shrink-0">DELETE</button>
+                        </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 mb-3">
-                         {q.options?.map((opt, i) => (
-                           <span key={i} className={`text-xs px-2 py-1 rounded border ${q.correctAnswer.includes(opt) ? 'bg-green-500/20 border-green-500/50 text-green-300' : 'bg-white/5 border-white/10 text-gray-400'}`}>
-                             {opt}
-                           </span>
-                         ))}
-                      </div>
+                      {q.questionType === 'NUMERICAL' ? (
+                          <div className="text-sm font-bold text-green-400 mb-3 block">
+                             Correct Answer: {q.correctAnswer.join(', ')}
+                          </div>
+                      ) : (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                             {q.options?.map((opt, i) => (
+                               <span key={i} className={`text-xs px-2 py-1 rounded border ${q.correctAnswer.includes(opt) ? 'bg-green-500/20 border-green-500/50 text-green-300' : 'bg-white/5 border-white/10 text-gray-400'}`}>
+                                 {opt}
+                               </span>
+                             ))}
+                          </div>
+                      )}
                       <div className="flex gap-4 text-[10px] uppercase font-bold text-gray-500">
                         <span className="bg-gray-800 px-2 py-1 rounded">{q.questionType}</span>
                         <span className="bg-gray-800 px-2 py-1 rounded">{q.difficulty}</span>

@@ -20,6 +20,8 @@ app.use('/api/exam', require('./routes/exam'));
 app.use('/api/questions', require('./routes/questions'));
 app.use('/api/certificates', require('./routes/certificates'));
 
+app.use('/api/examCollections', require('./routes/examCollections'));
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

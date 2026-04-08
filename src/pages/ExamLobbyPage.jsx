@@ -53,7 +53,7 @@ export default function ExamLobbyPage() {
       navigate(`/exam/${session.sessionId}`);
     } catch (err) {
       console.error(err);
-      alert('Failed to initialize connection to secure exam servers.');
+      alert(err.response?.data?.msg || 'Failed to initialize connection to secure exam servers.');
       setLoading(false);
     }
   };

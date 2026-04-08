@@ -32,14 +32,25 @@ router.post('/start', auth, async (req, res) => {
       { $sample: { size: 5 } }
     ]);
 
+    let examTitle = title;
+    const ExamCollection = require('../models/ExamCollection');
+    const existingCol = await ExamCollection.findOne({ examType });
+    if (existingCol) {
+      examTitle = existingCol.title;
+    }
+
     const allQuestions = [...mcqs, ...multis, ...numericals];
+    if (allQuestions.length === 0) {
+      return res.status(400).json({ msg: 'No questions available for this module yet. Please contact an administrator.' });
+    }
+    
     // Store only ObjectIds (converted to Strings)
     const questionIds = allQuestions.map(q => q._id.toString());
 
     // Create new exam session
     const newSession = new ExamSession({
       userId: req.user.id,
-      title,
+      title: examTitle,
       examType,
       questions: questionIds,
       startTime: new Date(),

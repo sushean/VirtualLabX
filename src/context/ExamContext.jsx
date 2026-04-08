@@ -25,9 +25,9 @@ export function ExamProvider({ children }) {
     };
   };
 
-  const startExam = async (title) => {
+  const startExam = async (examType) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/exam/start', { title }, getAuthHeaders());
+      const res = await axios.post('http://localhost:5000/api/exam/start', { examType, title: `${examType} Certification Test` }, getAuthHeaders());
       setExamSession(res.data);
       setExamResult(null);
       return res.data;

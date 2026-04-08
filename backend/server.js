@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 // Middleware
-app.use(express.json()); // Parses incoming json requests
+app.use(express.json({ limit: '50mb' })); // Parses incoming json requests (increased limit for base64 images)
 app.use(cors()); // Enables cross-origin requests from the React frontend
 
 // Connect to MongoDB
@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/exam', require('./routes/exam'));
 
 // Start Server
 const PORT = process.env.PORT || 5000;

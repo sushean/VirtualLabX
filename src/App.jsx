@@ -6,30 +6,39 @@ import AllLabsPage from './pages/AllLabsPage'
 import LinearRegressionLabPage from './pages/LinearRegressionLabPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
+import CertificationsSelectionPage from './pages/CertificationsSelectionPage'
+import ExamPage from './pages/ExamPage'
+import AdminDashboard from './pages/AdminDashboard'
 import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { SpotifyProvider } from './context/SpotifyContext'
+import { ExamProvider } from './context/ExamContext'
 import SpotifyPlayerWidget from './components/SpotifyPlayerWidget'
 
 function App() {
   return (
     <AuthProvider>
-      <SpotifyProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <div className="min-h-screen text-white relative font-sans">
-            <Navbar />
-            <SpotifyPlayerWidget />
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/labs" element={<AllLabsPage />} />
-              <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </SpotifyProvider>
+      <ExamProvider>
+        <SpotifyProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <div className="min-h-screen text-white relative font-sans">
+              <Navbar />
+              <SpotifyPlayerWidget />
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/labs" element={<AllLabsPage />} />
+                <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/certifications" element={<CertificationsSelectionPage />} />
+                <Route path="/exam/:sessionId" element={<ExamPage />} />
+                <Route path="/admin/exams" element={<AdminDashboard />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </SpotifyProvider>
+      </ExamProvider>
     </AuthProvider>
   )
 }

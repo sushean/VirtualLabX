@@ -5,6 +5,7 @@ import SolutionSection from '../components/SolutionSection';
 import FeaturesSection from '../components/FeaturesSection';
 import LabsSection from '../components/LabsSection';
 import HowItWorksSection from '../components/HowItWorksSection';
+import CertificationExamsSection from '../components/CertificationExamsSection';
 import WaveFooter from '../components/WaveFooter';
 
 export default function LandingPage() {
@@ -16,6 +17,7 @@ export default function LandingPage() {
         <SolutionSection />
         <FeaturesSection />
         <LabsSection />
+        <CertificationExamsSection />
         <HowItWorksSection />
       </main>
       <WaveFooter />

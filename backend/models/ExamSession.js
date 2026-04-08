@@ -14,11 +14,12 @@ const examSessionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  examType: {
+    type: String,
+    required: true
+  },
   questions: [{
-    id: String,
-    text: String,
-    options: [String],
-    correctAnswer: String // Never sent to frontend
+    type: String // We will store Question ObjectIds here
   }],
   currentIndex: {
     type: Number,
@@ -26,8 +27,16 @@ const examSessionSchema = new mongoose.Schema({
   },
   answers: [{
     questionId: String,
-    selectedOption: String
+    selectedOption: mongoose.Schema.Types.Mixed // Can be String or Array for MULTI type questions
   }],
+  score: {
+    type: Number,
+    default: 0
+  },
+  maxScore: {
+    type: Number,
+    default: 0
+  },
   status: {
     type: String,
     enum: ['IN_PROGRESS', 'COMPLETED', 'DISQUALIFIED'],

@@ -9,6 +9,8 @@ import ProfilePage from './pages/ProfilePage'
 import CertificationsSelectionPage from './pages/CertificationsSelectionPage'
 import ExamPage from './pages/ExamPage'
 import AdminDashboard from './pages/AdminDashboard'
+import FeaturesPage from './pages/FeaturesPage'
+import ExamLobbyPage from './pages/ExamLobbyPage'
 import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { SpotifyProvider } from './context/SpotifyContext'
@@ -34,6 +36,8 @@ function App() {
                 <Route path="/certifications" element={<CertificationsSelectionPage />} />
                 <Route path="/exam/:sessionId" element={<ExamPage />} />
                 <Route path="/admin/exams" element={<AdminDashboard />} />
+                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/certifications/lobby" element={<ExamLobbyPage />} />
               </Routes>
             </div>
           </BrowserRouter>

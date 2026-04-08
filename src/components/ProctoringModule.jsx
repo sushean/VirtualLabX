@@ -9,6 +9,11 @@ export default function ProctoringModule() {
   const detectionIntervalRef = useRef(null);
   const isDetectingRef = useRef(false);
   const faceCanvasRef = useRef(null);
+  const liveSignalsRef = useRef({
+    gazeDirection: 'CENTER',
+    isSpeaking: false,
+    faceBounds: null
+  });
   const detectorOptionsRef = useRef(new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.3 }));
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [isFacePresent, setIsFacePresent] = useState(false);
@@ -23,8 +28,16 @@ export default function ProctoringModule() {
   });
   const { attentionScore, status, ingestBehavior } = useProctoringEngine(sessionId);
 
+  useEffect(() => {
+    liveSignalsRef.current = {
+      gazeDirection,
+      isSpeaking,
+      faceBounds
+    };
+  }, [gazeDirection, isSpeaking, faceBounds]);
+
   const DETECTION_INTERVAL_MS = 300;
-  const NO_FACE_THRESHOLD_MS = 6000;
+  const NO_FACE_THRESHOLD_MS = 4000;
   const MULTIPLE_FACES_THRESHOLD_MS = 4000;
   const ATTENTION_VIOLATION_COOLDOWN_MS = 5000;
   const LOOKING_AWAY_PERSIST_MS = 3000;
@@ -97,12 +110,19 @@ export default function ProctoringModule() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, width, height);
 
-    if (detections.length) {
-      detections.forEach((det) => {
-        const box = det?.detection?.box || det?.box;
-        if (!box || typeof box.x !== 'number' || typeof box.y !== 'number' || typeof box.width !== 'number' || typeof box.height !== 'number') {
-          return;
-        }
+    const validBoxes = detections
+      .map((det) => det?.detection?.box || det?.box)
+      .filter(
+        (box) =>
+          box &&
+          typeof box.x === 'number' &&
+          typeof box.y === 'number' &&
+          typeof box.width === 'number' &&
+          typeof box.height === 'number'
+      );
+
+    if (validBoxes.length) {
+      validBoxes.forEach((box) => {
         ctx.strokeStyle = '#22c55e';
         ctx.lineWidth = 2.5;
         ctx.shadowColor = 'rgba(34, 197, 94, 0.6)';
@@ -147,11 +167,13 @@ export default function ProctoringModule() {
         isDetectingRef.current = true;
         try {
           const detections = await faceapi.detectAllFaces(videoRef.current, detectorOptionsRef.current);
-          drawFaceBox(detections, faceBounds);
-          analyzeDetections(detections, DETECTION_INTERVAL_MS);
+          const signals = liveSignalsRef.current;
+          drawFaceBox(detections, signals.faceBounds);
+          analyzeDetections(detections, DETECTION_INTERVAL_MS, signals);
         } catch (err) {
           console.error('Detection loop error:', err);
-          drawFaceBox([], faceBounds);
+          const signals = liveSignalsRef.current;
+          drawFaceBox([], signals.faceBounds);
         } finally {
           isDetectingRef.current = false;
         }
@@ -174,20 +196,21 @@ export default function ProctoringModule() {
     return () => video.removeEventListener('loadeddata', onLoadedData);
   }, [modelsLoaded, examSession?.status]);
 
-  const analyzeDetections = (detections, elapsedMs) => {
+  const analyzeDetections = (detections, elapsedMs, signals) => {
     const state = violationState.current;
-    const faceDetected = detections.length > 0;
+    const faceDetectedByApi = detections.length > 0;
     const multipleFaces = detections.length > 1;
-    const meshFaceDetected = Boolean(faceBounds);
-    const hasFaceForGaze = faceDetected || meshFaceDetected;
+    const meshFaceDetected = Boolean(signals?.faceBounds);
+    const hasFaceForGaze = faceDetectedByApi || meshFaceDetected;
+    const faceDetected = hasFaceForGaze;
 
     setIsFacePresent((prev) => (prev === hasFaceForGaze ? prev : hasFaceForGaze));
 
     const engineResult = ingestBehavior({
       faceDetected,
       multipleFaces,
-      gaze: hasFaceForGaze ? gazeDirection : 'CENTER',
-      audioSpeaking: isSpeaking,
+      gaze: hasFaceForGaze ? signals?.gazeDirection || 'CENTER' : 'CENTER',
+      audioSpeaking: Boolean(signals?.isSpeaking),
       tabSwitched: false,
       timestamp: Date.now()
     });
@@ -231,9 +254,10 @@ export default function ProctoringModule() {
     }
 
     // 3. LOOKING_AWAY Detection (centralized via unified engine)
-    if (hasFaceForGaze && gazeDirection !== 'CENTER') {
-      if (state.lookingAwayDirection !== gazeDirection) {
-        state.lookingAwayDirection = gazeDirection;
+    const liveGazeDirection = signals?.gazeDirection || 'CENTER';
+    if (hasFaceForGaze && liveGazeDirection !== 'CENTER') {
+      if (state.lookingAwayDirection !== liveGazeDirection) {
+        state.lookingAwayDirection = liveGazeDirection;
         state.lookingAwayDurationMs = 0;
       }
       state.lookingAwayDurationMs += elapsedMs;
@@ -244,7 +268,7 @@ export default function ProctoringModule() {
       if (state.lookingAwayDurationMs >= LOOKING_AWAY_PERSIST_MS && canTrigger && sessionId) {
         state.lastLookingAwayViolationTs = now;
         logViolation(sessionId, 'LOOKING_AWAY', {
-          direction: gazeDirection,
+          direction: liveGazeDirection,
           duration: state.lookingAwayDurationMs
         });
       }

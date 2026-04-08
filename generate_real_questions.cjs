@@ -1,0 +1,273 @@
+const fs = require('fs');
+
+const questions = [
+  // --- MCQs ---
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which of the following hooks is used to perform side effects in React?",
+    options: ["useState", "useEffect", "useContext", "useReducer"],
+    correctAnswer: ["useEffect"],
+    difficulty: "easy",
+    topic: "React"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "In MongoDB, which method is used to insert multiple documents at once?",
+    options: ["insertOne()", "insertMany()", "add()", "push()"],
+    correctAnswer: ["insertMany()"],
+    difficulty: "easy",
+    topic: "MongoDB"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "What is the primary function of Express.js?",
+    options: ["Database modeling", "Frontend rendering", "Backend routing and middleware", "State management"],
+    correctAnswer: ["Backend routing and middleware"],
+    difficulty: "medium",
+    topic: "Express.js"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which HTTP method is idempotent and typically used for full document updates?",
+    options: ["POST", "PUT", "PATCH", "DELETE"],
+    correctAnswer: ["PUT"],
+    difficulty: "medium",
+    topic: "HTTP Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which JavaScript array method returns a new array with all elements that pass a test?",
+    options: ["map()", "filter()", "reduce()", "forEach()"],
+    correctAnswer: ["filter()"],
+    difficulty: "easy",
+    topic: "JavaScript"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "What does the 'A' in the MERN stack stand for?",
+    options: ["Angular", "Apache", "Nothing, there is no A (MongoDB, Express, React, Node)", "AWS"],
+    correctAnswer: ["Nothing, there is no A (MongoDB, Express, React, Node)"],
+    difficulty: "easy",
+    topic: "MERN Architecture"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "How do you define a route parameter in Express.js?",
+    options: ["/users?id", "/users/:id", "/users/id=", "/users[id]"],
+    correctAnswer: ["/users/:id"],
+    difficulty: "easy",
+    topic: "Express.js"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which status code indicates a 'Not Found' error?",
+    options: ["200", "400", "401", "404"],
+    correctAnswer: ["404"],
+    difficulty: "easy",
+    topic: "HTTP Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "What is the default export type for a React component in a modern ES module?",
+    options: ["export default", "module.exports", "export const", "exports.default"],
+    correctAnswer: ["export default"],
+    difficulty: "easy",
+    topic: "JavaScript Modules"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which CSS property is responsible for the space outside an element's border?",
+    options: ["padding", "margin", "border-spacing", "outline"],
+    correctAnswer: ["margin"],
+    difficulty: "easy",
+    topic: "CSS"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "What is typically utilized to hash user passwords before saving them in Node.js applications?",
+    options: ["bcrypt", "jsonwebtoken", "crypto", "base64"],
+    correctAnswer: ["bcrypt"],
+    difficulty: "medium",
+    topic: "Security"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which React hook is optimal for caching heavy computational calculations?",
+    options: ["useEffect", "useMemo", "useCallback", "useState"],
+    correctAnswer: ["useMemo"],
+    difficulty: "medium",
+    topic: "React"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "In git, what command is used to record changes to the repository locally?",
+    options: ["git push", "git commit", "git save", "git upload"],
+    correctAnswer: ["git commit"],
+    difficulty: "easy",
+    topic: "Version Control"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "When utilizing JWT, what are the three parts of the token comprised of?",
+    options: ["Header, Payload, Signature", "Header, Body, Wrapper", "Salt, Hash, Algorithm", "User, Expiration, Key"],
+    correctAnswer: ["Header, Payload, Signature"],
+    difficulty: "hard",
+    topic: "Authentication"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MCQ",
+    questionText: "Which command converts a JSON string into a native JavaScript object?",
+    options: ["JSON.stringify()", "JSON.parse()", "JSON.toObject()", "Object.fromJSON()"],
+    correctAnswer: ["JSON.parse()"],
+    difficulty: "easy",
+    topic: "JavaScript"
+  },
+
+  // --- MULTI ---
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which of the following are valid variable declarators in ES6 JavaScript?",
+    options: ["var", "let", "const", "def", "static"],
+    correctAnswer: ["var", "let", "const"],
+    difficulty: "easy",
+    topic: "JavaScript"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which of these are valid standard HTTP methods?",
+    options: ["GET", "RECEIVE", "POST", "DELETE", "FETCH"],
+    correctAnswer: ["GET", "POST", "DELETE"],
+    difficulty: "easy",
+    topic: "Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Select the NoSQL document databases from the list below.",
+    options: ["MongoDB", "PostgreSQL", "CouchDB", "MySQL"],
+    correctAnswer: ["MongoDB", "CouchDB"],
+    difficulty: "medium",
+    topic: "Databases"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which of these hooks trigger re-renders in a React component when their value changes?",
+    options: ["useState", "useRef", "useReducer", "useContext"],
+    correctAnswer: ["useState", "useReducer", "useContext"],
+    difficulty: "hard",
+    topic: "React"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which frameworks/libraries can be used primarily on the frontend?",
+    options: ["React", "Express", "Vue", "Mongoose", "Angular"],
+    correctAnswer: ["React", "Vue", "Angular"],
+    difficulty: "easy",
+    topic: "Frontend Architecture"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which HTTP status codes indicate a client-side error?",
+    options: ["400", "200", "500", "403", "404"],
+    correctAnswer: ["400", "403", "404"],
+    difficulty: "medium",
+    topic: "HTTP Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "MULTI",
+    questionText: "Which of these are popular CSS utility-first or component frameworks?",
+    options: ["Tailwind CSS", "Bootstrap", "Django", "Chakra UI"],
+    correctAnswer: ["Tailwind CSS", "Bootstrap", "Chakra UI"],
+    difficulty: "easy",
+    topic: "CSS"
+  },
+
+  // --- NUMERICAL ---
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "What is the standard port number mapped to the HTTPS protocol?",
+    options: [],
+    correctAnswer: ["443"],
+    difficulty: "medium",
+    topic: "Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "What will the expression `typeof null` return in JavaScript historically? (Length of the string)",
+    options: [],
+    correctAnswer: ["6"], // "object" string has 6 letters
+    difficulty: "hard",
+    topic: "JavaScript"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "How many layers are defined in the OSI network model?",
+    options: [],
+    correctAnswer: ["7"],
+    difficulty: "medium",
+    topic: "Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "The standard Express default port usually used in Node local environments?",
+    options: [],
+    correctAnswer: ["3000", "5000", "8080"], // any of these might be accepted depending on context, we'll just say 5000
+    difficulty: "easy",
+    topic: "Express.js"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "What is the HTTP status code used to denote 'Created'?",
+    options: [],
+    correctAnswer: ["201"],
+    difficulty: "medium",
+    topic: "HTTP Networking"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "How many arguments does the JavaScript built-in `.reduce()` array method callback take natively? (Accumulator, currentValue, currentIndex, array)",
+    options: [],
+    correctAnswer: ["4"],
+    difficulty: "hard",
+    topic: "JavaScript"
+  },
+  {
+    examType: "FULL_STACK",
+    questionType: "NUMERICAL",
+    questionText: "What is the total sum resulting from: eval('2') + eval('3') in pure JS?",
+    options: [],
+    correctAnswer: ["5"],
+    difficulty: "easy",
+    topic: "JavaScript"
+  }
+];
+
+fs.writeFileSync('real_full_stack_questions.json', JSON.stringify(questions, null, 2));
+console.log('real_full_stack_questions.json generated successfully!');

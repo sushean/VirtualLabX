@@ -20,10 +20,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Center Links (Desktop) */}
         <div className="hidden md:flex items-center gap-10">
           <Link to="/" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Home</Link>
-          <a href="#" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Features</a>
+          <Link to="/features" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Features</Link>
           <Link to="/labs" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Labs</Link>
         </div>
 

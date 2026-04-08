@@ -6,31 +6,42 @@ const ExamSession = require('../models/ExamSession');
 const Certificate = require('../models/Certificate');
 const User = require('../models/User');
 
-const SAMPLE_QUESTIONS = [
-  { id: 'q1', text: 'What does HTML stand for?', options: ['Hyper Text Markup Language', 'High Text Markup Language', 'Hyper Tabular Markup Language', 'None of these'], correctAnswer: 'Hyper Text Markup Language' },
-  { id: 'q2', text: 'Which language is used for styling web pages?', options: ['HTML', 'JQuery', 'CSS', 'XML'], correctAnswer: 'CSS' },
-  { id: 'q3', text: 'What is the main purpose of React?', options: ['Database Management', 'Building User Interfaces', 'Server-side processing', 'Styling'], correctAnswer: 'Building User Interfaces' },
-  { id: 'q4', text: 'Who originally created Node.js?', options: ['Brendan Eich', 'Ryan Dahl', 'Tim Berners-Lee', 'Linus Torvalds'], correctAnswer: 'Ryan Dahl' },
-  { id: 'q5', text: 'What type of database is MongoDB?', options: ['Relational', 'Document-based NoSQL', 'Graph Database', 'Key-Value Memory Store'], correctAnswer: 'Document-based NoSQL' },
-  { id: 'q6', text: 'What does CSS stand for?', options: ['Creative Style Sheets', 'Cascading Style Sheets', 'Computer Style Sheets', 'Colorful Style Sheets'], correctAnswer: 'Cascading Style Sheets' },
-  { id: 'q7', text: 'In the MERN stack, what does the E stand for?', options: ['Electron', 'Ember', 'Express', 'Entity'], correctAnswer: 'Express' },
-  { id: 'q8', text: 'Which part of the MERN stack is typically used for the frontend?', options: ['MongoDB', 'Express', 'React', 'Node'], correctAnswer: 'React' },
-  { id: 'q9', text: 'What is a JSON Web Token (JWT) primarily used for?', options: ['Styling pages', 'Authentication and Information Exchange', 'Database querying', 'Routing'], correctAnswer: 'Authentication and Information Exchange' },
-  { id: 'q10', text: 'Which React hook is used for managing state in functional components?', options: ['useEffect', 'useReducer', 'useMemo', 'useState'], correctAnswer: 'useState' }
-];
+const { getQuestionModel } = require('../models/Question');
 
 // @route   POST api/exam/start
 // @desc    Start an exam session
 // @access  Private
 router.post('/start', auth, async (req, res) => {
   try {
-    const { title = "Sample Full-Stack Exam" } = req.body;
+    const { title = "Sample Full-Stack Exam", examType = "FULL_STACK" } = req.body;
     
+    // Dynamically get the model for the specific exam topic collection
+    const Question = getQuestionModel(examType);
+
+    // Pick 10 MCQ, 5 MULTI, 5 NUMERICAL randomly
+    const mcqs = await Question.aggregate([
+      { $match: { questionType: 'MCQ' } },
+      { $sample: { size: 10 } }
+    ]);
+    const multis = await Question.aggregate([
+      { $match: { questionType: 'MULTI' } },
+      { $sample: { size: 5 } }
+    ]);
+    const numericals = await Question.aggregate([
+      { $match: { questionType: 'NUMERICAL' } },
+      { $sample: { size: 5 } }
+    ]);
+
+    const allQuestions = [...mcqs, ...multis, ...numericals];
+    // Store only ObjectIds (converted to Strings)
+    const questionIds = allQuestions.map(q => q._id.toString());
+
     // Create new exam session
     const newSession = new ExamSession({
       userId: req.user.id,
       title,
-      questions: SAMPLE_QUESTIONS,
+      examType,
+      questions: questionIds,
       startTime: new Date(),
     });
 
@@ -39,6 +50,7 @@ router.post('/start', auth, async (req, res) => {
     res.json({
       sessionId: session._id,
       title: session.title,
+      examType: session.examType,
       totalQuestions: session.questions.length,
       startTime: session.startTime,
       status: session.status
@@ -63,17 +75,25 @@ router.get('/question/:sessionId', auth, async (req, res) => {
       return res.status(400).json({ msg: 'Exam is not in progress' });
     }
 
-    const { currentIndex, questions } = session;
+    const { currentIndex, questions, examType } = session;
     if (currentIndex >= questions.length) {
       return res.status(400).json({ msg: 'All questions answered' });
     }
 
-    const currentQuestion = questions[currentIndex];
+    const questionId = questions[currentIndex];
+    const Question = getQuestionModel(examType);
+    const qDetails = await Question.findById(questionId);
+
+    if (!qDetails) {
+      return res.status(404).json({ msg: 'Question no longer exists in DB' });
+    }
+
     // Return question without correct answer
     res.json({
-      id: currentQuestion.id,
-      text: currentQuestion.text,
-      options: currentQuestion.options,
+      id: qDetails._id.toString(),
+      text: qDetails.questionText,
+      options: qDetails.options,
+      questionType: qDetails.questionType,
       currentIndex,
       totalQuestions: questions.length
     });
@@ -178,14 +198,32 @@ router.post('/submit', auth, async (req, res) => {
 
     // Calculate score
     let score = 0;
+    const Question = getQuestionModel(session.examType);
+    const questionsList = await Question.find({ _id: { $in: session.questions } });
+    const qMap = {};
+    questionsList.forEach(q => qMap[q._id.toString()] = q);
+
     session.answers.forEach(answer => {
-      const q = session.questions.find(sq => sq.id === answer.questionId);
-      if (q && q.correctAnswer === answer.selectedOption) {
-        score += 10; // 10 points per question
+      const q = qMap[answer.questionId];
+      if (q) {
+        const correct = [...q.correctAnswer].sort().join(',');
+        let selected = '';
+        if (Array.isArray(answer.selectedOption)) {
+           selected = [...answer.selectedOption].sort().join(',');
+        } else if (typeof answer.selectedOption === 'string') {
+           selected = answer.selectedOption.split(',').map(s => s.trim()).sort().join(',');
+        }
+        
+        if (correct === selected) {
+          score += 10; // 10 points per question
+        }
       }
     });
 
     const maxScore = session.questions.length * 10;
+    // Save to session properties
+    session.score = score;
+    session.maxScore = maxScore;
 
     // Calculate cheating score
     const cs = (session.tabSwitches * 10) + (session.faceFlags * 10) + (session.multipleFaceEvents * 40) + (session.lookingAwayEvents * 10);
@@ -228,10 +266,12 @@ router.post('/submit', auth, async (req, res) => {
   }
 });
 
+const authorizeRoles = require('../middleware/authorizeRoles');
+
 // @route   GET api/exam/all
 // @desc    Get all exams for admin dashboard
-// @access  Private (should ideally be Admin only)
-router.get('/all', auth, async (req, res) => {
+// @access  Private (Admin only)
+router.get('/all', auth, authorizeRoles('ADMIN', 'MODERATOR'), async (req, res) => {
   try {
     const sessions = await ExamSession.find().populate('userId', ['name', 'email']).sort({ createdAt: -1 });
     res.json(sessions);

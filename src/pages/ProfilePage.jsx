@@ -12,6 +12,7 @@ export default function ProfilePage() {
   const [lastName, setLastName] = useState('');
   const [message, setMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
     // If auth state dictates logout, kick to home
@@ -24,6 +25,20 @@ export default function ProfilePage() {
     if (user) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      
+      const fetchCertificates = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await axios.get('http://localhost:5000/api/certificates/my', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setCertificates(res.data || []);
+        } catch (err) {
+          console.error('Error fetching certificates:', err);
+        }
+      };
+      
+      fetchCertificates();
     }
   }, [user]);
 
@@ -145,7 +160,36 @@ export default function ProfilePage() {
             )}
           </div>
 
-          <div className="text-center md:text-right">
+          {/* Certificates Section */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-8">
+            <h2 className="text-lg font-bold tracking-wide uppercase text-gray-300 mb-6 border-b border-white/10 pb-2">My Certificates</h2>
+            <div className="space-y-4">
+              {certificates.length > 0 ? certificates.map(cert => (
+                 <div key={cert._id} className="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col md:flex-row justify-between md:items-center group hover:bg-white/5 transition">
+                    <div>
+                      <h3 className="text-white font-bold">{cert.examName}</h3>
+                      <p className="text-[10px] text-[#00e5ff] font-mono mt-1 break-all">ID: {cert.certificateId}</p>
+                    </div>
+                    <div className="md:text-right mt-4 md:mt-0">
+                      <p className="text-green-400 font-bold">{cert.score} / {cert.maxScore} <span className="text-xs text-gray-500 uppercase ml-1">Score</span></p>
+                      <p className="text-gray-500 text-[10px] uppercase mt-1">Issued {new Date(cert.date).toLocaleDateString()}</p>
+                    </div>
+                 </div>
+              )) : (
+                 <p className="text-gray-500 text-sm italic text-center py-6">You have not securely earned any certificates yet. Take an exam to build your profile.</p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-end gap-4 text-center md:text-right">
+             {user?.role === 'ADMIN' && (
+                <button 
+                  onClick={() => navigate('/admin/exams')}
+                  className="bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 hover:border-purple-500/50 transition-all font-semibold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]"
+                >
+                  Enter Admin Dashboard
+                </button>
+             )}
              <button 
                 onClick={handleLogout}
                 className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 hover:border-red-500/50 transition-all font-semibold py-3 px-8 rounded-xl"

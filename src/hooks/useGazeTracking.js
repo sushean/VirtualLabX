@@ -7,6 +7,7 @@ const LOOK_AWAY_PERSIST_MS = 3000;
 const VIOLATION_COOLDOWN_MS = 5000;
 const HISTORY_WINDOW_MS = 15000;
 const RATIO_SMOOTHING_SAMPLES = 8;
+const DIRECTION_SWITCH_HOLD_MS = 180;
 
 const GAZE = {
   LEFT: 'LEFT',
@@ -34,11 +35,20 @@ const drawDot = (ctx, x, y, color = '#22d3ee') => {
   ctx.fill();
 };
 
+const clearOverlayCanvas = (canvasRef) => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
+
 export default function useGazeTracking(sessionId, options = {}) {
   const {
     drawOverlay = true,
     leftThreshold = 0.35,
     rightThreshold = 0.65,
+    directionHysteresis = 0.04,
+    mirrorPreview = true,
     suppressViolationLogging = false
   } = options;
 
@@ -61,6 +71,8 @@ export default function useGazeTracking(sessionId, options = {}) {
   const historyRef = useRef([]);
 
   const currentDirectionRef = useRef(GAZE.CENTER);
+  const pendingDirectionRef = useRef(null);
+  const pendingDirectionSinceRef = useRef(0);
   const awayStartTsRef = useRef(null);
   const awayDirectionRef = useRef(null);
   const lastViolationTsRef = useRef(0);
@@ -111,10 +123,50 @@ export default function useGazeTracking(sessionId, options = {}) {
     inFlightRef.current = false;
   };
 
-  const classifyDirection = (ratio) => {
+  const classifyDirection = (ratio, currentDirection) => {
+    // Hysteresis reduces rapid LEFT/CENTER/RIGHT flicker near thresholds.
+    if (currentDirection === GAZE.LEFT && ratio < leftThreshold + directionHysteresis) {
+      return GAZE.LEFT;
+    }
+    if (currentDirection === GAZE.RIGHT && ratio > rightThreshold - directionHysteresis) {
+      return GAZE.RIGHT;
+    }
+
     if (ratio < leftThreshold) return GAZE.LEFT;
     if (ratio > rightThreshold) return GAZE.RIGHT;
     return GAZE.CENTER;
+  };
+
+  const toDisplayDirection = (direction) => {
+    if (!mirrorPreview || direction === GAZE.CENTER) return direction;
+    if (direction === GAZE.LEFT) return GAZE.RIGHT;
+    if (direction === GAZE.RIGHT) return GAZE.LEFT;
+    return direction;
+  };
+
+  const stabilizeDirection = (nextDirection, nowTs) => {
+    const current = currentDirectionRef.current;
+
+    if (nextDirection === current) {
+      pendingDirectionRef.current = null;
+      pendingDirectionSinceRef.current = 0;
+      return current;
+    }
+
+    if (pendingDirectionRef.current !== nextDirection) {
+      pendingDirectionRef.current = nextDirection;
+      pendingDirectionSinceRef.current = nowTs;
+      return current;
+    }
+
+    if (nowTs - pendingDirectionSinceRef.current < DIRECTION_SWITCH_HOLD_MS) {
+      return current;
+    }
+
+    currentDirectionRef.current = nextDirection;
+    pendingDirectionRef.current = null;
+    pendingDirectionSinceRef.current = 0;
+    return nextDirection;
   };
 
   const pushHistory = (entryTs, direction) => {
@@ -175,8 +227,11 @@ export default function useGazeTracking(sessionId, options = {}) {
   const processResults = (results, nowTs) => {
     const faceLandmarks = results.multiFaceLandmarks;
     if (!faceLandmarks || !faceLandmarks.length) {
+      clearOverlayCanvas(canvasRef);
       maybeEmitFaceBounds(null);
       currentDirectionRef.current = GAZE.CENTER;
+      pendingDirectionRef.current = null;
+      pendingDirectionSinceRef.current = 0;
       awayStartTsRef.current = null;
       awayDirectionRef.current = null;
       pushHistory(nowTs, GAZE.CENTER);
@@ -243,8 +298,9 @@ export default function useGazeTracking(sessionId, options = {}) {
       smoothRatiosRef.current.reduce((sum, value) => sum + value, 0) /
       smoothRatiosRef.current.length;
 
-    const direction = classifyDirection(smoothedRatio);
-    currentDirectionRef.current = direction;
+    const rawDirection = classifyDirection(smoothedRatio, currentDirectionRef.current);
+    const stabilizedDirection = stabilizeDirection(rawDirection, nowTs);
+    const direction = toDisplayDirection(stabilizedDirection);
 
     pushHistory(nowTs, direction);
 
@@ -354,6 +410,8 @@ export default function useGazeTracking(sessionId, options = {}) {
       historyRef.current = [];
       awayStartTsRef.current = null;
       awayDirectionRef.current = null;
+      pendingDirectionRef.current = null;
+      pendingDirectionSinceRef.current = 0;
       lastViolationTsRef.current = 0;
       lastProcessedTsRef.current = 0;
       maybeEmitUi(GAZE.CENTER, 100);
@@ -365,7 +423,7 @@ export default function useGazeTracking(sessionId, options = {}) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-  }, [drawOverlay, logViolation, sessionId, leftThreshold, rightThreshold]);
+  }, [drawOverlay, logViolation, sessionId, leftThreshold, rightThreshold, directionHysteresis, mirrorPreview]);
 
   return {
     gazeDirection,

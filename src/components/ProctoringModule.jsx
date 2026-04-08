@@ -6,18 +6,19 @@ import useGazeTracking from '../hooks/useGazeTracking';
 import useProctoringEngine from '../hooks/useProctoringEngine';
 
 export default function ProctoringModule() {
-  const DEBUG_OVERLAY_DEFAULT = false;
   const detectionIntervalRef = useRef(null);
   const isDetectingRef = useRef(false);
   const faceCanvasRef = useRef(null);
   const detectorOptionsRef = useRef(new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.3 }));
   const [modelsLoaded, setModelsLoaded] = useState(false);
-  const [debugOverlayEnabled, setDebugOverlayEnabled] = useState(DEBUG_OVERLAY_DEFAULT);
+  const [isFacePresent, setIsFacePresent] = useState(false);
   const { examSession, logViolation, sendSnapshot } = useExam();
   const sessionId = examSession?.sessionId;
   const { noiseLevel, isSpeaking } = useAudioProctoring(sessionId);
   const { gazeDirection, gazeStabilityScore, faceBounds, videoRef, canvasRef } = useGazeTracking(sessionId, {
-    drawOverlay: debugOverlayEnabled,
+    drawOverlay: true,
+    mirrorPreview: true,
+    directionHysteresis: 0.04,
     suppressViolationLogging: true
   });
   const { attentionScore, status, ingestBehavior } = useProctoringEngine(sessionId);
@@ -126,12 +127,7 @@ export default function ProctoringModule() {
       return;
     }
 
-    if (debugOverlayEnabled && !detections.length) {
-      ctx.fillStyle = 'rgba(255, 193, 7, 0.9)';
-      ctx.font = '12px sans-serif';
-      ctx.fillText('No face detected', 8, 16);
-      return;
-    }
+    return;
   };
 
   const handleVideoPlay = () => {
@@ -182,11 +178,15 @@ export default function ProctoringModule() {
     const state = violationState.current;
     const faceDetected = detections.length > 0;
     const multipleFaces = detections.length > 1;
+    const meshFaceDetected = Boolean(faceBounds);
+    const hasFaceForGaze = faceDetected || meshFaceDetected;
+
+    setIsFacePresent((prev) => (prev === hasFaceForGaze ? prev : hasFaceForGaze));
 
     const engineResult = ingestBehavior({
       faceDetected,
       multipleFaces,
-      gaze: gazeDirection,
+      gaze: hasFaceForGaze ? gazeDirection : 'CENTER',
       audioSpeaking: isSpeaking,
       tabSwitched: false,
       timestamp: Date.now()
@@ -231,7 +231,7 @@ export default function ProctoringModule() {
     }
 
     // 3. LOOKING_AWAY Detection (centralized via unified engine)
-    if (gazeDirection !== 'CENTER') {
+    if (hasFaceForGaze && gazeDirection !== 'CENTER') {
       if (state.lookingAwayDirection !== gazeDirection) {
         state.lookingAwayDirection = gazeDirection;
         state.lookingAwayDurationMs = 0;
@@ -260,23 +260,14 @@ export default function ProctoringModule() {
     <div className="fixed bottom-4 right-4 z-50">
       <div className="bg-gray-900 border border-purple-500 rounded-lg shadow-xl overflow-hidden shadow-purple-500/20">
         <div className="px-2 py-1 bg-purple-900/50 text-xs text-center text-purple-200">
-          <div className="flex items-center justify-between gap-2">
-            <span>Proctoring Active</span>
-            <button
-              type="button"
-              onClick={() => setDebugOverlayEnabled((prev) => !prev)}
-              className="px-1.5 py-0.5 rounded bg-purple-700/70 hover:bg-purple-600/80 text-[10px] leading-none"
-            >
-              Debug {debugOverlayEnabled ? 'ON' : 'OFF'}
-            </button>
-          </div>
+          Proctoring Active
         </div>
         <div className="px-2 py-1 bg-gray-800/80 border-y border-gray-700 text-[10px] text-gray-200 flex items-center justify-between">
           <span>Audio: {isSpeaking ? 'Speaking' : 'Quiet'}</span>
           <span>Level: {noiseLevel}</span>
         </div>
         <div className="px-2 py-1 bg-gray-800/80 border-b border-gray-700 text-[10px] text-gray-200 flex items-center justify-between">
-          <span>Gaze: {gazeDirection}</span>
+          <span>Gaze: {isFacePresent ? gazeDirection : 'NO_FACE'}</span>
           <span>Stability: {gazeStabilityScore}</span>
         </div>
         <div className="px-2 py-1 bg-gray-800/80 border-b border-gray-700 text-[10px] text-gray-200 flex items-center justify-between">

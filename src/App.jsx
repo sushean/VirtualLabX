@@ -11,6 +11,7 @@ import ExamPage from './pages/ExamPage'
 import AdminDashboard from './pages/AdminDashboard'
 import FeaturesPage from './pages/FeaturesPage'
 import ExamLobbyPage from './pages/ExamLobbyPage'
+import VerifyCertificatePage from './pages/VerifyCertificatePage'
 import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { SpotifyProvider } from './context/SpotifyContext'
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/admin/exams" element={<AdminDashboard />} />
                 <Route path="/features" element={<FeaturesPage />} />
                 <Route path="/certifications/lobby" element={<ExamLobbyPage />} />
+                <Route path="/verify/:hash" element={<VerifyCertificatePage />} />
               </Routes>
             </div>
           </BrowserRouter>

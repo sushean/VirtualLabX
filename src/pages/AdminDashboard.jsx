@@ -509,6 +509,7 @@ export default function AdminDashboard() {
                    <th className="p-4 font-semibold text-gray-300">Curriculum</th>
                    <th className="p-4 font-semibold text-gray-300">Yield</th>
                    <th className="p-4 font-semibold text-gray-300">Timestamp</th>
+                   <th className="p-4 font-semibold text-gray-300">Actions</th>
                  </tr>
                </thead>
                <tbody>
@@ -524,6 +525,28 @@ export default function AdminDashboard() {
                         <div className="text-[10px] text-gray-500 uppercase">Passed</div>
                      </td>
                      <td className="p-4 text-sm text-gray-500">{new Date(cert.date).toLocaleDateString()}</td>
+                     <td className="p-4">
+                        <div className="flex gap-2">
+                           <button 
+                             onClick={() => window.open(`http://localhost:5000/api/certificate/view/${cert.certificateId}`, '_blank')}
+                             className="bg-white/10 hover:bg-[#00e5ff]/20 hover:text-[#00e5ff] px-2 py-1 rounded text-xs font-bold transition-all text-gray-300"
+                           >
+                             View
+                           </button>
+                           <button 
+                             onClick={() => window.open(`http://localhost:5000/api/certificate/download/${cert.certificateId}`, '_blank')}
+                             className="bg-white/10 hover:bg-[#00e5ff]/20 hover:text-[#00e5ff] px-2 py-1 rounded text-xs font-bold transition-all text-gray-300"
+                           >
+                             PDF
+                           </button>
+                           <button 
+                             onClick={() => window.open(`/verify/${cert.certificateId}`, '_blank')}
+                             className="bg-white/10 hover:bg-[#6c2bd9]/20 hover:text-[#6c2bd9] px-2 py-1 rounded text-xs font-bold transition-all text-gray-300"
+                           >
+                             Verify
+                           </button>
+                        </div>
+                     </td>
                    </tr>
                  ))}
                  {certificates.length === 0 && <tr><td colSpan="5" className="p-8 text-center text-gray-500">No certificates successfully vaulted into history.</td></tr>}

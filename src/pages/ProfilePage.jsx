@@ -166,13 +166,33 @@ export default function ProfilePage() {
             <div className="space-y-4">
               {certificates.length > 0 ? certificates.map(cert => (
                  <div key={cert._id} className="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col md:flex-row justify-between md:items-center group hover:bg-white/5 transition">
-                    <div>
-                      <h3 className="text-white font-bold">{cert.examName}</h3>
+                    <div className="flex-1 min-w-0 pr-4">
+                      <h3 className="text-white font-bold truncate">{cert.examName}</h3>
                       <p className="text-[10px] text-[#00e5ff] font-mono mt-1 break-all">ID: {cert.certificateId}</p>
                     </div>
-                    <div className="md:text-right mt-4 md:mt-0">
-                      <p className="text-green-400 font-bold">{cert.score} / {cert.maxScore} <span className="text-xs text-gray-500 uppercase ml-1">Score</span></p>
-                      <p className="text-gray-500 text-[10px] uppercase mt-1">Issued {new Date(cert.date).toLocaleDateString()}</p>
+                    <div className="md:text-right mt-4 md:mt-0 flex flex-col md:items-end shrink-0">
+                      <p className="text-green-400 font-bold mb-2">{cert.score} / {cert.maxScore} <span className="text-xs text-gray-500 uppercase ml-1">Score</span></p>
+                      <div className="flex flex-wrap gap-2 md:justify-end">
+                        <button 
+                          onClick={() => window.open(`http://localhost:5000/api/certificate/view/${cert.certificateId}`, '_blank')}
+                          className="bg-[#00e5ff]/10 hover:bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
+                        >
+                          View
+                        </button>
+                        <button 
+                          onClick={() => window.open(`http://localhost:5000/api/certificate/download/${cert.certificateId}`, '_blank')}
+                          className="bg-[#00e5ff]/10 hover:bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
+                        >
+                          PDF
+                        </button>
+                        <button 
+                          onClick={() => navigate(`/verify/${cert.certificateId}`)}
+                          className="bg-[#6c2bd9]/10 hover:bg-[#6c2bd9]/20 text-[#6c2bd9] border border-[#6c2bd9]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
+                        >
+                          Verify
+                        </button>
+                      </div>
+                      <p className="text-gray-500 text-[10px] uppercase mt-2">Issued {new Date(cert.date).toLocaleDateString()}</p>
                     </div>
                  </div>
               )) : (

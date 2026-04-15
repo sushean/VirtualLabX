@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body, html { margin: 0; padding: 0; width: 1123px; height: 794px; }
+    .cert { position: relative; width: 1123px; height: 794px; }
+    .bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
+    
+    .overlay {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%; z-index: 2;
+    }
+
+    /* We will use background: white for elements to hide underlying template text */
+    .name-hider {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      text-align: center;
+      font-size: 40px;
+      font-weight: bold;
+      color: #022a4f;
+      font-family: Arial, sans-serif;
+      padding: 0 10px;
+      /* Try top: 290px */
+      top: 290px;
+      width: 400px;
+      border: 1px dashed red;
+    }
+
+    .course-hider {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #022a4f;
+      font-family: Arial, sans-serif;
+      padding: 0 10px;
+      top: 450px;
+      width: 250px;
+      border: 1px dashed red;
+    }
+
+    .date-hider {
+      position: absolute;
+      left: 360px; /* Guessing x coordinate after "Issued on: " */
+      top: 505px;
+      background: white;
+      font-size: 14px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      padding: 2px 5px;
+      border: 1px dashed red;
+    }
+
+    .hash-hider {
+      position: absolute;
+      left: 380px; /* Guessing x coordinate after "Certificate ID: " */
+      top: 615px; /* guess */
+      background: white;
+      font-size: 12px;
+      font-weight: bold;
+      font-family: monospace;
+      padding: 2px 5px;
+      border: 1px dashed red;
+    }
+
+    .qr-hider {
+      position: absolute;
+      right: 175px; 
+      bottom: 120px;
+      width: 100px;
+      height: 100px;
+      background: white;
+      border: 1px dashed red;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="cert">
+    <img src="../../Certificate_Template.png" class="bg"/>
+    <div class="overlay">
+      <div class="name-hider" style="top: 290px;">NAME 290px</div>
+      <div class="name-hider" style="top: 310px;">NAME 310px</div>
+      <div class="name-hider" style="top: 330px;">NAME 330px</div>
+      
+      <div class="course-hider" style="top: 430px;">COURSE 430px</div>
+      <div class="course-hider" style="top: 450px;">COURSE 450px</div>
+      
+      <!-- Let's map out the positions visually. We will generate an image of this HTML -->
+    </div>
+  </div>
+</body>
+</html>

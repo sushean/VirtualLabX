@@ -260,6 +260,22 @@ router.post('/submit', auth, async (req, res) => {
         certificateId: crypto.randomUUID(),
         examName: session.title
       });
+
+      try {
+        const { generateCertificatePDF } = require('../services/certificateService');
+        const userDoc = await User.findById(req.user.id);
+        const pdfBuffer = await generateCertificatePDF({
+          studentName: `${userDoc.firstName} ${userDoc.lastName}`,
+          courseName: session.title,
+          issueDate: certificate.date || new Date(),
+          hash: certificate.certificateId
+        });
+        certificate.pdfBuffer = pdfBuffer;
+      } catch (pdfErr) {
+        console.error('Error generating PDF during submission:', pdfErr);
+        // We will continue saving the certificate even if PDF generation fails to not block user
+      }
+
       await certificate.save();
     }
 

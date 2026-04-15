@@ -26,6 +26,9 @@ const certificateSchema = new mongoose.Schema({
   examName: {
     type: String,
     required: true
+  },
+  pdfBuffer: {
+    type: Buffer
   }
 }, { timestamps: true });
 

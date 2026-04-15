@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import linearRegressionImg from '../assets/linear_regression.png';
 import nfaImg from '../assets/nfa_simulator.png';
 import dfaImg from '../assets/dfa_simulator.png';
+import mathBasicsImg from '../assets/math_basics.png';
 import WaveFooter from '../components/WaveFooter';
 
 export default function AllLabsPage() {
@@ -10,6 +11,7 @@ export default function AllLabsPage() {
 
   const genericLabs = [
     { id: 'linear-regression', title: "Linear Regression", img: linearRegressionImg },
+    { id: 'matrix-multiplication', title: "Matrix Multiplication", img: mathBasicsImg },
     { id: 'nfa', title: "NFA Simulator", img: nfaImg },
     { id: 'turing', title: "Turing Machine", img: dfaImg }, 
     { id: 'pda', title: "Pushdown Automata", img: nfaImg },

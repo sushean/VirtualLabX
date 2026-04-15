@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
 import AllLabsPage from './pages/AllLabsPage'
 import LinearRegressionLabPage from './pages/LinearRegressionLabPage'
+import MatrixMultiplicationLabPage from './pages/MatrixMultiplicationLabPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import CertificationsSelectionPage from './pages/CertificationsSelectionPage'
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/labs" element={<AllLabsPage />} />
                 <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
+                <Route path="/labs/matrix-multiplication" element={<MatrixMultiplicationLabPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/certifications" element={<CertificationsSelectionPage />} />

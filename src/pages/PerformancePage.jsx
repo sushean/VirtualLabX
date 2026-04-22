@@ -31,8 +31,8 @@ export default function PerformancePage() {
     <div className="min-h-screen bg-[#05010a] text-white pt-24 pb-16 px-6 relative overflow-hidden">
       {/* Background gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#00e5ff]/20 rounded-full blur-[120px]"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-125 h-125 bg-[#00e5ff]/20 rounded-full blur-[120px]"></div>
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -115,7 +115,7 @@ export default function PerformancePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                <div className="bg-green-500/5 border border-green-500/20 p-6 rounded-2xl">
-                 <h2 className="text-lg font-bold text-green-400 mb-4 uppercase tracking-widest text-sm flex items-center gap-2">💪 Core Strengths</h2>
+                 <h2 className="font-bold text-green-400 mb-4 uppercase tracking-widest text-sm flex items-center gap-2">💪 Core Strengths</h2>
                  {performance.strengths && performance.strengths.length > 0 ? (
                    <ul className="space-y-3">
                      {performance.strengths.map((item, idx) => (
@@ -130,7 +130,7 @@ export default function PerformancePage() {
                </div>
                
                <div className="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl">
-                 <h2 className="text-lg font-bold text-red-400 mb-4 uppercase tracking-widest text-sm flex items-center gap-2">⚠️ Weaknesses</h2>
+                 <h2 className="font-bold text-red-400 mb-4 uppercase tracking-widest text-sm flex items-center gap-2">⚠️ Weaknesses</h2>
                  <ul className="space-y-3">
                    {performance.weaknesses?.map((item, idx) => (
                      <li key={idx} className="flex gap-3 text-gray-300 text-sm items-start">
@@ -142,7 +142,7 @@ export default function PerformancePage() {
             </div>
 
             <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-xl">
-               <h2 className="text-lg font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">📋 Recommended Actions</h2>
+               <h2 className="font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">📋 Recommended Actions</h2>
                <div className="space-y-4">
                  {performance.recommendations?.map((item, idx) => (
                    <div key={idx} className="flex gap-4 items-center bg-black/40 p-4 rounded-xl border border-white/5">

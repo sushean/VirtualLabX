@@ -4,7 +4,25 @@ const UserProgress = require('../models/UserProgress');
 const ExamCollection = require('../models/ExamCollection');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const authorizeRoles = require('../middleware/authorizeRoles');
+const ExamSession = require('../models/ExamSession');
 const { OpenAI } = require('openai');
+
+// @route   GET /api/progress/user/:id
+// @desc    Get detailed progress and exam history for a specific user
+// @access  Private (ADMIN, MODERATOR)
+router.get('/user/:id', auth, authorizeRoles('ADMIN', 'MODERATOR'), async (req, res) => {
+   try {
+       const user = await User.findById(req.params.id).select('-password');
+       if (!user) return res.status(404).json({ msg: 'User not found' });
+       const progress = await UserProgress.findOne({ userId: req.params.id });
+       const exams = await ExamSession.find({ user: req.params.id }).sort({ startTime: -1 });
+       res.json({ user, progress, exams });
+   } catch (error) {
+       console.error("Error fetching user progress:", error.message);
+       res.status(500).json({ msg: 'Server error' });
+   }
+});
 
 // Configure OpenAI. We don't error out immediately if missing because we have fallback logic.
 let openai = null;

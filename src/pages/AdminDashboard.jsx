@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
+  const { user } = useContext(AuthContext);
+  const isAdmin = user?.role === 'ADMIN';
   
   // Data states
   const [exams, setExams] = useState([]);
@@ -71,10 +74,46 @@ export default function AdminDashboard() {
       await axios.put(`http://localhost:5000/api/auth/users/${userId}/promote`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('User promoted successfully');
       fetchDashboardData();
     } catch (err) {
       alert(err.response?.data?.msg || 'Error promoting user');
+    }
+  };
+
+  const demoteUser = async (userId) => {
+    try {
+      await axios.put(`http://localhost:5000/api/auth/users/${userId}/demote`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDashboardData();
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Error demoting user');
+    }
+  };
+
+  const toggleBanUser = async (userId) => {
+    try {
+      await axios.put(`http://localhost:5000/api/auth/users/${userId}/toggle-ban`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDashboardData();
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Error toggling suspend');
+    }
+  };
+
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  const fetchUserDetails = async (userId) => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/progress/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSelectedUserDetails(res.data);
+      setIsUserModalOpen(true);
+    } catch (err) {
+      alert('Failed to load deep user context.');
     }
   };
 
@@ -209,7 +248,7 @@ export default function AdminDashboard() {
         
         {/* Navigation Tabs */}
         <div className="flex gap-4 mb-8 border-b border-gray-800 pb-2 overflow-x-auto custom-scrollbar">
-          {['overview', 'sessions', 'users', 'questions', 'certificates', 'labs'].map(tab => (
+          {['overview', 'sessions', 'users', ...(isAdmin ? ['questions', 'certificates', 'labs'] : [])].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -348,8 +387,13 @@ export default function AdminDashboard() {
                </thead>
                <tbody>
                  {users.map(u => (
-                   <tr key={u._id} className="border-b border-gray-800 hover:bg-white/5 transition">
-                     <td className="p-4 font-medium">{u.firstName} {u.lastName}</td>
+                   <tr key={u._id} className={`border-b border-gray-800 hover:bg-white/5 transition ${u.isSuspended ? 'opacity-50 grayscale' : ''}`}>
+                     <td className="p-4 font-medium">
+                        <button onClick={() => fetchUserDetails(u._id)} className="text-[#00e5ff] hover:underline font-bold text-left focus:outline-none transition">
+                           {u.firstName} {u.lastName}
+                        </button>
+                        {u.isSuspended && <span className="ml-2 text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-bold border border-red-500/30">BANNED</span>}
+                     </td>
                      <td className="p-4 text-gray-400">{u.email}</td>
                      <td className="p-4">
                        <span className={`px-2 py-1 rounded text-xs font-bold ${u.role === 'ADMIN' ? 'bg-purple-500/20 text-purple-400' : u.role === 'MODERATOR' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>
@@ -358,11 +402,23 @@ export default function AdminDashboard() {
                      </td>
                      <td className="p-4 text-sm text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
                      <td className="p-4">
-                        {u.role === 'USER' && (
-                          <button onClick={() => promoteUser(u._id)} className="text-xs bg-[#00e5ff]/20 text-[#00e5ff] hover:bg-[#00e5ff]/40 px-3 py-1.5 rounded transition font-bold">
-                            Promote
-                          </button>
-                        )}
+                        <div className="flex flex-wrap gap-2">
+                           {u.role === 'USER' && isAdmin && (
+                             <button onClick={() => promoteUser(u._id)} className="text-xs bg-[#00e5ff]/20 text-[#00e5ff] hover:bg-[#00e5ff]/40 px-3 py-1.5 rounded transition font-bold border border-[#00e5ff]/30">
+                               Promote
+                             </button>
+                           )}
+                           {u.role === 'MODERATOR' && isAdmin && (
+                             <button onClick={() => demoteUser(u._id)} className="text-xs bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/40 px-3 py-1.5 rounded transition font-bold border border-yellow-500/30">
+                               Demote
+                             </button>
+                           )}
+                           {u.role !== 'ADMIN' && (
+                             <button onClick={() => toggleBanUser(u._id)} className={`text-xs px-3 py-1.5 rounded transition font-bold border ${u.isSuspended ? 'bg-green-500/20 text-green-500 hover:bg-green-500/40 border-green-500/30' : 'bg-red-500/20 text-red-500 hover:bg-red-500/40 border-red-500/30'}`}>
+                               {u.isSuspended ? 'Restore' : 'Suspend'}
+                             </button>
+                           )}
+                        </div>
                      </td>
                    </tr>
                  ))}
@@ -608,6 +664,63 @@ export default function AdminDashboard() {
         )}
 
       </div>
+
+      {/* User Progress Deep Inspector Modal Overlay */}
+      {isUserModalOpen && selectedUserDetails && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+           <div className="bg-[#0a0510] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden animate-fade-in shadow-[0_0_50px_rgba(0,229,255,0.1)]">
+              {/* Header */}
+              <div className="p-6 border-b border-white/10 flex justify-between items-start bg-white/5">
+                 <div>
+                    <h2 className="text-3xl font-extrabold text-[#00e5ff]">{selectedUserDetails.user.firstName} {selectedUserDetails.user.lastName}</h2>
+                    <p className="text-gray-400 font-mono mt-1 text-sm">{selectedUserDetails.user.email} | Role: {selectedUserDetails.user.role}</p>
+                 </div>
+                 <button onClick={() => setIsUserModalOpen(false)} className="text-gray-400 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1 rounded transition font-bold">Close X</button>
+              </div>
+
+              {/* Body */}
+              <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-8">
+                 
+                 {/* Lab Completions Section */}
+                 <section>
+                    <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">Lab Completions</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       {selectedUserDetails.progress?.labs?.length > 0 ? selectedUserDetails.progress.labs.map((lab, i) => (
+                          <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between">
+                             <span className="font-bold text-gray-200 truncate pr-4">{lab.labSlug}</span>
+                             <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-widest ${lab.completed ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                               {lab.completed ? 'COMPLETED' : `${lab.progressPercentage}%`}
+                             </span>
+                          </div>
+                       )) : <p className="text-gray-500 italic text-sm">No lab tracking data found.</p>}
+                    </div>
+                 </section>
+
+                 {/* Exam History Section */}
+                 <section>
+                    <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">Proctored Exam History</h3>
+                    <div className="space-y-4">
+                       {selectedUserDetails.exams?.length > 0 ? selectedUserDetails.exams.map(exam => (
+                          <div key={exam._id} className="bg-white/5 border border-white/10 p-5 rounded-xl">
+                             <div className="flex justify-between items-center mb-3">
+                                <span className="text-lg font-bold text-purple-400">{exam.examType} Auth Session</span>
+                                <span className={`text-[10px] font-bold px-2 py-1 rounded tracking-widest uppercase ${exam.status === 'COMPLETED' ? 'bg-green-500/20 text-green-400' : exam.status === 'DISQUALIFIED' ? 'bg-red-500/20 text-red-500' : 'bg-blue-500/20 text-blue-400'}`}>{exam.status}</span>
+                             </div>
+                             <div className="grid grid-cols-3 gap-4 text-sm mt-4 border-t border-white/5 pt-4">
+                                <div><span className="text-gray-500 block text-xs uppercase mb-1">Score</span><span className="font-bold">{exam.score || 0} / {exam.totalQuestions || 0}</span></div>
+                                <div><span className="text-gray-500 block text-xs uppercase mb-1">Confidence</span><span className="font-mono text-[#00e5ff]">{exam.confidenceScore > 0 ? `${exam.confidenceScore}%` : 'N/A'}</span></div>
+                                <div><span className="text-gray-500 block text-xs uppercase mb-1">Violations</span><span className="text-red-400 font-bold">{exam.violations?.length || 0} Triggers</span></div>
+                                <div><span className="text-gray-500 block text-xs uppercase mb-1">Date</span><span className="text-gray-300">{new Date(exam.startTime).toLocaleDateString()}</span></div>
+                             </div>
+                          </div>
+                       )) : <p className="text-gray-500 italic text-sm">No external certification exams recorded.</p>}
+                    </div>
+                 </section>
+
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 }

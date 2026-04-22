@@ -85,6 +85,11 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid Credentials' });
     }
 
+    // Check Suspend State
+    if (user.isSuspended) {
+      return res.status(403).json({ msg: 'Account Suspended by Administration' });
+    }
+
     // Create JWT Payload
     const payload = {
       user: {
@@ -185,6 +190,42 @@ router.put('/users/:id/promote', auth, authorizeRoles('ADMIN'), async (req, res)
     await user.save();
 
     res.json({ msg: 'User promoted successfully', user: { id: user.id, firstName: user.firstName, email: user.email, role: user.role } });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   PUT /api/auth/users/:id/demote
+// @desc    Demote MODERATOR back to USER
+// @access  Private (ADMIN only)
+router.put('/users/:id/demote', auth, authorizeRoles('ADMIN'), async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    if (user.role === 'ADMIN') return res.status(400).json({ msg: 'Cannot demote an ADMIN' });
+
+    user.role = 'USER';
+    await user.save();
+    res.json({ msg: 'User demoted successfully', user: { id: user.id, role: user.role } });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   PUT /api/auth/users/:id/toggle-ban
+// @desc    Suspend or Restore a user account
+// @access  Private (ADMIN, MODERATOR)
+router.put('/users/:id/toggle-ban', auth, authorizeRoles('ADMIN', 'MODERATOR'), async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    if (user.role === 'ADMIN') return res.status(403).json({ msg: 'Cannot suspend an ADMIN' });
+
+    user.isSuspended = !user.isSuspended;
+    await user.save();
+    res.json({ msg: `User account has been ${user.isSuspended ? 'suspended' : 'restored'}.`, isSuspended: user.isSuspended });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

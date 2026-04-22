@@ -45,6 +45,7 @@ function App() {
                 <Route path="/admin/exams" element={<AdminDashboard />} />
                 <Route path="/admin/builder" element={<AdminLabBuilder />} />
                 <Route path="/admin/builder/:slug" element={<AdminLabBuilder />} />
+                <Route path="/admin/lab/create" element={<AdminLabContentEditor />} />
                 <Route path="/admin/lab/:slug/edit" element={<AdminLabContentEditor />} />
                 <Route path="/features" element={<FeaturesPage />} />
                 <Route path="/certifications/lobby" element={<ExamLobbyPage />} />

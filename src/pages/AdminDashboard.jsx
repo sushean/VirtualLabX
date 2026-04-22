@@ -568,7 +568,7 @@ export default function AdminDashboard() {
                  <h2 className="text-2xl font-bold">Labs Management</h2>
                  <p className="text-gray-400 text-sm mt-1">Configure metadata, toggle statuses, and jump into visual Flow Builders.</p>
               </div>
-              <button onClick={() => window.location.href = '/admin/builder'} className="btn-primary flex items-center gap-2">
+              <button onClick={() => window.location.href = '/admin/lab/create'} className="btn-primary flex items-center gap-2">
                  <span className="font-bold text-lg">+</span> Create New Lab
               </button>
             </div>

@@ -5,6 +5,8 @@ import BuilderCanvas from '../components/lab-builder/BuilderCanvas';
 import NodePanel from '../components/lab-builder/NodePanel';
 import PropertiesPanel from '../components/lab-builder/PropertiesPanel';
 import { NodeRegistry, transformLegacyNodes } from '../components/simulation/registry/NodeRegistry';
+import dagre from 'dagre';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 
 // Natively bind Builder components from the unified registry mapping identically to FlowRenderer
 const nodeTypes = Object.fromEntries(
@@ -127,6 +129,34 @@ export default function AdminLabBuilder() {
     }
   };
 
+  const autoLayout = useCallback(() => {
+    if (nodes.length === 0) return;
+    const dagreGraph = new dagre.graphlib.Graph();
+    dagreGraph.setDefaultEdgeLabel(() => ({}));
+    dagreGraph.setGraph({ rankdir: 'LR', align: 'UL', nodesep: 100, ranksep: 200 });
+
+    nodes.forEach((node) => {
+      dagreGraph.setNode(node.id, { width: 220, height: 120 });
+    });
+
+    edges.forEach((edge) => {
+      dagreGraph.setEdge(edge.source, edge.target);
+    });
+
+    dagre.layout(dagreGraph);
+
+    setNodes((nds) => nds.map((node) => {
+      const nodeWithPosition = dagreGraph.node(node.id);
+      return {
+        ...node,
+        position: {
+          x: nodeWithPosition.x - 220 / 2,
+          y: nodeWithPosition.y - 120 / 2,
+        },
+      };
+    }));
+  }, [nodes, edges, setNodes]);
+
   return (
     <div className="flex flex-col h-screen pt-20 bg-[#05010a] text-white animate-page-enter">
       {/* Header bar */}
@@ -136,6 +166,9 @@ export default function AdminLabBuilder() {
           <p className="text-xs text-gray-400">Design your simulation visually</p>
         </div>
         <div className="flex gap-4 items-center">
+           <button onClick={autoLayout} className="flex gap-2 items-center bg-blue-500/10 text-blue-400 border border-blue-500/30 text-sm px-4 py-2 rounded focus:outline-none hover:bg-blue-500/20 transition-colors">
+             <AutoAwesomeMosaicIcon fontSize="small"/> Auto Layout
+           </button>
            <input 
              className="bg-black/50 border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-purple-500 w-64" 
              placeholder="Lab Title" 

@@ -16,13 +16,31 @@ export default function AdminLabContentEditor() {
 
   useEffect(() => {
     const fetchLab = async () => {
+      if (!slug) {
+         setLab({
+           title: '',
+           slug: '',
+           description: '',
+           category: 'Custom',
+           difficulty: 'Beginner',
+           simulationType: 'flow',
+           status: 'UPCOMING',
+           tabs: {
+              introduction: [], prerequisites: [], objective: [], targetAudience: [],
+              courseAlignment: { alignment: [], typicalPart: [] },
+              resources: [], quiz: [], learnCode: { learnContent: [], testContent: [] },
+              quizSettings: { timeLimit: 10 }
+           }
+         });
+         setLoading(false);
+         return;
+      }
+
       try {
-         // fetch normally, although here we might have multiple labs. The easiest is GET by slug.
          const response = await fetch(`http://localhost:5000/api/labs/${slug}`);
          if (!response.ok) throw new Error('Lab not found');
          const data = await response.json();
          
-         // Initialize arrays if they don't exist
          if (!data.tabs) data.tabs = {};
          if (!data.tabs.introduction) data.tabs.introduction = [];
          if (!data.tabs.prerequisites) data.tabs.prerequisites = [];
@@ -70,10 +88,21 @@ export default function AdminLabContentEditor() {
     setErrorTabs([]);
 
     try {
-       await axios.put(`http://localhost:5000/api/labs/${lab._id}`, lab, {
+       const url = lab._id ? `http://localhost:5000/api/labs/${lab._id}` : 'http://localhost:5000/api/labs';
+       const method = lab._id ? 'put' : 'post';
+       const res = await axios({
+         method,
+         url,
+         data: lab,
          headers: { Authorization: `Bearer ${token}` }
        });
-       alert('Lab Content Saved Successfully!');
+       
+       if (!lab._id && res.data && res.data.slug) {
+          alert('Lab Created Successfully! You can now continue adding content or jump to the Builder.');
+          navigate(`/admin/lab/${res.data.slug}/edit`);
+       } else {
+          alert('Lab Content Saved Successfully!');
+       }
     } catch (err) {
        console.error(err);
        if (err.response && err.response.data && err.response.data.message) {
@@ -94,7 +123,11 @@ export default function AdminLabContentEditor() {
   /* ---------------- HANDLERS ---------------- */
   // Update Lab Root Fields
   const updateLab = (field, value) => {
-    setLab({ ...lab, [field]: value });
+    let updates = { [field]: value };
+    if (field === 'title' && !lab._id) {
+       updates.slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+    setLab({ ...lab, ...updates });
   };
 
   // Update tabs fields

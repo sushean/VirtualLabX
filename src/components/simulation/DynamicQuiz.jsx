@@ -6,8 +6,11 @@ import TimerIcon from '@mui/icons-material/Timer';
 import QuizIcon from '@mui/icons-material/Quiz';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function DynamicQuiz({ questions = [], category = 'General', settings = { timeLimit: 10 } }) {
+  const { slug } = useParams();
   const [quizState, setQuizState] = useState('intro'); // 'intro', 'active', 'finished', 'review'
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState((settings.timeLimit || 10) * 60);
@@ -48,8 +51,19 @@ export default function DynamicQuiz({ questions = [], category = 'General', sett
         correctCount += 1;
       }
     });
-    setScore(Math.round((correctCount / Math.max(1, questions.length)) * 100));
+    const finalScore = Math.round((correctCount / Math.max(1, questions.length)) * 100);
+    setScore(finalScore);
     setQuizState('finished');
+
+    const token = localStorage.getItem('token');
+    if (token && slug) {
+       axios.post('http://localhost:5000/api/progress/quiz', {
+          labSlug: slug,
+          score: correctCount,
+          total: questions.length,
+          accuracy: finalScore
+       }, { headers: { Authorization: `Bearer ${token}` } }).catch(err => console.error("Telemetry Sync Error:", err));
+    }
   };
 
   const formatTime = (seconds) => {

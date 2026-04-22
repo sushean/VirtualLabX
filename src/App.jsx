@@ -7,6 +7,7 @@ import LinearRegressionLabPage from './pages/LinearRegressionLabPage'
 import MatrixMultiplicationLabPage from './pages/MatrixMultiplicationLabPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
+import PerformancePage from './pages/PerformancePage'
 import CertificationsSelectionPage from './pages/CertificationsSelectionPage'
 import ExamPage from './pages/ExamPage'
 import AdminDashboard from './pages/AdminDashboard'
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/labs/:slug" element={<DynamicLabPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/performance" element={<PerformancePage />} />
                 <Route path="/certifications" element={<CertificationsSelectionPage />} />
                 <Route path="/exam/:sessionId" element={<ExamPage />} />
                 <Route path="/admin/exams" element={<AdminDashboard />} />

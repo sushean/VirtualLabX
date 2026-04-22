@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import WaveFooter from '../components/WaveFooter';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -250,10 +251,26 @@ const MatrixPrerequisitesContent = () => {
 
 export default function MatrixMultiplicationLabPage() {
   const [activeTab, setActiveTab] = useState('Introduction');
+  const [viewedTabs, setViewedTabs] = useState([]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [activeTab]);
+
+  useEffect(() => {
+     if (!viewedTabs.includes(activeTab)) {
+        const nextViewed = [...viewedTabs, activeTab];
+        setViewedTabs(nextViewed);
+        const token = localStorage.getItem('token');
+        if (token) {
+           const progressionRatio = Math.round((nextViewed.length / 10) * 100);
+           axios.post('http://localhost:5000/api/progress/lab', 
+               { labSlug: 'matrix-multiplication', progressPercentage: progressionRatio },
+               { headers: { Authorization: `Bearer ${token}` } }
+           ).catch(err => console.debug("Sync Warning", err));
+        }
+     }
+  }, [activeTab, viewedTabs]);
 
   const tabs = [
     { id: 'Introduction', icon: <PlayArrowIcon fontSize="small"/> },

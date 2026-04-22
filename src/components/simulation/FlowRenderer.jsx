@@ -11,6 +11,8 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import dagre from 'dagre';
 import { NodeRegistry, transformLegacyNodes } from './registry/NodeRegistry';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const nodeTypes = Object.fromEntries(
   Object.entries(NodeRegistry).map(([key, def]) => [key, def.component])
@@ -48,6 +50,7 @@ const getLayoutedElements = (nodes, edges) => {
 };
 
 export default function FlowRenderer({ config }) {
+  const { slug } = useParams();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isExecuting, setIsExecuting] = useState(false);
@@ -163,6 +166,15 @@ export default function FlowRenderer({ config }) {
     // Freeze edge animations natively
     setEdges(eds => eds.map(e => ({ ...e, animated: false, style: { stroke: '#a855f7', strokeWidth: 1 } })));
     setIsExecuting(false);
+
+    // AI Mentor Tracking Post Hook
+    const token = localStorage.getItem('token');
+    if (token && slug) {
+       axios.post('http://localhost:5000/api/progress/lab', {
+          labSlug: slug,
+          progressPercentage: 100
+       }, { headers: { Authorization: `Bearer ${token}` } }).catch(e => console.error(e));
+    }
   };
 
   return (

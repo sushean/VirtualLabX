@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import WaveFooter from '../components/WaveFooter';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -59,6 +60,7 @@ export default function DynamicLabPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Introduction');
   const [expandedTopic, setExpandedTopic] = useState(null);
+  const [viewedTabs, setViewedTabs] = useState([]);
 
   useEffect(() => {
     const fetchLab = async () => {
@@ -80,6 +82,24 @@ export default function DynamicLabPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeTab]);
+
+  // Telemetry Background Syncer
+  useEffect(() => {
+     if (lab && !viewedTabs.includes(activeTab)) {
+        const nextViewed = [...viewedTabs, activeTab];
+        setViewedTabs(nextViewed);
+        
+        const token = localStorage.getItem('token');
+        if (token) {
+           // We have exactly 10 master tab nodes globally handling lab scope
+           const progressionRatio = Math.round((nextViewed.length / 10) * 100);
+           axios.post('http://localhost:5000/api/progress/lab', 
+               { labSlug: slug, progressPercentage: progressionRatio },
+               { headers: { Authorization: `Bearer ${token}` } }
+           ).catch(err => console.debug("Sync Warning", err));
+        }
+     }
+  }, [activeTab, lab, slug, viewedTabs]);
 
   if (loading) return <div className="pt-32 text-center text-white h-screen">Compiling Lab Interface...</div>;
   if (!lab) return <div className="pt-32 text-center text-red-500 h-screen">Lab could not be found or access is restricted.</div>;

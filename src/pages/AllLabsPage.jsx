@@ -29,8 +29,11 @@ export default function AllLabsPage() {
   }, []);
 
   // Helper to map lab slugs to specific asset images if preferred, or a default
-  const getLabImage = (slug) => {
-    switch (slug) {
+  const getLabImage = (lab) => {
+    if (lab.thumbnail) {
+       return lab.thumbnail.startsWith('http') ? lab.thumbnail : `http://localhost:5000${lab.thumbnail}`;
+    }
+    switch (lab.slug) {
       case 'linear-regression': return linearRegressionImg;
       case 'matrix-multiplication': return mathBasicsImg;
       default: return dfaImg; // using dfaImg as a placeholder for dynamic ones
@@ -64,10 +67,11 @@ export default function AllLabsPage() {
             return (
             <div key={lab._id || lab.slug} className={`glass-card flex flex-col p-0 overflow-hidden text-left border ${isUpcoming ? 'border-[#00e5ff] shadow-[0_0_20px_rgba(0,229,255,0.2)]' : 'border-white/5'} ${isLocked ? 'opacity-60 cursor-not-allowed grayscale-[50%]' : 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer'} transition-all group bg-[#0a0510]/60 relative`}>
               
-              {isLocked && <div className="absolute top-4 right-4 bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5 z-20 backdrop-blur-sm shadow-[0_0_10px_rgba(239,68,68,0.3)]">🔒 {lab.statusMessage || 'LOCKED'}</div>}
-              {isUpcoming && <div className="absolute top-4 right-4 bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/50 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5 z-20 backdrop-blur-sm shadow-[0_0_10px_rgba(0,229,255,0.3)]">⚡ {lab.statusMessage || 'COMING SOON'}</div>}
-
               <div className="p-8 pb-2">
+                 <div className="flex flex-wrap gap-2 mb-4">
+                    {isLocked && <div className="bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5 backdrop-blur-sm shadow-[0_0_10px_rgba(239,68,68,0.3)]">🔒 {lab.statusMessage || 'LOCKED'}</div>}
+                    {isUpcoming && <div className="bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/50 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5 backdrop-blur-sm shadow-[0_0_10px_rgba(0,229,255,0.3)]">⚡ {lab.statusMessage || 'COMING SOON'}</div>}
+                 </div>
                  <h3 className="text-2xl font-bold mb-2">{lab.title}</h3>
                  {lab.category && <span className="text-xs text-purple-400 font-semibold mb-2 block">{lab.category}</span>}
               </div>
@@ -86,7 +90,7 @@ export default function AllLabsPage() {
                  </button>
               </div>
               <div className="relative h-64 bg-gradient-to-t from-black/80 to-black/20 mt-auto overflow-hidden pointer-events-none">
-                 <img src={getLabImage(lab.slug)} alt={lab.title} className={`w-full h-full object-cover mix-blend-screen opacity-70 group-hover:scale-105 ${!isLocked && 'group-hover:opacity-100'} transition-all duration-700 pt-2`} />
+                 <img src={getLabImage(lab)} alt={lab.title} className={`w-full h-full object-cover mix-blend-screen opacity-70 group-hover:scale-105 ${!isLocked && 'group-hover:opacity-100'} transition-all duration-700 pt-2`} />
                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f0a20] to-transparent"></div>
               </div>
             </div>

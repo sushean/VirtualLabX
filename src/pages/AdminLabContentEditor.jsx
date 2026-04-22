@@ -168,6 +168,28 @@ export default function AdminLabContentEditor() {
     updateTab('introduction', [...introArr, { type, text: '' }]);
   };
 
+  const handleImageUpload = async (e, callback) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      setIsUploading(true);
+      try {
+          const res = await axios.post(`http://localhost:5000/api/upload`, formData, {
+              headers: {
+                 'Content-Type': 'multipart/form-data',
+                 'Authorization': `Bearer ${token}`
+              }
+          });
+          callback(res.data.url);
+      } catch (err) {
+          alert("Image Upload Failed: " + (err.response?.data?.msg || err.message));
+      } finally {
+          setIsUploading(false);
+      }
+  };
+
   const handleZipUpload = async (e) => {
      const file = e.target.files[0];
      if (!file) return;
@@ -209,6 +231,17 @@ export default function AdminLabContentEditor() {
          <div>
            <label className="block text-xs font-bold text-[#00e5ff] mb-2 uppercase tracking-wide">URL Slug</label>
            <input value={lab.slug || ''} onChange={e => updateLab('slug', e.target.value)} className="w-full bg-black/50 border border-white/10 focus:border-[#00e5ff] rounded-lg p-3 text-white transition-colors" />
+         </div>
+         <div className="col-span-1 md:col-span-2">
+           <label className="block text-xs font-bold text-yellow-400 mb-2 uppercase tracking-wide">Card Thumbnail / Cover Banner</label>
+           <div className="flex gap-4 items-center bg-black/50 border border-white/10 focus-within:border-yellow-400 rounded-lg p-2 transition-colors">
+              <label className={`cursor-pointer shrink-0 ${isUploading ? 'bg-yellow-600/50' : 'bg-yellow-600 hover:bg-yellow-500'} text-white font-bold py-2 px-4 rounded transition-colors text-sm`}>
+                 {isUploading ? 'Uploading...' : 'Upload Cover Image'}
+                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, (url) => updateLab('thumbnail', url))} disabled={isUploading} className="hidden" />
+              </label>
+              <input value={lab.thumbnail || ''} onChange={e => updateLab('thumbnail', e.target.value)} placeholder="/assets/default_lab_banner.jpg or Web URL" className="flex-1 bg-transparent border-none outline-none text-[#00e5ff] text-sm" />
+              {lab.thumbnail && <img src={lab.thumbnail} className="h-10 w-16 object-cover rounded shadow border border-white/10 shrink-0" alt="Preview"/>}
+           </div>
          </div>
          <div className="relative">
            <label className="block text-xs font-bold text-[#00e5ff] mb-2 uppercase tracking-wide">Lab Status</label>
@@ -309,8 +342,14 @@ export default function AdminLabContentEditor() {
              )}
              {['split-image', 'glass-box', 'alert-red'].includes(block.type) && (
                 <div>
-                  <label className="block text-xs font-bold text-[#00e5ff] mb-1">Image URL</label>
-                  <input value={block.imageUrl || ''} onChange={e => updateBlockFn(idx, 'imageUrl', e.target.value)} placeholder="/assets/img.png" className="w-full bg-black/50 border border-white/10 rounded pt-2 pb-2 px-3 text-sm text-[#00e5ff]" />
+                  <label className="block text-xs font-bold text-[#00e5ff] mb-1">Image Block Upload</label>
+                  <div className="flex gap-2 items-center">
+                    <label className={`cursor-pointer ${isUploading ? 'bg-[#00e5ff]/50' : 'bg-[#00e5ff] hover:bg-cyan-400'} text-black font-bold py-1.5 px-4 rounded transition-colors text-xs shrink-0 tracking-wide`}>
+                       {isUploading ? 'Uploading...' : 'Upload Local Image'}
+                       <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, (url) => updateBlockFn(idx, 'imageUrl', url))} disabled={isUploading} className="hidden" />
+                    </label>
+                    <input value={block.imageUrl || ''} onChange={e => updateBlockFn(idx, 'imageUrl', e.target.value)} placeholder="/assets/img.png or Manual URL" className="w-full bg-black/50 border border-white/10 rounded pt-2 pb-2 px-3 text-sm text-[#00e5ff]" />
+                  </div>
                 </div>
              )}
              {['split-image'].includes(block.type) && (
@@ -360,8 +399,14 @@ export default function AdminLabContentEditor() {
                    <input value={item.title || ''} onChange={e => updateArrayItem('prerequisites', idx, 'title', e.target.value)} placeholder="e.g. 1. Understanding Matrices" className="w-full bg-black/50 border border-white/10 rounded pt-2 pb-2 px-3 text-sm text-white" />
                 </div>
                 <div>
-                   <label className="block text-xs font-bold text-gray-400 mb-1">Side Image URL</label>
-                   <input value={item.image || ''} onChange={e => updateArrayItem('prerequisites', idx, 'image', e.target.value)} placeholder="/assets/image_name.png" className="w-full bg-black/50 border border-white/10 rounded pt-2 pb-2 px-3 text-sm text-[#00e5ff]" />
+                   <label className="block text-xs font-bold text-gray-400 mb-1">Side Image Upload</label>
+                   <div className="flex gap-2 items-center">
+                      <label className={`cursor-pointer ${isUploading ? 'bg-purple-500/50' : 'bg-purple-600 hover:bg-purple-500'} text-white font-bold py-1.5 px-4 rounded transition-colors text-xs shrink-0 tracking-wide`}>
+                         {isUploading ? 'Uploading...' : 'Upload Image'}
+                         <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, (url) => updateArrayItem('prerequisites', idx, 'image', url))} disabled={isUploading} className="hidden" />
+                      </label>
+                      <input value={item.image || ''} onChange={e => updateArrayItem('prerequisites', idx, 'image', e.target.value)} placeholder="/assets/image_name.png or Manual URL" className="w-full bg-black/50 border border-white/10 rounded pt-2 pb-2 px-3 text-sm text-[#00e5ff]" />
+                   </div>
                 </div>
              </div>
 

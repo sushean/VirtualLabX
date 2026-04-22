@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function DynamicLearnCode({ data }) {
+  const { slug } = useParams();
   const [mode, setMode] = useState('learn');
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
+  const [synced, setSynced] = useState(false);
 
   const items = (data?.items?.length > 0) ? data.items : (data?.learnContent || []);
   const tests = (data?.tests?.length > 0) ? data.tests : (data?.testContent || []);
+  
+  useEffect(() => {
+     if(tests.length > 0 && !synced) {
+        const correctCount = tests.filter(t => feedback[t.inputKey] === 'correct').length;
+        if(correctCount === tests.length && tests.length > 0) {
+            setSynced(true);
+            const token = localStorage.getItem('token');
+            if (token && slug) {
+               axios.post('http://localhost:5000/api/progress/code', {
+                  labSlug: slug,
+                  successRate: 100
+               }, { headers: { Authorization: `Bearer ${token}` } }).catch(err => console.error(err));
+            }
+        }
+     }
+  }, [feedback, tests, synced, slug]);
+
   const checkAnswer = (qKey, expected, e) => {
     const val = answers[qKey] || '';
     if (val.trim().toLowerCase() === expected.toLowerCase()) {

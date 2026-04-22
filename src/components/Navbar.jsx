@@ -24,6 +24,9 @@ export default function Navbar() {
           <Link to="/" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Home</Link>
           <Link to="/features" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Features</Link>
           <Link to="/labs" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Labs</Link>
+          {isAuthenticated && (
+            <Link to="/performance" className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">AI Mentor</Link>
+          )}
         </div>
 
         {/* Action Button */}

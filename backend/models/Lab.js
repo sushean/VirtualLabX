@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const LabSchema = new mongoose.Schema({
   title: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
+  thumbnail: { type: String, default: '' },
   description: String,
   category: String,
   difficulty: String,

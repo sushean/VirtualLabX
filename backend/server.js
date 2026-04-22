@@ -27,6 +27,8 @@ app.use('/api/examCollections', require('./routes/examCollections'));
 app.use('/api/certificate', require('./routes/certificate'));
 app.use('/api/verify', require('./routes/verify'));
 app.use('/api/labs', require('./routes/labs'));
+app.use('/api/progress', require('./routes/progress'));
+app.use('/api/upload', require('./routes/upload'));
 
 // Start Server
 const PORT = process.env.PORT || 5000;

@@ -36,13 +36,13 @@ export default function VerifyCertificatePage() {
   return (
     <div className="min-h-screen bg-[#0a0510] pt-32 pb-12 px-6 flex items-center justify-center text-white relative overflow-hidden font-sans">
       {/* Background Visual Enhancements */}
-      <div className={`absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none -z-10 ${isValid ? 'bg-[#00e5ff]/20' : 'bg-red-500/20'}`}></div>
-      <div className={`absolute bottom-10 left-10 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none -z-10 ${isValid ? 'bg-[#6c2bd9]/20' : 'bg-red-900/20'}`}></div>
+      <div className={`absolute top-0 right-1/4 w-125 h-125 rounded-full blur-[120px] pointer-events-none -z-10 ${isValid ? 'bg-[#00e5ff]/20' : 'bg-red-500/20'}`}></div>
+      <div className={`absolute bottom-10 left-10 w-[600px] h-150 rounded-full blur-[150px] pointer-events-none -z-10 ${isValid ? 'bg-[#6c2bd9]/20' : 'bg-red-900/20'}`}></div>
 
       <div className="w-full max-w-2xl bg-white/5 border border-white/10 backdrop-blur-3xl rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden text-center animate-fade-in">
         {isValid ? (
           <>
-            <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#00e5ff] via-[#6c2bd9] to-[#00e5ff]"></div>
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-linear-to-r from-[#00e5ff] via-[#6c2bd9] to-[#00e5ff]"></div>
             
             <div className="w-24 h-24 mx-auto bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mb-6 border border-green-500/30 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
               <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -50,7 +50,7 @@ export default function VerifyCertificatePage() {
               </svg>
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-white mb-2">
               Authentic Certificate
             </h1>
             <p className="text-gray-400 mb-8 font-medium">This credential has been verified in the VirtualLabX registry.</p>
@@ -71,7 +71,7 @@ export default function VerifyCertificatePage() {
                 </div>
                 <div className="md:col-span-2">
                   <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Registry ID</p>
-                  <p className="font-mono text-sm text-gray-300 break-words bg-black/50 p-2 rounded border border-white/10">{result.data.certificateId}</p>
+                  <p className="font-mono text-sm text-gray-300 wrap-break-word bg-black/50 p-2 rounded border border-white/10">{result.data.certificateId}</p>
                 </div>
               </div>
             </div>
@@ -96,7 +96,7 @@ export default function VerifyCertificatePage() {
           </>
         ) : (
           <>
-            <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-500 to-orange-500"></div>
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-linear-to-r from-red-500 to-orange-500"></div>
 
             <div className="w-24 h-24 mx-auto bg-red-500/20 text-red-500 rounded-full flex items-center justify-center mb-6 border border-red-500/30 shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>

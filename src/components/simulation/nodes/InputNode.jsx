@@ -31,7 +31,7 @@ export default function InputNode({ data, id }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Input Node</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Default Input'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Default Input'}</div>
        
        <div className="bg-black/50 p-2 rounded-lg border border-white/10">
           <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1">Injection Value</label>

@@ -30,7 +30,7 @@ export default function MatrixOutputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Yield Matrix</span>
          {isComplete && <span className="text-[#2dd4bf] text-sm font-black">★</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Final Array'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Final Array'}</div>
        
        <div className="bg-black/80 p-3 rounded-lg border border-white/20 flex flex-col items-center justify-center min-h-[64px]">
           <div className="text-[10px] text-gray-500 font-bold uppercase mb-2 w-full text-center">Calculated Tensor</div>

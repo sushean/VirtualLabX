@@ -28,7 +28,7 @@ export default function TextInputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-cyan-400">String Gen</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Text String'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Text String'}</div>
        
        <div className="flex items-center gap-2 mb-2">
           <input 

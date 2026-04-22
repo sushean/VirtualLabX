@@ -43,7 +43,7 @@ export default function AllLabsPage() {
       {/* Page Header */}
       <div className="text-center px-4 max-w-5xl mx-auto mb-16 relative z-10 w-full">
         <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-          Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">All Labs</span>
+          Explore <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">All Labs</span>
         </h1>
         <p className="text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
           Access our complete library of interactive theoretical computer science simulators and start experimenting immediately.
@@ -71,7 +71,7 @@ export default function AllLabsPage() {
                  <h3 className="text-2xl font-bold mb-2">{lab.title}</h3>
                  {lab.category && <span className="text-xs text-purple-400 font-semibold mb-2 block">{lab.category}</span>}
               </div>
-              <div className="px-8 pb-6 text-sm text-gray-300 flex-grow">
+              <div className="px-8 pb-6 text-sm text-gray-300 grow">
                  <p>{lab.description || 'Interactive simulation and learning lab.'}</p>
               </div>
               <div className="px-8 pb-6 relative z-30">

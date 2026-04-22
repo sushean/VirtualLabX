@@ -30,10 +30,10 @@ export default function MatrixOperationNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Tensor Math</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Matrix Alg'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Matrix Alg'}</div>
        
        <div className="bg-black/50 p-3 rounded-lg border border-white/10 flex items-center justify-center gap-3">
-          <div className="w-10 h-10 rounded bg-rose-500/20 flex flex-shrink-0 items-center justify-center border border-rose-500/50 text-rose-400 font-extrabold text-sm shadow-[0_0_10px_rgba(244,63,94,0.5)]">
+          <div className="w-10 h-10 rounded bg-rose-500/20 flex shrink-0 items-center justify-center border border-rose-500/50 text-rose-400 font-extrabold text-sm shadow-[0_0_10px_rgba(244,63,94,0.5)]">
             {opSymbol}
           </div>
           <div className="flex-1 text-right">

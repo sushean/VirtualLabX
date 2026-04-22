@@ -50,7 +50,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <Link to="/profile">
                <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white text-sm font-semibold py-2 px-4 rounded-full transition-all border border-white/10 hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                 <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-[#00e5ff] flex items-center justify-center text-xs text-white font-bold">
+                 <div className="w-6 h-6 rounded-full bg-linear-to-r from-purple-500 to-[#00e5ff] flex items-center justify-center text-xs text-white font-bold">
                    {user?.firstName?.charAt(0) || 'U'}
                  </div>
                  <span>Profile</span>
@@ -58,7 +58,7 @@ export default function Navbar() {
             </Link>
           ) : (
             <Link to="/login">
-              <button className="bg-gradient-to-r from-[#6c2bd9] to-[#4a1bb8] hover:from-[#813df0] hover:to-[#5c20e5] text-white text-sm font-semibold py-2.5 px-7 rounded-full transition-all border border-white/10 hover:shadow-[0_0_20px_rgba(108,43,217,0.5)] transform hover:-translate-y-0.5">
+              <button className="bg-linear-to-r from-[#6c2bd9] to-[#4a1bb8] hover:from-[#813df0] hover:to-[#5c20e5] text-white text-sm font-semibold py-2.5 px-7 rounded-full transition-all border border-white/10 hover:shadow-[0_0_20px_rgba(108,43,217,0.5)] transform hover:-translate-y-0.5">
                 Sign In
               </button>
             </Link>

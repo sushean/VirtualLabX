@@ -65,7 +65,7 @@ export default function SolutionSection() {
       
       {/* Premium Header */}
       <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-        The Solution: Experience It <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Virtually</span>
+        The Solution: Experience It <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Virtually</span>
       </h2>
       <p className="text-gray-300 mb-20 max-w-2xl mx-auto text-lg leading-relaxed">
         Bridging the gap between dense textbook theory and practical software engineering through live, dynamic sandbox environments.
@@ -75,10 +75,10 @@ export default function SolutionSection() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         {solutions.map((sol, index) => (
           <div key={index} className="sol-card-wrapper h-full">
-            <div className={`sol-card glass-card p-8 flex flex-col items-center text-center group transition-all duration-300 border border-white/5 relative overflow-hidden bg-gradient-to-b ${sol.colorStart} to-[#0a0510]/60 ${sol.colorBorder} ${sol.colorGlow} transform hover:-translate-y-2 h-full`}>
+            <div className={`sol-card glass-card p-8 flex flex-col items-center text-center group transition-all duration-300 border border-white/5 relative overflow-hidden bg-linear-to-b ${sol.colorStart} to-[#0a0510]/60 ${sol.colorBorder} ${sol.colorGlow} transform hover:-translate-y-2 h-full`}>
               
               {/* Top Edge Shine for Premium Glassmorphism Look */}
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-linear-to-r from-transparent via-white/20 to-transparent"></div>
               
               {/* Floating Orbiting Background Flare */}
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors duration-500"></div>

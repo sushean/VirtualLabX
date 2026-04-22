@@ -171,7 +171,7 @@ export default function FlowRenderer({ config }) {
       {/* Floating Control Dashboard */}
       <div className="absolute top-6 right-6 z-10 flex gap-4 bg-[#0a0510]/80 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
          <div className="flex flex-col justify-center px-2 border-r border-white/10 mr-2">
-            <h3 className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff] uppercase tracking-wider mb-1 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff] uppercase tracking-wider mb-1 flex items-center gap-2">
                <AutoFixHighIcon fontSize="small"/> Flow Engine
             </h3>
             <p className="text-[10px] text-gray-500 font-bold uppercase">{isExecuting ? 'Engine Running...' : 'Idle System State'}</p>
@@ -187,7 +187,7 @@ export default function FlowRenderer({ config }) {
          <button 
            onClick={runSimulation}
            disabled={isExecuting || nodes.length === 0}
-           className={`px-8 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 ${isExecuting ? 'bg-gray-700 text-gray-400 cursor-not-allowed border-none' : 'bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white hover:scale-105 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]'}`}
+           className={`px-8 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 ${isExecuting ? 'bg-gray-700 text-gray-400 cursor-not-allowed border-none' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white hover:scale-105 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]'}`}
          >
             <PlayArrowIcon /> {isExecuting ? 'Processing...' : 'Run Simulation'}
          </button>

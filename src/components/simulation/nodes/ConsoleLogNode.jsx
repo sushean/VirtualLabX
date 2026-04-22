@@ -28,7 +28,7 @@ export default function ConsoleLogNode({ data }) {
        <div className="flex justify-between items-center mb-2">
          <span className="text-xs uppercase tracking-widest font-bold text-gray-500">System Log</span>
        </div>
-       <div className="text-gray-300 font-bold text-sm mb-3 break-words">{data.label || 'Console Print'}</div>
+       <div className="text-gray-300 font-bold text-sm mb-3 wrap-break-word">{data.label || 'Console Print'}</div>
        
        <div className="bg-black/90 p-3 rounded-lg border border-gray-700/50 flex flex-col justify-center min-h-[60px] custom-scrollbar">
           <div className="text-[10px] text-yellow-500/80 font-bold uppercase mb-1">STDOUT</div>

@@ -84,17 +84,17 @@ export default function FeaturesSection() {
   return (
     <section ref={sectionRef} className="relative py-28 bg-transparent">
       {/* Abstract Animated Glows */}
-      <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-[#6c2bd9] rounded-full blur-[150px] opacity-[0.15] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#00e5ff] rounded-full blur-[180px] opacity-[0.1] pointer-events-none"></div>
+      <div className="absolute top-[10%] left-[-10%] w-125 h-125 bg-[#6c2bd9] rounded-full blur-[150px] opacity-[0.15] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-150 bg-[#00e5ff] rounded-full blur-[180px] opacity-[0.1] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         <div className="text-center mb-20 features-header relative">
-          <h2 className="text-4xl md:text-5xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-black mb-6 text-transparent bg-clip-text bg-linear-to-r from-white via-gray-200 to-gray-500 tracking-tight">
             Ecosystem Core Capabilities
           </h2>
-          <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 w-24 h-1.5 bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9] rounded-full blur-[2px]"></div>
-          <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 w-24 h-1.5 bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9] rounded-full"></div>
+          <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 w-24 h-1.5 bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-full blur-[2px]"></div>
+          <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 w-24 h-1.5 bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-full"></div>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg mt-8">
             Our architecture is split into heavily specialized operational nodes, completely interlinked to orchestrate your educational ascension natively.
           </p>
@@ -109,17 +109,17 @@ export default function FeaturesSection() {
               className={`group flex flex-col p-8 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md cursor-pointer hover:-translate-y-3 transition-all duration-500 ${feature.glow} h-full relative overflow-hidden`}
             >
               {/* Internal Accent Glow */}
-              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.color} rounded-full blur-[70px] opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none`} />
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-linear-to-br ${feature.color} rounded-full blur-[70px] opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none`} />
 
-              <div className={`w-14 h-14 mb-6 rounded-2xl flex items-center justify-center text-3xl text-white bg-gradient-to-br ${feature.color} shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+              <div className={`w-14 h-14 mb-6 rounded-2xl flex items-center justify-center text-3xl text-white bg-linear-to-br ${feature.color} shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                 {feature.icon}
               </div>
               
-              <h3 className="text-xl font-bold mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-colors">
+              <h3 className="text-xl font-bold mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-white group-hover:to-gray-400 transition-colors">
                 {feature.title}
               </h3>
               
-              <p className="text-gray-400 text-sm leading-relaxed flex-grow mb-8 group-hover:text-gray-300 transition-colors">
+              <p className="text-gray-400 text-sm leading-relaxed grow mb-8 group-hover:text-gray-300 transition-colors">
                 {feature.description}
               </p>
               

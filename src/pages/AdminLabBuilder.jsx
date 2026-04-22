@@ -162,7 +162,7 @@ export default function AdminLabBuilder() {
       {/* Header bar */}
       <div className="px-6 py-4 flex justify-between items-center border-b border-white/10 bg-[#0a0510]/80 z-20">
         <div>
-          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Dynamic Lab Builder</h1>
+          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Dynamic Lab Builder</h1>
           <p className="text-xs text-gray-400">Design your simulation visually</p>
         </div>
         <div className="flex gap-4 items-center">
@@ -180,10 +180,10 @@ export default function AdminLabBuilder() {
       </div>
 
       {/* Main layout */}
-      <div className="flex flex-grow overflow-hidden relative">
+      <div className="flex grow overflow-hidden relative">
         <NodePanel />
         
-        <div className="flex-grow relative h-full bg-[#120a1f]/50" ref={reactFlowWrapper}>
+        <div className="grow relative h-full bg-[#120a1f]/50" ref={reactFlowWrapper}>
           <ReactFlowProvider>
             <div className="h-full w-full" onDrop={onDrop} onDragOver={onDragOver}>
               <BuilderCanvas 

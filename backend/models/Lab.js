@@ -8,6 +8,7 @@ const LabSchema = new mongoose.Schema({
   difficulty: String,
   simulationType: String,
   simulationConfig: Object,
+  simulationPath: String,
   status: { type: String, enum: ['ACTIVE', 'UPCOMING', 'LOCKED'], default: 'ACTIVE' },
   statusMessage: { type: String },
   tabs: { type: mongoose.Schema.Types.Mixed, default: {} },

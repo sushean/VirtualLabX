@@ -45,7 +45,7 @@ export default function MatrixInputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-pink-400">Matrix Source</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || '2D Tensor'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || '2D Tensor'}</div>
        
        <div className="bg-black/50 p-3 rounded-lg border border-pink-500/20 flex flex-col items-center justify-center relative">
           <div className="text-[10px] text-gray-400 font-bold uppercase mb-2">Configure {rows}×{cols}</div>

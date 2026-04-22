@@ -79,16 +79,16 @@ export default function ProfilePage() {
     <div className="min-h-screen text-white relative font-sans flex items-center justify-center pt-32 pb-12 px-6 overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#6c2bd9]/20 rounded-full blur-[100px] pointer-events-none -z-10"></div>
-      <div className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-[#00e5ff]/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="absolute bottom-10 left-10 w-125 h-125 bg-[#00e5ff]/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
       
       <div className="w-full max-w-2xl z-10 animate-page-enter">
         <div className="glass-card p-10 md:p-14 relative overflow-hidden backdrop-blur-2xl bg-[#0a0510]/80 border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.6)]">
           
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent"></div>
 
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
-            <div className="w-28 h-28 rounded-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
+            <div className="w-28 h-28 rounded-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
               {user.firstName?.charAt(0).toUpperCase()}
             </div>
             <div className="text-center md:text-left">
@@ -141,7 +141,7 @@ export default function ProfilePage() {
                 </div>
                 <button 
                   type="submit" disabled={isSaving}
-                  className="w-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] py-3 rounded-xl font-bold mt-4 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all disabled:opacity-50"
+                  className="w-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] py-3 rounded-xl font-bold mt-4 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all disabled:opacity-50"
                  >
                    {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>

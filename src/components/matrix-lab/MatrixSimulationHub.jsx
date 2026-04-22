@@ -29,7 +29,7 @@ export default function MatrixSimulationHub() {
           </div>
 
           {/* Grids Sandbox (Right Column) */}
-          <div className="w-full xl:w-3/5 bg-[#0b0614] border border-white/5 shadow-2xl rounded-3xl p-6 lg:p-10 flex flex-col relative overflow-hidden min-h-[600px] justify-between">
+          <div className="w-full xl:w-3/5 bg-[#0b0614] border border-white/5 shadow-2xl rounded-3xl p-6 lg:p-10 flex flex-col relative overflow-hidden min-h-150 justify-between">
              
              {/* Decorative Background grid lines */}
              <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>

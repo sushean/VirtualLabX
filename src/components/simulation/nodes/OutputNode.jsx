@@ -27,7 +27,7 @@ export default function OutputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Yield Output</span>
          {isComplete && <span className="text-[#00e5ff] text-sm font-black">★</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Final Result'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Final Result'}</div>
        
        <div className="bg-black/80 p-3 rounded-lg border border-white/20 flex flex-col items-center justify-center min-h-[64px]">
           <div className="text-[10px] text-gray-500 font-bold uppercase mb-1 w-full text-center">Engine Result</div>

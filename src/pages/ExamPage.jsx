@@ -148,7 +148,7 @@ export default function ExamPage() {
         <div className="bg-white/5 border border-white/10 p-10 rounded-3xl max-w-lg w-full text-center shadow-[0_0_50px_rgba(108,43,217,0.15)] backdrop-blur-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#00e5ff] rounded-full blur-[80px] opacity-20 transform translate-x-12 -translate-y-12"></div>
           
-          <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9]">Exam Submitted</h2>
+          <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-[#6c2bd9]">Exam Submitted</h2>
           <div className="space-y-4 text-lg text-gray-300 font-medium">
             <div className="flex justify-between border-b border-white/10 pb-2"><p>Final Score</p> <span className="text-white font-black">{examResult.score} <span className="text-sm font-bold text-gray-500">/ {examResult.maxScore}</span></span></div>
             <div className="flex justify-between border-b border-white/10 pb-2"><p>Proctor Flags</p> <span className="text-red-400 font-bold tracking-widest">{examResult.cheatingScore}</span></div>
@@ -159,12 +159,12 @@ export default function ExamPage() {
              <div className="mt-10 p-6 border border-[#00e5ff]/30 bg-[#00e5ff]/5 rounded-xl block">
                <h3 className="text-xl text-[#00e5ff] font-bold mb-2">Verification Complete</h3>
                <p className="text-sm text-gray-400 mb-3">Your credentials have successfully entered the vault.</p>
-               <p className="font-mono text-xs mt-2 font-bold text-gray-200 select-all border border-white/10 bg-black/40 p-2 rounded break-words">{examResult.certificate.certificateId}</p>
+               <p className="font-mono text-xs mt-2 font-bold text-gray-200 select-all border border-white/10 bg-black/40 p-2 rounded wrap-break-word">{examResult.certificate.certificateId}</p>
              </div>
           )}
           <button 
             onClick={() => navigate('/profile')}
-            className="w-full mt-10 px-6 py-4 bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] hover:opacity-90 rounded-xl font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(108,43,217,0.3)]"
+            className="w-full mt-10 px-6 py-4 bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] hover:opacity-90 rounded-xl font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(108,43,217,0.3)]"
           >
             Review Diploma Log
           </button>
@@ -179,12 +179,12 @@ export default function ExamPage() {
       
       {/* Background Visual Enhancements */}
       <div className="absolute top-[20%] left-[-10%] w-96 h-96 bg-[#6c2bd9] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#00e5ff] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-125 h-125 bg-[#00e5ff] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
 
       {/* Top Bar Navigation */}
       <div className="max-w-5xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6 flex justify-between items-center mb-8 shadow-xl backdrop-blur-md relative overflow-visible z-10">
-        <div className="absolute -inset-[1px] bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9] rounded-2xl opacity-[0.1] -z-10 blur-sm"></div>
-        <h1 className="text-xl md:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 tracking-wide uppercase shrink-0 truncate">
+        <div className="absolute -inset-[1px] bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-2xl opacity-[0.1] -z-10 blur-sm"></div>
+        <h1 className="text-xl md:text-2xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-gray-100 to-gray-400 tracking-wide uppercase shrink-0 truncate">
           {examSession.title || 'Certification Node'}
         </h1>
         
@@ -217,7 +217,7 @@ export default function ExamPage() {
       <div className="max-w-5xl mx-auto flex gap-6 relative z-10">
         
         {/* Working Space */}
-        <div className="flex-1 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl relative flex flex-col min-h-[500px]">
+        <div className="flex-1 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl relative flex flex-col min-h-125">
           
           {currentQuestion ? (
             <div className="animate-fade-in flex flex-col flex-1 h-full">
@@ -256,7 +256,7 @@ export default function ExamPage() {
                           onChange={() => setSelectedOption(opt)}
                           className="hidden"
                         />
-                        <div className={`w-6 h-6 rounded-full border-[3px] mr-5 flex items-center justify-center flex-shrink-0 transition-colors ${selectedOption === opt ? 'border-[#00e5ff]' : 'border-gray-600 group-hover:border-gray-400'}`}>
+                        <div className={`w-6 h-6 rounded-full border-[3px] mr-5 flex items-center justify-center shrink-0 transition-colors ${selectedOption === opt ? 'border-[#00e5ff]' : 'border-gray-600 group-hover:border-gray-400'}`}>
                            <div className={`w-2.5 h-2.5 bg-[#00e5ff] rounded-full transform transition-transform ${selectedOption === opt ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
                         </div>
                         <span className={`font-semibold align-middle transition-colors ${selectedOption === opt ? 'text-white' : 'text-gray-300 group-hover:text-gray-100'}`}>{opt}</span>
@@ -283,7 +283,7 @@ export default function ExamPage() {
                             onChange={() => toggleMultiOption(opt)}
                             className="hidden"
                           />
-                          <div className={`w-6 h-6 rounded-md border-[3px] mr-4 flex items-center justify-center flex-shrink-0 transition-colors ${isChecked ? 'border-purple-500 bg-purple-500/20' : 'border-gray-600 group-hover:border-gray-400'}`}>
+                          <div className={`w-6 h-6 rounded-md border-[3px] mr-4 flex items-center justify-center shrink-0 transition-colors ${isChecked ? 'border-purple-500 bg-purple-500/20' : 'border-gray-600 group-hover:border-gray-400'}`}>
                              {isChecked && (
                                <svg className="w-3 h-3 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -301,7 +301,7 @@ export default function ExamPage() {
                 {currentQuestion.questionType === 'NUMERICAL' && (
                   <div className="flex justify-center items-center h-full pb-10">
                     <div className="w-full max-w-sm relative group">
-                       <div className="absolute -inset-[2px] bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl opacity-20 blur-sm group-focus-within:opacity-50 transition-opacity pointer-events-none"></div>
+                       <div className="absolute -inset-[2px] bg-linear-to-r from-yellow-500 to-orange-500 rounded-2xl opacity-20 blur-sm group-focus-within:opacity-50 transition-opacity pointer-events-none"></div>
                        <input 
                          type="text" 
                          value={selectedOption}
@@ -329,7 +329,7 @@ export default function ExamPage() {
                    <button 
                      onClick={handleNext}
                      disabled={!isAnswerValid()}
-                     className="px-10 py-4 w-full md:w-auto bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] disabled:from-gray-800 disabled:to-gray-800 disabled:text-gray-600 rounded-xl font-black uppercase text-sm tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.3)] disabled:shadow-none transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
+                     className="px-10 py-4 w-full md:w-auto bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] disabled:from-gray-800 disabled:to-gray-800 disabled:text-gray-600 rounded-xl font-black uppercase text-sm tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.3)] disabled:shadow-none transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
                    >
                      {currentQuestion.currentIndex === currentQuestion.totalQuestions - 1 ? 'Final Commit' : 'Sync & Next Block'}
                    </button>

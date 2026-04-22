@@ -30,7 +30,7 @@ export default function TransformNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Data Pipeline</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Transform Array'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Transform Array'}</div>
        
        <div className="bg-black/50 p-2 rounded-lg border border-white/10 flex flex-col items-center justify-center gap-1">
           <div className="text-blue-400 font-extrabold text-sm uppercase">[{op}()]</div>

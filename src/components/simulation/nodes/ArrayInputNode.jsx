@@ -28,7 +28,7 @@ export default function ArrayInputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-amber-500">Array Block</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || '1D List Sequence'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || '1D List Sequence'}</div>
        
        <div className="bg-black/50 p-2 rounded-lg border border-amber-500/20 mb-2">
           <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Comma Formatted</div>

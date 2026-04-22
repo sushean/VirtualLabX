@@ -78,7 +78,7 @@ export default function VisualizationPanel({ simState }) {
              </div>
           </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-2"></div>
+          <div className="w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent my-2"></div>
 
           {/* Summation Line */}
           <div className="text-center">

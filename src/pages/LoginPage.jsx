@@ -25,8 +25,8 @@ export default function LoginPage() {
     <div className="min-h-screen text-white relative font-sans flex items-center justify-center pt-48 pb-12 px-6 overflow-hidden">
       
       {/* Immersive Background Effects */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/30 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-900/20 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+      <div className="absolute top-0 right-0 w-125 h-125 bg-purple-900/30 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-150 bg-cyan-900/20 rounded-full blur-[150px] pointer-events-none -z-10"></div>
       
       <div className="animate-page-enter w-full max-w-md z-10 transition-all duration-500">
         
@@ -34,7 +34,7 @@ export default function LoginPage() {
         <div className="glass-card p-10 md:p-12 relative overflow-hidden backdrop-blur-2xl bg-[#0a0510]/80 border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.6)]">
           
           {/* Subtle top glare effect */}
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent"></div>
           
           <div className="text-center mb-8">
             <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">
@@ -129,7 +129,7 @@ export default function LoginPage() {
             {/* Sign In / Sign Up Button */}
             <button 
               type="submit" disabled={loading}
-              className="w-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] text-white font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(108,43,217,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] transform hover:-translate-y-1 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] text-white font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(108,43,217,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] transform hover:-translate-y-1 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Sign Up')}
             </button>
@@ -165,7 +165,7 @@ export default function LoginPage() {
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button 
               onClick={() => setIsLogin(!isLogin)}
-              className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff] hover:opacity-80 transition-opacity"
+              className="font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff] hover:opacity-80 transition-opacity"
             >
               {isLogin ? "Create one now" : "Sign in instead"}
             </button>

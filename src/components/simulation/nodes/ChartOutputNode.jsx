@@ -36,7 +36,7 @@ export default function ChartOutputNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Data Vis</span>
          {isComplete && <span className="text-lime-400 text-sm font-black">★</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Bar Chart Output'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Bar Chart Output'}</div>
        
        <div className="bg-black/80 p-3 rounded-lg border border-white/20 flex flex-col items-center justify-end min-h-[120px] pb-1">
           <div className="flex gap-1 items-end h-[80px] w-full justify-center">

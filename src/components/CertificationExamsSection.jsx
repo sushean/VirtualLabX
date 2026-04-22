@@ -41,19 +41,19 @@ export default function CertificationExamsSection() {
   return (
     <section ref={sectionRef} className="relative py-32 bg-transparent">
       {/* Seamless radial blending transitions */}
-      <div className="absolute top-0 right-0 w-full h-[100px] bg-gradient-to-b from-transparent to-transparent z-10" />
+      <div className="absolute top-0 right-0 w-full h-[100px] bg-linear-to-b from-transparent to-transparent z-10" />
       <div className="absolute bottom-0 left-0 w-full h-[100px] bg-gradient-to-t from-transparent to-transparent z-10" />
 
       {/* Internal Glows */}
-      <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#00e5ff] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-125 h-125 bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-125 h-125 bg-[#00e5ff] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 z-20 relative">
         <div className="text-center mb-20 cert-title">
-          <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-[#00e5ff] mb-6 tracking-tight drop-shadow-[0_0_15px_rgba(108,43,217,0.3)]">
+          <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-blue-400 to-[#00e5ff] mb-6 tracking-tight drop-shadow-[0_0_15px_rgba(108,43,217,0.3)]">
             AI-Proctored Certifications
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-purple-500 to-[#00e5ff] mx-auto rounded-full mb-8" />
+          <div className="w-32 h-1 bg-linear-to-r from-purple-500 to-[#00e5ff] mx-auto rounded-full mb-8" />
           <p className="text-xl text-gray-400 max-w-3xl mx-auto font-medium">
             Validate your skills with our enterprise-grade, secure certification exams. Fully automated AI-driven visual tracking guarantees total credential integrity natively.
           </p>
@@ -82,7 +82,7 @@ export default function CertificationExamsSection() {
         <div className="text-center relative">
           <button 
             onClick={() => navigate('/certifications')}
-            className="cert-btn relative px-12 py-5 bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] rounded-2xl font-black uppercase tracking-widest text-white text-lg transition-transform hover:scale-[1.03] overflow-hidden group"
+            className="cert-btn relative px-12 py-5 bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] rounded-2xl font-black uppercase tracking-widest text-white text-lg transition-transform hover:scale-[1.03] overflow-hidden group"
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <span className="relative z-10 flex items-center justify-center gap-3">

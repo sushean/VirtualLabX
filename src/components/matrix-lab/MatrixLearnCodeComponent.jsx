@@ -129,7 +129,7 @@ export default function MatrixLearnCodeComponent() {
            {isIncorrect && <span className="text-red-500 font-bold uppercase tracking-widest text-sm">Incorrect</span>}
            <button 
              onClick={(e) => isFilled ? checkAnswer(inputKey, expectedAnswer, e) : revealAnswer(inputKey, expectedAnswer)}
-             className={`px-5 py-2 rounded-lg font-bold text-sm transition-all ${isCorrect ? 'bg-green-500/20 text-green-400 border border-green-500/50 cursor-default' : 'bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.4)]'}`}
+             className={`px-5 py-2 rounded-lg font-bold text-sm transition-all ${isCorrect ? 'bg-green-500/20 text-green-400 border border-green-500/50 cursor-default' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.4)]'}`}
              disabled={isCorrect}
            >
              {isCorrect ? 'Solved' : isFilled ? 'Check Answer' : 'Reveal Answer'}
@@ -141,19 +141,19 @@ export default function MatrixLearnCodeComponent() {
 
   return (
     <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
       
       {/* Mode Toggle */}
       <div className="flex bg-[#110b27] border border-white/10 p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
         <button 
           onClick={() => setMode('learn')}
-          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-gradient-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
+          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
         >
           LEARN MODE
         </button>
         <button 
           onClick={() => setMode('test')}
-          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'test' ? 'bg-gradient-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
+          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'test' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
         >
           TEST MODE
         </button>

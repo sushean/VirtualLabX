@@ -62,7 +62,7 @@ export default function SimulationControls({ simState }) {
             <button 
                onClick={play}
                disabled={hasError}
-               className="flex-[2] md:flex-none bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] text-white border border-white/20 hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all flex justify-center items-center gap-2 disabled:opacity-40 disabled:hover:shadow-none"
+               className="flex-[2] md:flex-none bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] text-white border border-white/20 hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all flex justify-center items-center gap-2 disabled:opacity-40 disabled:hover:shadow-none"
             >
                <PlayArrowIcon fontSize="small"/> {isPaused ? "Resume" : "Train Model"}
             </button>

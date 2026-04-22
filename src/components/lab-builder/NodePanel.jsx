@@ -11,7 +11,7 @@ export default function NodePanel() {
 
   return (
     <div className="w-64 bg-[#0a0510]/80 border-r border-white/10 p-4 flex flex-col h-full z-10 shadow-[2px_0_15px_rgba(0,0,0,0.5)] overflow-y-auto custom-scrollbar">
-      <h2 className="text-xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Node Palette</h2>
+      <h2 className="text-xl font-bold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Node Palette</h2>
       <p className="text-xs text-gray-400 mb-6 pb-4 border-b border-white/10">Drag these nodes onto the canvas.</p>
 
       <div className="flex flex-col gap-6">

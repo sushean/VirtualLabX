@@ -204,7 +204,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-[#0a0510] pt-24 pb-12 px-8 text-white font-sans">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9]">System Administration</h1>
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-[#6c2bd9]">System Administration</h1>
         </div>
         
         {/* Navigation Tabs */}
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-t-xl font-bold capitalize transition-all ${activeTab === tab ? 'bg-gradient-to-r from-[#6c2bd9]/40 to-[#00e5ff]/40 text-white border-b-2 border-[#00e5ff]' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'}`}
+              className={`px-6 py-2 rounded-t-xl font-bold capitalize transition-all ${activeTab === tab ? 'bg-linear-to-r from-[#6c2bd9]/40 to-[#00e5ff]/40 text-white border-b-2 border-[#00e5ff]' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'}`}
             >
               {tab}
             </button>
@@ -266,7 +266,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="w-full lg:w-2/3 bg-white/5 border border-white/10 rounded-xl p-6 min-h-[500px]">
+            <div className="w-full lg:w-2/3 bg-white/5 border border-white/10 rounded-xl p-6 min-h-125">
               {selectedExam ? (
                  <div className="animate-fade-in">
                    <h2 className="text-2xl font-bold mb-4">{selectedExam.title} Details</h2>
@@ -319,7 +319,7 @@ export default function AdminDashboard() {
                         {selectedExam.snapshots?.map((snap, idx) => (
                           <div key={idx} className="shrink-0 relative group border border-white/10 rounded-lg overflow-hidden">
                             <img src={snap.image} alt="Evidence" className="w-48 h-auto object-cover group-hover:opacity-75 transition" />
-                            <div className="absolute top-0 inset-x-0 bg-gradient-to-b from-black/80 to-transparent p-2">
+                            <div className="absolute top-0 inset-x-0 bg-linear-to-b from-black/80 to-transparent p-2">
                                <span className="text-[10px] font-bold text-red-400">{snap.violationType}</span>
                             </div>
                           </div>
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
                       </select>
                       <input type="text" placeholder="Topic Tag" required value={newQuestion.topic} onChange={e => setNewQuestion({...newQuestion, topic: e.target.value})} className="w-1/2 bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#00e5ff] outline-none" />
                     </div>
-                    <button type="submit" className="w-full bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] py-2 rounded-lg font-bold text-sm hover:opacity-80 transition shadow-[0_0_15px_rgba(108,43,217,0.3)]">{isEditMode ? 'Update Resource' : 'Publish Resource'}</button>
+                    <button type="submit" className="w-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] py-2 rounded-lg font-bold text-sm hover:opacity-80 transition shadow-[0_0_15px_rgba(108,43,217,0.3)]">{isEditMode ? 'Update Resource' : 'Publish Resource'}</button>
                  </form>
                </div>
 
@@ -521,7 +521,7 @@ export default function AdminDashboard() {
                  {certificates.map(cert => (
                    <tr key={cert._id} className="border-b border-gray-800 hover:bg-white/5 transition">
                      <td className="p-4">
-                       <span className="font-mono text-xs text-[#00e5ff] break-words">{cert.certificateId}</span>
+                       <span className="font-mono text-xs text-[#00e5ff] wrap-break-word">{cert.certificateId}</span>
                      </td>
                      <td className="p-4 font-medium text-white">{cert.userId?.firstName} {cert.userId?.lastName}</td>
                      <td className="p-4 text-gray-400">{cert.examName}</td>
@@ -583,7 +583,7 @@ export default function AdminDashboard() {
                     <p className="text-sm text-gray-400 mb-6 flex-1">{lab.description || 'No description provided.'}</p>
                     
                     <div className="flex flex-col gap-3 mt-auto border-t border-white/10 pt-4">
-                       <button onClick={() => window.location.href = `/admin/builder/${lab.slug}`} className="bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white font-bold py-2 rounded text-sm hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all text-center">
+                       <button onClick={() => window.location.href = `/admin/builder/${lab.slug}`} className="bg-linear-to-r from-purple-600 to-[#00e5ff] text-white font-bold py-2 rounded text-sm hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all text-center">
                           Build Simulation Nodes
                        </button>
                        <button onClick={() => window.location.href = `/admin/lab/${lab.slug}/edit`} className="bg-white/5 hover:bg-white/10 text-white font-bold py-2 rounded text-sm transition-all text-center border border-white/10">

@@ -73,7 +73,7 @@ export default function ProblemSection() {
         {problems.map((prob, idx) => (
           <div key={idx} className={`gsap-card-${idx} h-full`}>
             <div className="glass-card p-6 flex flex-col items-center text-center group hover:bg-[#0f0a20]/80 transition-all border border-white/5 hover:border-[#00e5ff]/50 relative overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transform hover:-translate-y-2 duration-300 h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00e5ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-[#00e5ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <div className="mb-6 relative z-10 w-full h-[220px] flex justify-center items-center overflow-hidden rounded-xl bg-black/40 border border-white/5 shadow-inner">
                 <img src={prob.img} alt={prob.title} className="w-full h-full object-cover group-hover:scale-[1.15] transition-transform duration-700 opacity-80 group-hover:opacity-100" />

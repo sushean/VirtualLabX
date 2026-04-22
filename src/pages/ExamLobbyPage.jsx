@@ -60,8 +60,8 @@ export default function ExamLobbyPage() {
 
   return (
     <div className="min-h-screen bg-transparent pt-28 pb-20 px-4 animate-page-enter relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#00e5ff] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-125 h-125 bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-125 h-125 bg-[#00e5ff] rounded-full blur-[200px] opacity-[0.1] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto relative z-10">
         
@@ -70,7 +70,7 @@ export default function ExamLobbyPage() {
           
           {/* Header & Step Tracker */}
           <div className="flex items-center gap-4 mb-10 border-b border-white/5 pb-8">
-            <div className="w-16 h-16 shrink-0 rounded-2xl bg-gradient-to-br from-[#6c2bd9] to-[#00e5ff] flex items-center justify-center text-white shadow-[0_0_15px_rgba(108,43,217,0.4)]">
+            <div className="w-16 h-16 shrink-0 rounded-2xl bg-linear-to-br from-[#6c2bd9] to-[#00e5ff] flex items-center justify-center text-white shadow-[0_0_15px_rgba(108,43,217,0.4)]">
               <FiShield className="text-3xl" />
             </div>
             <div className="w-full">
@@ -153,7 +153,7 @@ export default function ExamLobbyPage() {
                   type="checkbox" 
                   checked={accepted} 
                   onChange={() => setAccepted(!accepted)}
-                  className="w-6 h-6 rounded border-gray-600 appearance-none bg-black checked:bg-gradient-to-r checked:from-[#6c2bd9] checked:to-[#00e5ff] relative transition-colors focus:ring-0 after:content-[''] after:absolute after:inset-0 after:flex after:justify-center after:items-center checked:after:content-['✓'] checked:after:text-white checked:after:text-sm checked:after:font-bold"
+                  className="w-6 h-6 rounded border-gray-600 appearance-none bg-black checked:bg-linear-to-r checked:from-[#6c2bd9] checked:to-[#00e5ff] relative transition-colors focus:ring-0 after:content-[''] after:absolute after:inset-0 after:flex after:justify-center after:items-center checked:after:content-['✓'] checked:after:text-white checked:after:text-sm checked:after:font-bold"
                 />
                 <span className="text-sm text-gray-300 font-medium group-hover:text-white transition-colors leading-relaxed">
                   I agree to the strict evaluation parameters and understand that my behavioral footprint will be mathematically parsed.
@@ -162,7 +162,7 @@ export default function ExamLobbyPage() {
 
               <div className="flex justify-between pt-6 border-t border-white/5 mt-8">
                  <button onClick={() => setStep(1)} className="px-6 py-4 text-gray-500 hover:text-white transition-colors font-bold text-sm uppercase">Go Back</button>
-                 <button onClick={() => { setStep(3); initHardware(); }} disabled={!accepted} className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] disabled:opacity-50 disabled:grayscale text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(108,43,217,0.4)]">
+                 <button onClick={() => { setStep(3); initHardware(); }} disabled={!accepted} className="flex items-center gap-2 px-8 py-4 bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] disabled:opacity-50 disabled:grayscale text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(108,43,217,0.4)]">
                    Agree & Proceed <FiArrowRight />
                  </button>
                </div>

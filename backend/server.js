@@ -2,12 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
 // Middleware
 app.use(express.json({ limit: '50mb' })); // Parses incoming json requests (increased limit for base64 images)
 app.use(cors()); // Enables cross-origin requests from the React frontend
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Unarchived simulations static proxy
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

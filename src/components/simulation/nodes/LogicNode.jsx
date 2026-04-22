@@ -29,10 +29,10 @@ export default function LogicNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Logic Gate</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-sm mb-3 break-words">{data.label || 'Logical Unit'}</div>
+       <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Logical Unit'}</div>
        
        <div className="bg-black/50 p-3 rounded-lg border border-white/10 flex items-center justify-center gap-3">
-          <div className="w-10 h-8 rounded-lg bg-purple-500/20 flex flex-shrink-0 items-center justify-center border border-purple-500/50 text-purple-400 font-extrabold text-xs shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+          <div className="w-10 h-8 rounded-lg bg-purple-500/20 flex shrink-0 items-center justify-center border border-purple-500/50 text-purple-400 font-extrabold text-xs shadow-[0_0_10px_rgba(168,85,247,0.5)]">
             {op}
           </div>
           <div className="flex-1 text-right">

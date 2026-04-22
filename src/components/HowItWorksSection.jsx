@@ -93,12 +93,12 @@ export default function HowItWorksSection() {
       
       <h2 className="text-4xl md:text-5xl font-extrabold mb-24 relative inline-block drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         How It Works
-        <span className="absolute -bottom-4 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></span>
+        <span className="absolute -bottom-4 left-1/4 right-1/4 h-[2px] bg-linear-to-r from-transparent via-cyan-500 to-transparent"></span>
       </h2>
       
       <div className="flex flex-col md:flex-row justify-center items-start gap-12 md:gap-4 lg:gap-8 relative mt-10 w-full min-h-[220px]">
         {/* Connection line for desktop */}
-        <div className="hiw-line hidden md:block absolute top-[60px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-purple-500/80 via-indigo-500/80 to-blue-500/80 -z-10 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+        <div className="hiw-line hidden md:block absolute top-[60px] left-[10%] right-[10%] h-[2px] bg-linear-to-r from-purple-500/80 via-indigo-500/80 to-blue-500/80 -z-10 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
         
         {steps.map((step, idx) => (
           <div key={idx} className="hiw-step group flex flex-col items-center flex-1 cursor-pointer">
@@ -118,7 +118,7 @@ export default function HowItWorksSection() {
              </div>
              
              {/* Hidden Expanding Details on Hover */}
-             <div className="mt-8 max-w-[180px] lg:max-w-[200px] text-[13px] lg:text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 text-center font-medium leading-relaxed pointer-events-none group-hover:pointer-events-auto">
+             <div className="mt-8 max-w-[180px] lg:max-w-50 text-[13px] lg:text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 text-center font-medium leading-relaxed pointer-events-none group-hover:pointer-events-auto">
                 {step.desc}
              </div>
           </div>

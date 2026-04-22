@@ -19,8 +19,8 @@ export default function HeroSection() {
       </video>
 
       {/* Flawless Edge Blending Gradients matching new plum color #140d20 */}
-      <div className="absolute inset-x-0 top-0 h-[150px] bg-gradient-to-b from-[#140d20] to-transparent -z-10 pointer-events-none"></div>
-      <div className="absolute inset-x-0 bottom-0 h-[300px] bg-gradient-to-t from-[#140d20] to-transparent -z-10 pointer-events-none"></div>
+      <div className="absolute inset-x-0 top-0 h-[150px] bg-linear-to-b from-[#140d20] to-transparent -z-10 pointer-events-none"></div>
+      <div className="absolute inset-x-0 bottom-0 h-75 bg-gradient-to-t from-[#140d20] to-transparent -z-10 pointer-events-none"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">

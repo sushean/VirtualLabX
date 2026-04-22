@@ -44,7 +44,7 @@ export default function PropertiesPanel({ selectedNode, setNodes, setEdges }) {
 
   return (
     <div className="p-4 bg-[#0a0510]/80 border-l border-white/10 flex flex-col h-full w-72 z-10 shadow-[-2px_0_15px_rgba(0,0,0,0.5)]">
-      <h2 className="text-xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">Node Config</h2>
+      <h2 className="text-xl font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-emerald-400">Node Config</h2>
       
       <div className="mb-4">
         <label className="block text-xs text-gray-400 mb-1">Node ID</label>
@@ -106,7 +106,7 @@ export default function PropertiesPanel({ selectedNode, setNodes, setEdges }) {
               setNodes((nds) => nds.filter((n) => n.id !== selectedNode.id));
               if (setEdges) setEdges((eds) => eds.filter((e) => e.source !== selectedNode.id && e.target !== selectedNode.id));
            }} 
-           className="w-full bg-red-500/10 hover:bg-red-500/30 text-red-500 border border-red-500/50 py-2 rounded font-bold text-sm transition transition-all hover:shadow-[0_0_10px_rgba(239,68,68,0.3)] hover:scale-105 uppercase tracking-widest"
+           className="w-full bg-red-500/10 hover:bg-red-500/30 text-red-500 border border-red-500/50 py-2 rounded font-bold text-sm transition-all hover:shadow-[0_0_10px_rgba(239,68,68,0.3)] hover:scale-105 uppercase tracking-widest"
          >
             Delete Node
          </button>

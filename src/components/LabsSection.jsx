@@ -46,7 +46,7 @@ export default function LabsSection() {
           className="glass-card flex flex-col p-0 overflow-hidden text-left border-white/10 hover:border-[#00e5ff]/50 transition-colors group cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(0,229,255,0.2)]"
         >
           <div className="p-8 pb-2">
-             <h3 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Explore All Labs</h3>
+             <h3 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Explore All Labs</h3>
           </div>
           <div className="px-8 pb-6">
              <button className="bg-transparent border border-[#00e5ff]/50 text-[#00e5ff] hover:bg-[#00e5ff]/10 text-sm font-semibold py-2 px-6 rounded-full transition-all">View Gallery &rarr;</button>

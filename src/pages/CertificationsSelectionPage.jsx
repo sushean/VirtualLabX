@@ -74,14 +74,14 @@ export default function CertificationsSelectionPage() {
   return (
     <div className="min-h-screen bg-[#0a0510] pt-32 pb-24 px-6 overflow-hidden relative">
       {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-purple-900/10 to-transparent pointer-events-none" />
-      <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-125 bg-linear-to-b from-purple-900/10 to-transparent pointer-events-none" />
+      <div className="absolute -top-40 -right-40 w-[600px] h-150 bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" />
       <div className="absolute top-40 -left-60 w-[700px] h-[700px] bg-[#00e5ff] rounded-full blur-[250px] opacity-[0.1] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         <div ref={headerRef} className="text-center mb-24">
-          <h1 className="text-5xl md:text-7xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-[#00e5ff] to-blue-500 drop-shadow-[0_0_25px_rgba(108,43,217,0.4)] tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-black mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-[#00e5ff] to-blue-500 drop-shadow-[0_0_25px_rgba(108,43,217,0.4)] tracking-tight">
             Certification Matrix
           </h1>
           <p className="text-gray-300 text-xl font-medium max-w-3xl mx-auto leading-relaxed">
@@ -97,12 +97,12 @@ export default function CertificationsSelectionPage() {
                 ref={el => cardsRef.current[idx] = el}
                 className="group relative bg-[#0d071a] border border-[#6c2bd9]/30 rounded-3xl p-8 hover:-translate-y-4 transition-all duration-500 hover:shadow-[0_0_50px_rgba(108,43,217,0.3)] hover:border-[#00e5ff]/50 overflow-hidden flex flex-col"
               >
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#6c2bd9] to-[#00e5ff] rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition duration-500 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-linear-to-br from-[#6c2bd9] to-[#00e5ff] rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition duration-500 pointer-events-none" />
                 
                 <div className="flex justify-between items-start mb-8 relative z-10">
-                  <div className="bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] p-[1px] rounded-full">
+                  <div className="bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] p-[1px] rounded-full">
                     <div className="bg-black px-4 py-1.5 rounded-full">
-                      <span className="text-xs font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-blue-400">
+                      <span className="text-xs font-black uppercase tracking-widest text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-blue-400">
                         Live Status
                       </span>
                     </div>
@@ -110,11 +110,11 @@ export default function CertificationsSelectionPage() {
                   <FiStar className="text-3xl text-yellow-500 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
                 </div>
 
-                <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-colors relative z-10">
+                <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-white group-hover:to-gray-400 transition-colors relative z-10">
                   {item.title}
                 </h3>
                 
-                <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-grow relative z-10">
+                <p className="text-gray-400 text-sm leading-relaxed mb-8 grow relative z-10">
                   {item.description}
                 </p>
 
@@ -142,7 +142,7 @@ export default function CertificationsSelectionPage() {
                     }
                     navigate(`/certifications/lobby?topic=${item.examType}`);
                   }}
-                  className="w-full py-4 bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] hover:from-[#5a20b8] hover:to-[#00cce5] rounded-xl font-black uppercase tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.4)] transition-all duration-300 transform active:scale-95 relative z-10"
+                  className="w-full py-4 bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] hover:from-[#5a20b8] hover:to-[#00cce5] rounded-xl font-black uppercase tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.4)] transition-all duration-300 transform active:scale-95 relative z-10"
                 >
                   Enter Secured Lobby
                 </button>
@@ -163,7 +163,7 @@ export default function CertificationsSelectionPage() {
                   </div>
 
                   <h3 className="text-2xl font-bold text-gray-300 mb-4">{item.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">{item.description}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-6 grow">{item.description}</p>
 
                   <button disabled className="w-full py-4 bg-[#0d071a] border border-gray-800 text-gray-600 rounded-xl font-bold uppercase tracking-widest cursor-not-allowed">
                     Sub-routine Locked

@@ -9,6 +9,16 @@ export default function SimulationRenderer({ lab }) {
   switch (type) {
     case 'flow':
       return <FlowRenderer config={config} />;
+    case 'iframe':
+      if (!lab.simulationPath) return <div className="h-full flex items-center justify-center text-red-500">Error: Missing path map for IFRAME package.</div>;
+      return (
+        <iframe 
+          src={`http://localhost:5000${lab.simulationPath}`} 
+          className="w-full h-full border-none ring-0 outline-none bg-white" 
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          title="VirtualLabX External Sandbox"
+        />
+      );
     case 'matrix-multiplication':
       return <MatrixWrapper config={config} />;
     case 'cnn':

@@ -49,7 +49,7 @@ export default function SpotifyPlayerWidget() {
     <div className="absolute top-24 right-8 w-80 sm:w-80 md:w-[22rem] rounded-[24px] z-[200] animate-page-enter transform transition-all shadow-[0_25px_70px_rgba(29,185,84,0.2)] group">
       
       {/* Animated Gradient Border Wrap */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1db954]/60 via-purple-500/20 to-black/90 rounded-[24px] p-[1px] -z-10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-[#1db954]/60 via-purple-500/20 to-black/90 rounded-[24px] p-[1px] -z-10"></div>
       
       {/* Inner Container */}
       <div className="bg-[#0a0510]/80 backdrop-blur-3xl w-full h-full rounded-[23px] flex flex-col relative overflow-hidden">
@@ -74,7 +74,7 @@ export default function SpotifyPlayerWidget() {
         <div className="p-6 flex-1 flex flex-col gap-5 relative z-10">
           {!token ? (
             <div className="text-center py-8">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#1db954]/20 to-transparent rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1db954]/40 shadow-[0_0_30px_rgba(29,185,84,0.3)]">
+              <div className="w-20 h-20 bg-linear-to-br from-[#1db954]/20 to-transparent rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1db954]/40 shadow-[0_0_30px_rgba(29,185,84,0.3)]">
                  <MusicNoteIcon fontSize="large" sx={{ color: '#1db954' }} />
               </div>
               <p className="text-gray-300 text-sm mb-8 leading-relaxed font-medium">Elevate your study session. Connect your Premium account to stream full tracks natively.</p>

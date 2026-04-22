@@ -42,9 +42,9 @@ const FeedbackForm = () => {
 
   return (
     <div className="animate-page-enter max-w-3xl mx-auto">
-      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Experiment Feedback</h2>
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Experiment Feedback</h2>
       <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-         <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+         <div className="absolute top-0 right-0 w-75 h-75 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none"></div>
          <p className="text-gray-300 text-lg mb-8 relative z-10 text-center font-bold">How would you rate your experience with the Linear Regression simulation?</p>
          
          <div className="flex gap-2 mb-10 justify-center relative z-10">
@@ -75,7 +75,7 @@ const FeedbackForm = () => {
          <button 
             disabled={rating === 0}
             onClick={() => setSubmitted(true)}
-            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5' : 'bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
+            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
          >
             Submit Feedback
          </button>
@@ -143,7 +143,7 @@ const PrerequisitesContent = () => {
 
   return (
     <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Pre-Requisites</h2>
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Pre-Requisites</h2>
       <p className="text-gray-300 mb-8 text-lg">Before diving into Linear Regression, ensure you have a good grasp of these foundational concepts. Click on a topic to explore further.</p>
       
       <div className="space-y-4">
@@ -301,7 +301,7 @@ const LearnCodeComponent = () => {
            {isIncorrect && <span className="text-red-500 font-bold uppercase tracking-widest text-sm">Incorrect</span>}
            <button 
              onClick={(e) => isFilled ? checkAnswer(inputKey, expectedAnswer, e) : revealAnswer(inputKey, expectedAnswer)}
-             className={`px-5 py-2 rounded-lg font-bold text-sm transition-all ${isCorrect ? 'bg-green-500/20 text-green-400 border border-green-500/50 cursor-default' : 'bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.4)]'}`}
+             className={`px-5 py-2 rounded-lg font-bold text-sm transition-all ${isCorrect ? 'bg-green-500/20 text-green-400 border border-green-500/50 cursor-default' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.4)]'}`}
              disabled={isCorrect}
            >
              {isCorrect ? 'Solved' : isFilled ? 'Check Answer' : 'Reveal Answer'}
@@ -313,19 +313,19 @@ const LearnCodeComponent = () => {
 
   return (
     <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
       
       {/* Mode Toggle */}
       <div className="flex bg-[#110b27] border border-white/10 p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
         <button 
           onClick={() => setMode('learn')}
-          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-gradient-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
+          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
         >
           LEARN MODE
         </button>
         <button 
           onClick={() => setMode('test')}
-          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'test' ? 'bg-gradient-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
+          className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'test' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
         >
           TEST MODE
         </button>
@@ -433,7 +433,7 @@ export default function LinearRegressionLabPage() {
       case 'Introduction':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Linear Regression</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Linear Regression</h2>
             
             <div className="space-y-6 text-gray-300 leading-relaxed text-lg">
               <p>
@@ -570,11 +570,11 @@ export default function LinearRegressionLabPage() {
       case 'Objective':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Lab Objective</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Lab Objective</h2>
             
             <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
                {/* Decorative Gradient Blob */}
-               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#00e5ff]/10 blur-[100px] rounded-full pointer-events-none"></div>
+               <div className="absolute top-0 right-0 w-75 h-75 bg-[#00e5ff]/10 blur-[100px] rounded-full pointer-events-none"></div>
 
                <p className="text-xl font-semibold text-white mb-8 leading-relaxed">
                   By the end of this experiment, students will be able to:
@@ -589,7 +589,7 @@ export default function LinearRegressionLabPage() {
                     'Gain intuition behind how machines learn from data'
                   ].map((objective, idx) => (
                     <li key={idx} className="flex items-start gap-4">
-                       <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00e5ff]/10 border border-[#00e5ff]/30 flex items-center justify-center text-[#00e5ff] font-bold shadow-[0_0_15px_rgba(0,229,255,0.2)]">
+                       <span className="shrink-0 w-8 h-8 rounded-full bg-[#00e5ff]/10 border border-[#00e5ff]/30 flex items-center justify-center text-[#00e5ff] font-bold shadow-[0_0_15px_rgba(0,229,255,0.2)]">
                          {idx + 1}
                        </span>
                        <span className="text-lg text-gray-300 pt-1 leading-snug font-medium">
@@ -608,7 +608,7 @@ export default function LinearRegressionLabPage() {
       case 'Target Audience':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Target Audience</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Target Audience</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { title: 'Undergraduate Students', desc: '(CSE, IT, Data Science)' },
@@ -630,7 +630,7 @@ export default function LinearRegressionLabPage() {
       case 'Course Alignment':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Course Alignment</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Course Alignment</h2>
             
             <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
               <h3 className="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">This experiment aligns with:</h3>
@@ -644,7 +644,7 @@ export default function LinearRegressionLabPage() {
             </div>
 
             <div className="border border-purple-500/30 bg-purple-900/10 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-start gap-6 shadow-[0_0_30px_rgba(108,43,217,0.15)]">
-               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex flex-shrink-0 items-center justify-center border border-purple-500/50 shadow-[0_0_20px_rgba(108,43,217,0.3)]">
+               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex shrink-0 items-center justify-center border border-purple-500/50 shadow-[0_0_20px_rgba(108,43,217,0.3)]">
                  <span className="text-3xl">🎓</span>
                </div>
                <div>
@@ -660,7 +660,7 @@ export default function LinearRegressionLabPage() {
       case 'Resources':
         return (
           <div className="animate-page-enter max-w-5xl mx-auto pb-12">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Learning Resources</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learning Resources</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
@@ -674,7 +674,7 @@ export default function LinearRegressionLabPage() {
                  <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded flex-shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">By {res.author}</p>
@@ -700,7 +700,7 @@ export default function LinearRegressionLabPage() {
       default:
         return (
           <div className="animate-page-enter">
-            <h2 className="text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">{activeTab}</h2>
+            <h2 className="text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">{activeTab}</h2>
             <p className="text-gray-400 italic">Content for {activeTab} is currently being compiled...</p>
           </div>
         );
@@ -711,7 +711,7 @@ export default function LinearRegressionLabPage() {
     <div className="min-h-screen text-white relative font-sans flex flex-col pt-32 animate-page-enter">
       
       {/* Background ambient glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="absolute top-0 right-0 w-125 h-125 bg-purple-900/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-cyan-900/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
       {/* Page Header */}
@@ -735,7 +735,7 @@ export default function LinearRegressionLabPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full text-left px-5 py-3.5 mb-1 rounded-lg transition-all duration-300 flex items-center gap-3 font-semibold text-sm ${
                     isActive 
-                      ? 'bg-gradient-to-r from-[#6c2bd9] to-[#4a1bb8] text-white shadow-[0_4px_20px_rgba(108,43,217,0.4)]' 
+                      ? 'bg-linear-to-r from-[#6c2bd9] to-[#4a1bb8] text-white shadow-[0_4px_20px_rgba(108,43,217,0.4)]' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -748,7 +748,7 @@ export default function LinearRegressionLabPage() {
         </div>
 
         {/* Dynamic Content Area */}
-        <div className="flex-1 glass-card p-8 md:p-12 min-h-[600px] border border-white/5 bg-[#0a0510]/80 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div className="flex-1 glass-card p-8 md:p-12 min-h-150 border border-white/5 bg-[#0a0510]/80 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
           {renderContent()}
         </div>
 

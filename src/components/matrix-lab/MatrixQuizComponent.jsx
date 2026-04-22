@@ -198,11 +198,11 @@ export default function MatrixQuizComponent() {
         <div className="bg-[#110b27] border border-white/10 p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden w-full">
            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
            
-           <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-[#00e5ff] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/30">
+           <div className="w-20 h-20 bg-linear-to-br from-purple-500 to-[#00e5ff] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/30">
              <QuizIcon className="text-white" style={{ fontSize: 40 }} />
            </div>
            
-           <h2 className="text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Knowledge Assessment</h2>
+           <h2 className="text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400">Knowledge Assessment</h2>
            <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">Validate your understanding of linear algebra rules, loop iterations, and practical dot product implications before concluding.</p>
            
            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10 w-full">
@@ -222,7 +222,7 @@ export default function MatrixQuizComponent() {
 
            <button 
              onClick={startQuiz}
-             className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white font-bold text-lg rounded-full shadow-[0_0_30px_rgba(0,229,255,0.3)] hover:shadow-[0_0_40px_rgba(0,229,255,0.5)] hover:-translate-y-1 transition-all duration-300"
+             className="w-full md:w-auto px-12 py-4 bg-linear-to-r from-purple-600 to-[#00e5ff] text-white font-bold text-lg rounded-full shadow-[0_0_30px_rgba(0,229,255,0.3)] hover:shadow-[0_0_40px_rgba(0,229,255,0.5)] hover:-translate-y-1 transition-all duration-300"
            >
              Start the Quiz
            </button>
@@ -291,7 +291,7 @@ export default function MatrixQuizComponent() {
                        disabled={isAnswered}
                        className={`flex items-center text-left gap-4 w-full p-4 rounded-xl border transition-all duration-200 ${bgClass}`}
                      >
-                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${ringClass}`}>
+                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${ringClass}`}>
                           {innerNode}
                        </div>
                        <span dangerouslySetInnerHTML={{ __html: opt }}></span>
@@ -358,7 +358,7 @@ export default function MatrixQuizComponent() {
               </button>
               <button 
                 onClick={() => setQuizState('review')}
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white font-bold rounded-xl shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] transition-all flex items-center justify-center gap-2"
+                className="px-8 py-3 bg-linear-to-r from-purple-600 to-[#00e5ff] text-white font-bold rounded-xl shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] transition-all flex items-center justify-center gap-2"
               >
                 <AnalyticsIcon /> Analyze Performance
               </button>
@@ -374,7 +374,7 @@ export default function MatrixQuizComponent() {
         
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
            <div>
-             <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">Performance Analysis</h2>
+             <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Performance Analysis</h2>
              <p className="text-gray-400 mt-1">Review your selections and learn from the correct logical explanations.</p>
            </div>
            

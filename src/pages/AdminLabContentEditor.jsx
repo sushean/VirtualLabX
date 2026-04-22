@@ -10,6 +10,8 @@ export default function AdminLabContentEditor() {
   const [activeTab, setActiveTab] = useState('Settings');
   const [errorTabs, setErrorTabs] = useState([]);
   const [activeEmojiPicker, setActiveEmojiPicker] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   const token = localStorage.getItem('token');
   
   const commonEmojis = ['📘', '🎓', '📚', '🧪', '⚛️', '🔬', '💻', '🧮', '📈', '🌐', '🚀', '💡', '📝', '🎬', '🎧', '🔧', '⚙️', '📂', '📱', '⭐', '🏆', '🧠', '📡', '🎯'];
@@ -166,6 +168,35 @@ export default function AdminLabContentEditor() {
     updateTab('introduction', [...introArr, { type, text: '' }]);
   };
 
+  const handleZipUpload = async (e) => {
+     const file = e.target.files[0];
+     if (!file) return;
+     
+     const formData = new FormData();
+     formData.append('simulationZip', file);
+     
+     setIsUploading(true);
+     try {
+        const res = await axios.post(`http://localhost:5000/api/labs/upload-simulation`, formData, {
+           headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`
+           },
+           onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setUploadProgress(percentCompleted);
+           }
+        });
+        updateLab('simulationPath', res.data.simulationPath);
+        alert('Simulation package uploaded, expanded, and uniquely mounted successfully!');
+     } catch(err) {
+        alert("ZIP Extraction Fault: " + (err.response?.data?.message || err.message));
+     } finally {
+        setIsUploading(false);
+        setUploadProgress(0);
+     }
+  };
+
   /* ---------------- RENDERERS ---------------- */
   const renderSettings = () => (
     <div className="space-y-6">
@@ -209,6 +240,7 @@ export default function AdminLabContentEditor() {
                 className="w-full bg-black/50 border border-white/10 focus:border-purple-500 rounded-lg p-3 text-white transition-colors appearance-none cursor-pointer"
              >
                 <option value="flow">Flow Based Nodes (General)</option>
+                <option value="iframe">External Pre-built Upload (IFrame)</option>
                 <option value="matrix-multiplication">Legacy: Matrix Multiplication</option>
                 <option value="linear-regression">Legacy: Linear Regression</option>
                 <option value="cnn">CNN Visualizer</option>
@@ -217,6 +249,31 @@ export default function AdminLabContentEditor() {
            </div>
          </div>
        </div>
+       
+       {lab.simulationType === 'iframe' && (
+         <div className="bg-white/5 border border-indigo-500/30 p-5 rounded-xl shadow-lg mt-4 animate-fade-in relative overflow-hidden">
+            <h3 className="font-bold text-indigo-400 mb-2 uppercase text-xs tracking-widest flex items-center gap-2">
+              <span className="text-xl">📦</span> Iframe Package Deployment
+            </h3>
+            <p className="text-gray-400 text-sm mb-4">Upload a zipped React build (dist.zip) containing an `index.html`. It will be securely mounted.</p>
+            <div className="flex gap-4 items-center">
+               <label className={`cursor-pointer ${isUploading ? 'bg-indigo-500/50' : 'bg-indigo-600 hover:bg-indigo-500'} text-white font-bold py-2 px-4 rounded transition-colors`}>
+                  {isUploading ? `Extracting... ${uploadProgress}%` : 'Upload .ZIP Bundle'}
+                  <input type="file" accept=".zip" onChange={handleZipUpload} disabled={isUploading} className="hidden" />
+               </label>
+               {lab.simulationPath && (
+                 <span className="text-xs font-mono bg-black/50 px-3 py-2 rounded border border-green-500/30 text-green-400 flex items-center gap-2 max-w-[50%] overflow-hidden">
+                    <span className="shrink-0">✓ Mounted:</span> 
+                    <span className="truncate" title={lab.simulationPath}>{lab.simulationPath}</span>
+                 </span>
+               )}
+            </div>
+            {isUploading && (
+               <div className="absolute bottom-0 left-0 h-1 bg-indigo-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
+            )}
+         </div>
+       )}
+
        <div>
          <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Description</label>
          <textarea value={lab.description || ''} onChange={e => updateLab('description', e.target.value)} className="w-full bg-black/50 border border-white/10 focus:border-purple-500 rounded-lg p-3 text-white h-24 resize-none transition-colors" />
@@ -636,7 +693,7 @@ export default function AdminLabContentEditor() {
        <div className="bg-[#110b27] border border-white/10 p-6 rounded-2xl mb-8 flex gap-6 items-center shadow-lg">
           <div className="flex-1">
              <label className="text-xs text-[#00e5ff] font-bold uppercase tracking-widest block mb-2">Total Quiz Time (Minutes)</label>
-             <input type="number" min="1" value={settings.timeLimit || 10} onChange={e => updateTab('quizSettings', { ...settings, timeLimit: parseInt(e.target.value) || 1 })} className="w-full max-w-[200px] bg-black/50 border border-white/10 focus:border-[#00e5ff] rounded p-2 text-white font-bold text-center outline-none" />
+             <input type="number" min="1" value={settings.timeLimit || 10} onChange={e => updateTab('quizSettings', { ...settings, timeLimit: parseInt(e.target.value) || 1 })} className="w-full max-w-50 bg-black/50 border border-white/10 focus:border-[#00e5ff] rounded p-2 text-white font-bold text-center outline-none" />
           </div>
        </div>
 
@@ -698,7 +755,7 @@ export default function AdminLabContentEditor() {
        
        <div className="w-64 shrink-0 bg-[#0a0510] border-r border-white/10 h-[calc(100vh-6rem)] sticky top-24 flex flex-col pt-6 z-20">
           <div className="px-6 mb-6">
-             <h2 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-[#00e5ff]">CMS Editor</h2>
+             <h2 className="text-xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">CMS Editor</h2>
              <p className="text-xs text-gray-500 mt-1 font-mono uppercase tracking-widest">{lab.slug}</p>
           </div>
           
@@ -712,7 +769,7 @@ export default function AdminLabContentEditor() {
                     onClick={() => setActiveTab(tab)}
                     className={`w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all relative ${
                       isActive 
-                        ? (hasError ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_4px_15px_rgba(220,38,38,0.3)]' : 'bg-gradient-to-r from-[#6c2bd9] to-[#00e5ff] text-white shadow-[0_4px_15px_rgba(108,43,217,0.3)]')
+                        ? (hasError ? 'bg-linear-to-r from-red-600 to-red-500 text-white shadow-[0_4px_15px_rgba(220,38,38,0.3)]' : 'bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] text-white shadow-[0_4px_15px_rgba(108,43,217,0.3)]')
                         : (hasError ? 'text-red-400 hover:bg-red-500/10 border border-red-500/30' : 'text-gray-400 hover:text-white hover:bg-white/5')
                     }`}
                   >

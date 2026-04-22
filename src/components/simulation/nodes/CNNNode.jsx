@@ -31,7 +31,7 @@ export default function CNNNode({ data }) {
          <span className="text-xs uppercase tracking-widest font-bold text-indigo-400">AI / ML Layer</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
-       <div className="text-white font-bold text-lg mb-3 break-words leading-tight">{data.label || 'Network Layer'}</div>
+       <div className="text-white font-bold text-lg mb-3 wrap-break-word leading-tight">{data.label || 'Network Layer'}</div>
        
        <div className="bg-black/60 p-3 rounded-lg border border-indigo-500/20 flex items-center justify-between gap-4 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-1 opacity-10">

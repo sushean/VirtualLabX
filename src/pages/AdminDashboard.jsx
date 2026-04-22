@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   
   const [collections, setCollections] = useState([]);
   const [newCollection, setNewCollection] = useState({ title: '', examType: '', description: '', status: 'ACTIVE' });
+  const [adminLabs, setAdminLabs] = useState([]);
   
   const [loading, setLoading] = useState(true);
   const [selectedExam, setSelectedExam] = useState(null);
@@ -32,17 +33,19 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [examsRes, usersRes, certsRes, collectionsRes] = await Promise.all([
+      const [examsRes, usersRes, certsRes, collectionsRes, labsRes] = await Promise.all([
         axios.get('http://localhost:5000/api/exam/all', { headers }).catch(() => ({ data: [] })),
         axios.get('http://localhost:5000/api/auth/users', { headers }).catch(() => ({ data: [] })),
         axios.get('http://localhost:5000/api/certificates/all', { headers }).catch(() => ({ data: [] })),
-        axios.get('http://localhost:5000/api/examCollections').catch(() => ({ data: [] }))
+        axios.get('http://localhost:5000/api/examCollections').catch(() => ({ data: [] })),
+        axios.get('http://localhost:5000/api/labs').catch(() => ({ data: [] }))
       ]);
       
       setExams(examsRes.data || []);
       setUsers(usersRes.data || []);
       setCertificates(certsRes.data || []);
       setCollections(collectionsRes.data || []);
+      setAdminLabs(labsRes.data || []);
       
       await fetchQuestions();
     } catch (err) {
@@ -200,11 +203,13 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#0a0510] pt-24 pb-12 px-8 text-white font-sans">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9]">System Administration</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] to-[#6c2bd9]">System Administration</h1>
+        </div>
         
         {/* Navigation Tabs */}
         <div className="flex gap-4 mb-8 border-b border-gray-800 pb-2 overflow-x-auto custom-scrollbar">
-          {['overview', 'sessions', 'users', 'questions', 'certificates'].map(tab => (
+          {['overview', 'sessions', 'users', 'questions', 'certificates', 'labs'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -552,6 +557,53 @@ export default function AdminDashboard() {
                  {certificates.length === 0 && <tr><td colSpan="5" className="p-8 text-center text-gray-500">No certificates successfully vaulted into history.</td></tr>}
                </tbody>
              </table>
+          </div>
+        )}
+
+        {/* Labs Management Tab */}
+        {activeTab === 'labs' && (
+          <div className="animate-fade-in space-y-6">
+            <div className="flex justify-between items-center bg-[#110b27] p-6 rounded-2xl border border-white/5 shadow-lg">
+              <div>
+                 <h2 className="text-2xl font-bold">Labs Management</h2>
+                 <p className="text-gray-400 text-sm mt-1">Configure metadata, toggle statuses, and jump into visual Flow Builders.</p>
+              </div>
+              <button onClick={() => window.location.href = '/admin/builder'} className="btn-primary flex items-center gap-2">
+                 <span className="font-bold text-lg">+</span> Create New Lab
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {adminLabs.map(lab => (
+                 <div key={lab._id} className="glass-card flex flex-col p-6 border border-white/10 hover:border-[#00e5ff]/50 transition-colors bg-[#0a0510]/80">
+                    <div className="flex justify-between items-start mb-4">
+                       <h3 className="text-xl font-bold text-white shrink-0 truncate max-w-[70%]">{lab.title}</h3>
+                       <span className={`text-xs font-bold px-2 py-1 rounded tracking-widest uppercase ${lab.status === 'ACTIVE' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : lab.status === 'UPCOMING' ? 'bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/30' : 'bg-red-500/20 text-red-500 border border-red-500/30'}`}>{lab.status}</span>
+                    </div>
+                    <p className="text-sm text-gray-400 mb-6 flex-1">{lab.description || 'No description provided.'}</p>
+                    
+                    <div className="flex flex-col gap-3 mt-auto border-t border-white/10 pt-4">
+                       <button onClick={() => window.location.href = `/admin/builder/${lab.slug}`} className="bg-gradient-to-r from-purple-600 to-[#00e5ff] text-white font-bold py-2 rounded text-sm hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all text-center">
+                          Build Simulation Nodes
+                       </button>
+                       <button onClick={() => window.location.href = `/admin/lab/${lab.slug}/edit`} className="bg-white/5 hover:bg-white/10 text-white font-bold py-2 rounded text-sm transition-all text-center border border-white/10">
+                          Edit Lab Content
+                       </button>
+                       <button onClick={async () => {
+                          if (window.confirm(`Permanently delete lab ${lab.title}?`)) {
+                             await axios.delete(`http://localhost:5000/api/labs/${lab._id}`, { headers: { Authorization: `Bearer ${token}` }});
+                             fetchDashboardData();
+                          }
+                       }} className="bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-2 rounded text-sm transition-all text-center border border-red-500/20 mt-2">
+                          Delete Lab
+                       </button>
+                    </div>
+                 </div>
+              ))}
+              {adminLabs.length === 0 && (
+                 <div className="col-span-full py-10 text-center text-gray-500">No labs stored in database.</div>
+              )}
+            </div>
           </div>
         )}
 

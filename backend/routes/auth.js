@@ -141,7 +141,7 @@ router.put('/me', auth, async (req, res) => {
     let user = await User.findByIdAndUpdate(
       req.user.id,
       { $set: { firstName, lastName } },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).select('-password');
 
     res.json(user);

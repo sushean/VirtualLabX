@@ -10,6 +10,9 @@ import ProfilePage from './pages/ProfilePage'
 import CertificationsSelectionPage from './pages/CertificationsSelectionPage'
 import ExamPage from './pages/ExamPage'
 import AdminDashboard from './pages/AdminDashboard'
+import AdminLabBuilder from './pages/AdminLabBuilder'
+import AdminLabContentEditor from './pages/AdminLabContentEditor'
+import DynamicLabPage from './pages/DynamicLabPage'
 import FeaturesPage from './pages/FeaturesPage'
 import ExamLobbyPage from './pages/ExamLobbyPage'
 import VerifyCertificatePage from './pages/VerifyCertificatePage'
@@ -34,11 +37,15 @@ function App() {
                 <Route path="/labs" element={<AllLabsPage />} />
                 <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
                 <Route path="/labs/matrix-multiplication" element={<MatrixMultiplicationLabPage />} />
+                <Route path="/labs/:slug" element={<DynamicLabPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/certifications" element={<CertificationsSelectionPage />} />
                 <Route path="/exam/:sessionId" element={<ExamPage />} />
                 <Route path="/admin/exams" element={<AdminDashboard />} />
+                <Route path="/admin/builder" element={<AdminLabBuilder />} />
+                <Route path="/admin/builder/:slug" element={<AdminLabBuilder />} />
+                <Route path="/admin/lab/:slug/edit" element={<AdminLabContentEditor />} />
                 <Route path="/features" element={<FeaturesPage />} />
                 <Route path="/certifications/lobby" element={<ExamLobbyPage />} />
                 <Route path="/verify/:hash" element={<VerifyCertificatePage />} />

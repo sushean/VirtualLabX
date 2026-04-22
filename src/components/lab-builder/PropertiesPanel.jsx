@@ -1,4 +1,4 @@
-import React from 'react';
+import { NodeRegistry } from '../simulation/registry/NodeRegistry';
 
 export default function PropertiesPanel({ selectedNode, setNodes, setEdges }) {
   if (!selectedNode) {
@@ -26,6 +26,22 @@ export default function PropertiesPanel({ selectedNode, setNodes, setEdges }) {
     );
   };
 
+  const updateConfig = (key, value) => {
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (n.id === selectedNode.id) {
+          n.data = { 
+            ...n.data, 
+            config: { ...(n.data.config || {}), [key]: value } 
+          };
+        }
+        return n;
+      })
+    );
+  };
+
+  const schema = NodeRegistry[selectedNode.type]?.configSchema || [];
+
   return (
     <div className="p-4 bg-[#0a0510]/80 border-l border-white/10 flex flex-col h-full w-72 z-10 shadow-[-2px_0_15px_rgba(0,0,0,0.5)]">
       <h2 className="text-xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">Node Config</h2>
@@ -39,39 +55,50 @@ export default function PropertiesPanel({ selectedNode, setNodes, setEdges }) {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 text-xs font-bold text-gray-500 uppercase tracking-widest pb-2 border-b border-white/10">Type: {selectedNode.type}</div>
+
+      <div className="mb-6">
         <label className="block text-xs text-gray-400 mb-1">Label</label>
         <input 
           value={selectedNode.data?.label || ''}
           onChange={onChangeLabel}
-          className="w-full bg-black/50 border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-purple-500"
+          className="w-full bg-[#110b27] border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-purple-500"
         />
       </div>
 
-      {(selectedNode.type === 'default' || selectedNode.type === 'custom') && (
-        <div className="mb-6">
-          <label className="block text-xs text-[#00e5ff] font-bold uppercase mb-2">Math Operation</label>
-          <select 
-            value={selectedNode.data?.config?.operation || 'add'}
-            onChange={(e) => {
-              setNodes((nds) =>
-                nds.map((n) => {
-                  if (n.id === selectedNode.id) {
-                    n.data = { ...n.data, config: { ...n.data.config, operation: e.target.value } };
-                  }
-                  return n;
-                })
-              );
-            }}
-            className="w-full bg-[#110b27] border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-[#00e5ff] appearance-none cursor-pointer"
-          >
-             <option value="add">Addition (+)</option>
-             <option value="subtract">Subtraction (-)</option>
-             <option value="multiply">Multiplication (×)</option>
-             <option value="divide">Division (÷)</option>
-          </select>
-        </div>
-      )}
+      {schema.map((field) => {
+        const val = selectedNode.data?.config?.[field.key] ?? field.defaultValue ?? '';
+        
+        return (
+          <div key={field.key} className="mb-6">
+            <label className="block text-xs text-[#00e5ff] font-bold uppercase mb-2">{field.label}</label>
+            {field.type === 'select' ? (
+              <select 
+                value={val}
+                onChange={(e) => updateConfig(field.key, e.target.value)}
+                className="w-full bg-[#110b27] border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-[#00e5ff] appearance-none cursor-pointer"
+              >
+                {field.options.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            ) : field.type === 'number' ? (
+              <input 
+                type="number"
+                value={val}
+                onChange={(e) => updateConfig(field.key, Number(e.target.value))}
+                className="w-full bg-[#110b27] border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-[#00e5ff]"
+              />
+            ) : (
+              <input 
+                value={val}
+                onChange={(e) => updateConfig(field.key, e.target.value)}
+                className="w-full bg-[#110b27] border border-white/20 p-2 rounded text-sm text-white focus:outline-none focus:border-[#00e5ff]"
+              />
+            )}
+          </div>
+        );
+      })}
 
       <div className="mt-8 pt-4 border-t border-white/10">
          <button 

@@ -8,7 +8,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-export default function BuilderCanvas({ nodes, setNodes, edges, setEdges, onNodesChange, onEdgesChange, setReactFlowInstance, onSelectionChange }) {
+export default function BuilderCanvas({ nodes, setNodes, edges, setEdges, onNodesChange, onEdgesChange, setReactFlowInstance, onSelectionChange, nodeTypes }) {
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
   return (
@@ -16,6 +16,7 @@ export default function BuilderCanvas({ nodes, setNodes, edges, setEdges, onNode
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

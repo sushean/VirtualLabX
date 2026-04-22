@@ -9,13 +9,12 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import dagre from 'dagre';
+import { NodeRegistry, transformLegacyNodes } from './registry/NodeRegistry';
+import ReplayIcon from '@mui/icons-material/Replay';
 
-const nodeTypes = {
-  input: InputNode,
-  default: ProcessNode,
-  output: OutputNode,
-  custom: ProcessNode // Fallback custom to process natively
-};
+const nodeTypes = Object.fromEntries(
+  Object.entries(NodeRegistry).map(([key, def]) => [key, def.component])
+);
 
 const getLayoutedElements = (nodes, edges) => {
   const dagreGraph = new dagre.graphlib.Graph();
@@ -55,9 +54,12 @@ export default function FlowRenderer({ config }) {
 
   useEffect(() => {
     if (config?.nodes && config?.edges) {
+      // Strip legacy types and bind registry configuration structures securely
+      const transformedNodes = transformLegacyNodes(config.nodes);
+
       // Intelligently auto-layout the user's messy CMS mappings using dagre
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-        config.nodes,
+        transformedNodes,
         config.edges
       );
       
@@ -80,6 +82,12 @@ export default function FlowRenderer({ config }) {
       })));
     }
   }, [config, setNodes, setEdges]);
+
+  const resetSimulation = () => {
+    setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle', result: undefined } })));
+    setEdges(eds => eds.map(e => ({ ...e, animated: false, style: { stroke: '#a855f7', strokeWidth: 1 } })));
+    setIsExecuting(false);
+  };
 
   const runSimulation = async () => {
     if (isExecuting) return;
@@ -113,7 +121,6 @@ export default function FlowRenderer({ config }) {
       setNodes(nds => nds.map(n => n.id === currentId ? { ...n, data: { ...n.data, status: 'running' } } : n));
       await new Promise(r => setTimeout(r, 800)); // Execution step delay mapping
 
-      let finalResult;
       // Fetch latest node state to cleanly read inputs avoiding stale closures
       let latestNode;
       setNodes(nds => {
@@ -121,30 +128,22 @@ export default function FlowRenderer({ config }) {
         return nds;
       });
 
-      if (latestNode.type === 'input') {
-        finalResult = Number(latestNode.data.value) || 0;
-      } else if (latestNode.type === 'default' || latestNode.type === 'custom') {
-        const inboundEdges = edges.filter(e => e.target === currentId);
-        const inboundValues = inboundEdges.map(e => resolvedValues[e.source] || 0);
+      const inboundEdges = edges.filter(e => e.target === currentId);
+      const inputValues = {};
+      inboundEdges.forEach(e => {
+         inputValues[e.source] = resolvedValues[e.source] || 0;
+      });
 
-        const op = latestNode.data.config?.operation || 'add';
-        if (inboundValues.length === 0) {
-            finalResult = 0;
-        } else if (op === 'add') {
-            finalResult = inboundValues.reduce((a, b) => a + b, 0);
-        } else if (op === 'subtract') {
-            finalResult = inboundValues.reduce((a, b) => a - b);
-        } else if (op === 'multiply') {
-            finalResult = inboundValues.reduce((a, b) => a * b, 1);
-        } else if (op === 'divide') {
-            finalResult = inboundValues.reduce((a, b) => a / b);
-        } else {
-            finalResult = inboundValues[0];
-        }
-      } else if (latestNode.type === 'output') {
-        const inboundEdges = edges.filter(e => e.target === currentId);
-        if (inboundEdges.length > 0) finalResult = resolvedValues[inboundEdges[0].source] || 0;
-        else finalResult = 0;
+      let finalResult = 0;
+      const nodeDef = NodeRegistry[latestNode.type];
+
+      if (nodeDef && nodeDef.execute) {
+         try {
+           finalResult = await nodeDef.execute(inputValues, latestNode.data?.config, latestNode.data);
+         } catch (e) {
+           console.error(`Error resolving core node ${currentId}:`, e);
+           finalResult = NaN;
+         }
       }
 
       resolvedValues[currentId] = finalResult;
@@ -161,7 +160,7 @@ export default function FlowRenderer({ config }) {
       }
     }
 
-    // Freeze edge animations
+    // Freeze edge animations natively
     setEdges(eds => eds.map(e => ({ ...e, animated: false, style: { stroke: '#a855f7', strokeWidth: 1 } })));
     setIsExecuting(false);
   };
@@ -177,6 +176,14 @@ export default function FlowRenderer({ config }) {
             </h3>
             <p className="text-[10px] text-gray-500 font-bold uppercase">{isExecuting ? 'Engine Running...' : 'Idle System State'}</p>
          </div>
+         <button 
+           onClick={resetSimulation}
+           disabled={isExecuting || nodes.length === 0}
+           className={`px-4 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center ${isExecuting ? 'bg-gray-800 text-gray-500 cursor-not-allowed border-none' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30'}`}
+           title="Reset Engine State"
+         >
+            <ReplayIcon />
+         </button>
          <button 
            onClick={runSimulation}
            disabled={isExecuting || nodes.length === 0}

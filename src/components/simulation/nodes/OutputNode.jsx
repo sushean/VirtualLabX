@@ -31,8 +31,10 @@ export default function OutputNode({ data }) {
        
        <div className="bg-black/80 p-3 rounded-lg border border-white/20 flex flex-col items-center justify-center min-h-[64px]">
           <div className="text-[10px] text-gray-500 font-bold uppercase mb-1 w-full text-center">Engine Result</div>
-          <div className={`font-mono text-2xl font-black ${isComplete ? 'text-[#00e5ff] drop-shadow-[0_0_10px_rgba(0,229,255,1)]' : 'text-gray-600'}`}>
-             {isComplete && data.result !== undefined ? parseFloat(data.result.toFixed(4)) : '---'}
+          <div className={`font-mono text-xl font-black ${isComplete ? 'text-[#00e5ff] drop-shadow-[0_0_10px_rgba(0,229,255,1)]' : 'text-gray-600'}`}>
+             {isComplete && data.result !== undefined 
+                ? (typeof data.result === 'number' ? parseFloat(data.result.toFixed(4)) : String(data.result).toUpperCase()) 
+                : '---'}
           </div>
        </div>
     </div>

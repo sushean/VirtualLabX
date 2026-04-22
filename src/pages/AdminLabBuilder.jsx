@@ -4,6 +4,12 @@ import { ReactFlowProvider, useNodesState, useEdgesState } from '@xyflow/react';
 import BuilderCanvas from '../components/lab-builder/BuilderCanvas';
 import NodePanel from '../components/lab-builder/NodePanel';
 import PropertiesPanel from '../components/lab-builder/PropertiesPanel';
+import { NodeRegistry, transformLegacyNodes } from '../components/simulation/registry/NodeRegistry';
+
+// Natively bind Builder components from the unified registry mapping identically to FlowRenderer
+const nodeTypes = Object.fromEntries(
+  Object.entries(NodeRegistry).map(([key, def]) => [key, def.component])
+);
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -44,9 +50,10 @@ export default function AdminLabBuilder() {
             });
             if (data.simulationConfig) {
                if (data.simulationConfig.nodes) {
-                 setNodes(data.simulationConfig.nodes);
+                 const transformed = transformLegacyNodes(data.simulationConfig.nodes);
+                 setNodes(transformed);
                  // ensure getId doesn't overlap existing nodes
-                 const maxId = Math.max(...data.simulationConfig.nodes.map(n => parseInt(n.id.replace('dndnode_', '')) || 0));
+                 const maxId = Math.max(...transformed.map(n => parseInt(n.id.replace('dndnode_', '')) || 0));
                  if (maxId && maxId >= id) id = maxId + 1;
                }
                if (data.simulationConfig.edges) setEdges(data.simulationConfig.edges);
@@ -155,6 +162,7 @@ export default function AdminLabBuilder() {
                   onEdgesChange={onEdgesChange}
                   setReactFlowInstance={setReactFlowInstance}
                   onSelectionChange={onSelectionChange}
+                  nodeTypes={nodeTypes}
               />
             </div>
           </ReactFlowProvider>

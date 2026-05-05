@@ -3,10 +3,13 @@ const router = express.Router();
 const UserProgress = require('../models/UserProgress');
 const ExamCollection = require('../models/ExamCollection');
 const User = require('../models/User');
+const Lab = require('../models/Lab');
 const auth = require('../middleware/auth');
 const authorizeRoles = require('../middleware/authorizeRoles');
 const ExamSession = require('../models/ExamSession');
 const { OpenAI } = require('openai');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // @route   GET /api/progress/user/:id
 // @desc    Get detailed progress and exam history for a specific user
@@ -131,71 +134,223 @@ router.get('/performance', auth, async (req, res) => {
       const labCompletions = progress.labs.filter(l => l.completed).length;
       const totalLabsAttempted = progress.labs.length;
 
+      const availableExamsList = await ExamCollection.find({}, 'title');
+      const examTitles = availableExamsList.map(e => e.title);
+
+      const availableLabs = await Lab.find({});
+      const labTitles = availableLabs.map(l => l.title);
+      const labCategoryMap = {};
+      availableLabs.forEach(l => {
+          labCategoryMap[l.slug] = (l.category || '').toLowerCase();
+      });
+
       const userMeta = {
          name: `${user.firstName} ${user.lastName}`,
          overallProgress: {
              avgQuizAccuracy: Math.round(avgQuizAccuracy),
              labCompletions,
-             totalLabsAttempted
+             totalLabsAttempted,
+             totalPlatformLabs: labTitles.length
          }
       };
+
+      // --- DATA SUFFICIENCY GATEKEEPER ---
+      const isAdminOrMod = user.role === 'ADMIN' || user.role === 'MODERATOR';
+      if (labCompletions < 5 && !isAdminOrMod) {
+         return res.json({
+            status: "INSUFFICIENT_DATA",
+            reliability: "BLOCKED",
+            labsRemaining: 5 - labCompletions,
+            message: "Complete at least 5 labs to unlock AI Mentor analysis. More learning evidence is required before reliable predictions can be generated.",
+            userMeta
+         });
+      }
+      // ------------------------------------
 
       if (cache.lastGenerated && (Date.now() - new Date(cache.lastGenerated).getTime() < 86400000)) {
          return res.json({ ...cache, userMeta });
       }
 
-      // Fetch dynamic exams mapping from DB to explicitly pipe to OpenAI instruction set
-      const availableExamsList = await ExamCollection.find({}, 'title');
-      const examTitles = availableExamsList.map(e => e.title);
+      // Fetch Statistical Analytics Engine Data
+      const topicStats = await prisma.topicPerformance.findMany({ where: { userId: req.user.id } });
+      const structuredEvidence = topicStats.map(t => ({
+          topic: t.topic,
+          masteryScore: t.weightedScore,
+          confidence: t.confidenceScore,
+          attempts: t.totalAttempts,
+          trend: JSON.parse(t.trendEvolution || "[]").slice(-5)
+      }));
 
-      // Rule-based fallback generator with dynamic array construction
-      const generateRuleBasedFeedback = () => {
-         const dummyReadiness = examTitles.map(title => ({
-            examName: title,
-            probability: avgQuizAccuracy > 80 && labCompletions > 0 ? 85 : 40
-         }));
+      // --- FEATURE ENGINEERING & STATISTICAL ANALYTICS ---
+      const consistencyScore = qAccs.length > 1 
+         ? 1 - (Math.max(...qAccs) - Math.min(...qAccs)) / 100 
+         : 0.5;
          
-         return {
-            summary: "Data indicates basic system usage, but the AI mentor isn't active or lacks rich data to establish deep insights.",
-            strengths: avgQuizAccuracy > 70 ? ["Good baseline theory understanding"] : ["Initializing theory metrics..."],
-            weaknesses: totalLabsAttempted < 2 ? ["Need to complete more practical labs!"] : ["Keep practicing to build muscle memory."],
-            recommendations: ["Attempt a new lab simulation.", "Complete the quiz sections for your last lab."],
-            examReadiness: dummyReadiness.length > 0 ? dummyReadiness : [{ examName: "Platform Certification", probability: 50 }],
-            suggestedCertifications: ["Data Fundamentals Certification"]
-         };
-      };
+      const advancedLabCompletionRate = labCompletions / (labTitles.length || 1);
+      
+      let overallReliability = "LOW";
+      if (labCompletions > 20 && consistencyScore > 0.7) overallReliability = "HIGH";
+      else if (labCompletions >= 5) overallReliability = "MEDIUM";
 
-      if (!openai || qAccs.length + totalLabsAttempted === 0) {
-         const fallback = generateRuleBasedFeedback();
-         progress.aiFeedbackCache = { ...fallback, lastGenerated: new Date() };
-         await progress.save();
-         return res.json({ ...fallback, userMeta });
+      // --- EXPLAINABILITY SIGNALS (XAI) ---
+      const positiveSignals = [];
+      const negativeSignals = [];
+      const topContributors = [];
+      
+      if (consistencyScore >= 0.8) {
+         positiveSignals.push({ factor: "High Consistency", impact: "+18%", evidence: "Stable learning pattern over recent activity" });
+         topContributors.push({ feature: "Consistency", impact: "+18%" });
+      } else {
+         negativeSignals.push({ factor: "Inconsistent Performance", impact: "-10%", evidence: "Scores show high variance across attempts" });
+         topContributors.push({ feature: "Consistency", impact: "-10%" });
+      }
+      
+      if (advancedLabCompletionRate > 0.5) {
+         positiveSignals.push({ factor: "Strong Practical Exposure", impact: "+15%", evidence: `Completed ${labCompletions} platform labs` });
+         topContributors.push({ feature: "Practical Labs", impact: "+15%" });
+      } else if (advancedLabCompletionRate < 0.2) {
+         negativeSignals.push({ factor: "Low Practical Exposure", impact: "-15%", evidence: `Completed only ${labCompletions} platform labs` });
+         topContributors.push({ feature: "Practical Labs", impact: "-15%" });
       }
 
-      // Explicit System Instruction overriding global score with targeted probability matrix
-      const prompt = `You are an AI academic performance analyzer.
-Analyze the following student data and return JSON format EXACTLY matching the schema below.
-No other text except JSON. Do not output markdown code blocks, just raw JSON.
+      if (avgQuizAccuracy >= 80) {
+         positiveSignals.push({ factor: "High Conceptual Accuracy", impact: "+20%", evidence: `Average quiz accuracy is ${Math.round(avgQuizAccuracy)}%` });
+         topContributors.push({ feature: "Quiz Accuracy", impact: "+20%" });
+      } else {
+         negativeSignals.push({ factor: "Weak Conceptual Retention", impact: "-12%", evidence: `Average quiz accuracy is ${Math.round(avgQuizAccuracy)}%` });
+         topContributors.push({ feature: "Quiz Accuracy", impact: "-12%" });
+      }
 
-Student Data:
-- Average Quiz Accuracy: ${avgQuizAccuracy.toFixed(2)}%
-- Labs Completed: ${labCompletions} (Total Attempted: ${totalLabsAttempted})
-- Raw Quizzes Data: ${JSON.stringify(progress.quizzes.map(q => ({ lab: q.labSlug, acc: q.accuracy })))}
-- Raw LearnCode Data: ${JSON.stringify(progress.learnCode.map(c => ({ lab: c.labSlug, suc: c.successRate })))}
+      const evidenceCoverage = Math.min(100, Math.round(labCompletions * 5 + topicStats.length * 10));
 
-Database Available Exams List:
-${JSON.stringify(examTitles)}
+      const subDimensions = {
+         conceptualUnderstanding: Math.round(avgQuizAccuracy),
+         problemSolving: Math.round(Math.min(100, (advancedLabCompletionRate * 100) + 20)),
+         consistency: Math.round(consistencyScore * 100),
+         retention: Math.round(avgQuizAccuracy * 0.85),
+         speed: 75 
+      };
+
+      const computedReadiness = examTitles.map(title => {
+         const examTitleLower = title.toLowerCase();
+         
+         // 1. Topic Matching Heuristics
+         let targetCategories = [];
+         if (examTitleLower.includes('web') || examTitleLower.includes('react')) targetCategories = ['web', 'react', 'frontend', 'backend'];
+         else if (examTitleLower.includes('python')) targetCategories = ['python'];
+         else if (examTitleLower.includes('data') || examTitleLower.includes('algo')) targetCategories = ['algorithm', 'data structure', 'dsa'];
+         
+         const isMatch = (slug) => {
+             const cat = labCategoryMap[slug] || '';
+             if (targetCategories.length === 0) return true;
+             return targetCategories.some(tc => cat.includes(tc));
+         };
+
+         // 2. Filter User's Progress
+         let relevantQuizzes = progress.quizzes.filter(q => isMatch(q.labSlug));
+         let relevantLabs = progress.labs.filter(l => isMatch(l.labSlug));
+         
+         // Fallback if no specific data exists yet
+         if (relevantQuizzes.length === 0) relevantQuizzes = progress.quizzes;
+         if (relevantLabs.length === 0) relevantLabs = progress.labs;
+
+         // 3. Exam-Specific Math
+         const examQAccs = relevantQuizzes.map(q => q.accuracy);
+         const examAvgQuizAccuracy = examQAccs.length ? (examQAccs.reduce((a,b)=>a+b,0) / examQAccs.length) : (avgQuizAccuracy || 0);
+         
+         const examLabCompletions = relevantLabs.filter(l => l.completed).length;
+         const totalLabsInCategory = availableLabs.filter(l => {
+             const cat = (l.category || '').toLowerCase();
+             if (targetCategories.length === 0) return true;
+             return targetCategories.some(tc => cat.includes(tc));
+         }).length || 1;
+         
+         const examLabCompletionRate = examLabCompletions / totalLabsInCategory;
+         
+         let prob = (examAvgQuizAccuracy * 0.4) + (examLabCompletionRate * 100 * 0.6);
+         let conf = 1 - (1 / (1 + examLabCompletions * 0.3)); // Confidence scales with relevant labs
+         
+         // Apply global consistency penalty
+         prob = prob * (0.8 + (consistencyScore * 0.2));
+         if (conf < 0.6) prob *= 0.8;
+         
+         // Topic-Specific Explainability Signals
+         const examPosSignals = [...positiveSignals];
+         const examNegSignals = [...negativeSignals];
+         
+         if (examAvgQuizAccuracy > 85) examPosSignals.push({ factor: "Topic Mastery", impact: "+12%", evidence: `Scored ${Math.round(examAvgQuizAccuracy)}% on relevant topic quizzes` });
+         else if (examAvgQuizAccuracy < 50 && examAvgQuizAccuracy > 0) examNegSignals.push({ factor: "Topic Weakness", impact: "-15%", evidence: `Scored ${Math.round(examAvgQuizAccuracy)}% on relevant topic quizzes` });
+
+         if (examLabCompletionRate > 0.5) examPosSignals.push({ factor: "Deep Topic Experience", impact: "+10%", evidence: `Completed ${examLabCompletions} related labs` });
+         else if (examLabCompletionRate < 0.2 && examLabCompletions > 0) examNegSignals.push({ factor: "Shallow Topic Experience", impact: "-10%", evidence: `Completed only ${examLabCompletions} related labs` });
+         
+         return {
+            examName: title,
+            prediction: Math.min(100, Math.max(5, Math.round(prob))),
+            confidence: Number(conf.toFixed(2)),
+            reliability: overallReliability,
+            evidenceCoverage,
+            positiveSignals,
+            negativeSignals,
+            topContributors
+         };
+      });
+
+      // Update UserMLFeatures
+      try {
+         await prisma.userMLFeatures.upsert({
+            where: { userId: req.user.id },
+            update: {
+               weightedAccuracy: avgQuizAccuracy,
+               advancedLabCompletionRate,
+               consistencyScore,
+               lastComputedAt: new Date()
+            },
+            create: {
+               userId: req.user.id,
+               weightedAccuracy: avgQuizAccuracy,
+               advancedLabCompletionRate,
+               consistencyScore
+            }
+         });
+      } catch (e) {
+         console.warn("Failed to upsert UserMLFeatures", e);
+      }
+
+      if (!openai) {
+         return res.json({ 
+            summary: "AI Offline. Computed basic readiness stats.", 
+            examReadiness: computedReadiness, 
+            userMeta, 
+            topicStats 
+         });
+      }
+
+      // Explainability Layer Prompt (Neutered LLM)
+      const prompt = `You are the Explainability Layer of an XAI pipeline.
+Your job is ONLY to explain the pre-computed mathematical predictions and generate improvement simulations.
+DO NOT invent or alter the probabilities. DO NOT generate new scores.
+
+PRE-COMPUTED EXAM READINESS & SIGNALS:
+${JSON.stringify(computedReadiness, null, 2)}
 
 Required JSON Output Schema:
 {
-  "summary": "String (2-3 sentences)",
-  "strengths": ["String", "String"],
-  "weaknesses": ["String", "String"],
-  "recommendations": ["String", "String"],
-  "examReadiness": [{"examName": "Title from available list", "probability": Number (0 to 100)}],
-  "suggestedCertifications": ["String"]
-}
-Note: Ensure every single exam from the list gets assigned a probability organically.`;
+  "summary": "String (Enterprise-grade summary of overall readiness)",
+  "examReadiness": [
+    {
+      "examName": "Title exactly as provided",
+      "prediction": Number,
+      "confidence": Number,
+      "reliability": "String",
+      "evidenceCoverage": Number,
+      "positiveSignals": [{"factor": "String", "impact": "String", "evidence": "String"}],
+      "negativeSignals": [{"factor": "String", "impact": "String", "evidence": "String"}],
+      "topContributors": [{"feature": "String", "impact": "String"}],
+      "improvementSuggestions": [{"action": "Actionable roadmap step", "estimatedImpact": "+X%"}]
+    }
+  ]
+}`;
 
       const response = await openai.chat.completions.create({
          model: "gpt-3.5-turbo",
@@ -213,18 +368,37 @@ Note: Ensure every single exam from the list gets assigned a probability organic
       
       const payload = {
          summary: parsedData.summary,
-         strengths: parsedData.strengths || [],
-         weaknesses: parsedData.weaknesses || [],
-         recommendations: parsedData.recommendations || [],
-         examReadiness: parsedData.examReadiness || [],
-         suggestedCertifications: parsedData.suggestedCertifications || [],
+         examReadiness: parsedData.examReadiness || computedReadiness,
+         subDimensions,
          lastGenerated: new Date()
       };
 
       progress.aiFeedbackCache = payload;
       await progress.save();
+      
+      const { v4: uuidv4 } = require('uuid');
+      const predictionId = uuidv4();
+      
+      try {
+          await prisma.predictionTrace.create({
+             data: {
+                userId: req.user.id,
+                predictionId,
+                overallReadiness: parsedData.examReadiness[0]?.prediction || 0,
+                overallConfidence: parsedData.examReadiness[0]?.confidence || 0,
+                reliability: parsedData.examReadiness[0]?.reliability || overallReliability,
+                formulaVersion: "v2.1",
+                positiveSignals: JSON.stringify(positiveSignals),
+                negativeSignals: JSON.stringify(negativeSignals),
+                topContributors: JSON.stringify(topContributors),
+                improvementSuggestions: JSON.stringify(parsedData.examReadiness[0]?.improvementSuggestions || [])
+             }
+          });
+      } catch (e) {
+          console.warn("Failed to audit PredictionTrace:", e);
+      }
 
-      return res.json({ ...payload, userMeta });
+      return res.json({ ...payload, userMeta, topicStats, predictionId });
    } catch (err) {
       console.error(err);
       return res.json({

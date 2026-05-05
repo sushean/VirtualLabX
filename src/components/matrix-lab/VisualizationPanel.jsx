@@ -6,8 +6,8 @@ export default function VisualizationPanel({ simState }) {
 
   if (status === STATUS.IDLE || activeI === -1) {
     return (
-      <div className="bg-[#0b0614] border border-white/5 rounded-3xl p-8 shadow-2xl h-full flex flex-col justify-center items-center text-center">
-        <div className="w-16 h-16 mb-4 rounded-full border border-white/10 flex items-center justify-center text-gray-600 bg-white/5">
+      <div className="bg-[#0b0614] border border-[var(--glass-border)] rounded-3xl p-8 shadow-2xl h-full flex flex-col justify-center items-center text-center">
+        <div className="w-16 h-16 mb-4 rounded-full border border-[var(--glass-border)] flex items-center justify-center text-gray-600 bg-[var(--glass-bg)]">
            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
         </div>
         <p className="text-gray-500 uppercase tracking-widest font-bold text-sm">Engine Idle</p>
@@ -33,23 +33,23 @@ export default function VisualizationPanel({ simState }) {
   const prod = valA * valB;
 
   return (
-    <div className="bg-[#0b0614] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-2xl h-full flex flex-col relative overflow-hidden">
+    <div className="bg-[#0b0614] border border-[var(--glass-border)] rounded-3xl p-6 lg:p-8 shadow-2xl h-full flex flex-col relative overflow-hidden">
        {/* Background structural glow */}
        <div className="absolute top-0 right-0 w-64 h-64 bg-[#00e5ff]/5 rounded-full blur-[80px] pointer-events-none"></div>
 
-       <h3 className="text-gray-400 font-bold uppercase tracking-widest text-xs mb-6 border-b border-white/5 pb-2">Live Execution Trace</h3>
+       <h3 className="text-gray-400 font-bold uppercase tracking-widest text-xs mb-6 border-b border-[var(--glass-border)] pb-2">Live Execution Trace</h3>
        
        {/* Loop Trackers */}
-       <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-white/5 mb-6 shadow-inner">
-          <div className="text-center flex-1 border-r border-white/5">
+       <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-[var(--glass-border)] mb-6 shadow-inner">
+          <div className="text-center flex-1 border-r border-[var(--glass-border)]">
             <span className="text-xs text-gray-500 uppercase font-bold block mb-1">Target Cell</span>
             <span className="text-[#4ade80] font-mono font-bold">C[{activeI}][{activeJ}]</span>
           </div>
-          <div className="text-center flex-1 border-r border-white/5">
+          <div className="text-center flex-1 border-r border-[var(--glass-border)]">
             <span className="text-xs text-gray-500 uppercase font-bold block mb-1">Row (i)</span>
             <span className="text-[#00e5ff] font-mono font-bold tracking-widest">{activeI}</span>
           </div>
-          <div className="text-center flex-1 border-r border-white/5">
+          <div className="text-center flex-1 border-r border-[var(--glass-border)]">
             <span className="text-xs text-gray-500 uppercase font-bold block mb-1">Col (j)</span>
             <span className="text-[#6c2bd9] font-mono font-bold tracking-widest">{activeJ}</span>
           </div>

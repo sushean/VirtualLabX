@@ -21,6 +21,7 @@ import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { SpotifyProvider } from './context/SpotifyContext'
 import { ExamProvider } from './context/ExamContext'
+import { ThemeProvider } from './context/ThemeContext'
 import SpotifyPlayerWidget from './components/SpotifyPlayerWidget'
 
 function App() {
@@ -28,12 +29,13 @@ function App() {
     <AuthProvider>
       <ExamProvider>
         <SpotifyProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <div className="min-h-screen text-white relative font-sans">
-              <Navbar />
-              <SpotifyPlayerWidget />
-              <Routes>
+          <ThemeProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <div className="min-h-screen text-white relative font-sans">
+                <Navbar />
+                <SpotifyPlayerWidget />
+                <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/labs" element={<AllLabsPage />} />
                 <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
@@ -52,9 +54,10 @@ function App() {
                 <Route path="/features" element={<FeaturesPage />} />
                 <Route path="/certifications/lobby" element={<ExamLobbyPage />} />
                 <Route path="/verify/:hash" element={<VerifyCertificatePage />} />
-              </Routes>
-            </div>
-          </BrowserRouter>
+                </Routes>
+              </div>
+            </BrowserRouter>
+          </ThemeProvider>
         </SpotifyProvider>
       </ExamProvider>
     </AuthProvider>

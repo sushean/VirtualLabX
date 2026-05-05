@@ -12,8 +12,8 @@ export default function MatrixInputParams({
   } = simState;
 
   return (
-    <div className="bg-[#0b0614] border border-white/5 shadow-2xl rounded-3xl p-6 lg:p-8 flex flex-col gap-6 z-10">
-      <div className="flex flex-wrap justify-between items-center gap-4 border-b border-white/5 pb-4">
+    <div className="bg-[#0b0614] border border-[var(--glass-border)] shadow-2xl rounded-3xl p-6 lg:p-8 flex flex-col gap-6 z-10">
+      <div className="flex flex-wrap justify-between items-center gap-4 border-b border-[var(--glass-border)] pb-4">
         <h3 className="text-xl font-bold text-white tracking-widest">Dimension Settings</h3>
         <div className="flex flex-wrap gap-2">
            <button 
@@ -33,7 +33,7 @@ export default function MatrixInputParams({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Matrix A Dimensions */}
-        <div className="space-y-4 bg-white/5 p-4 rounded-xl border border-white/5">
+        <div className="space-y-4 bg-[var(--glass-bg)] p-4 rounded-xl border border-[var(--glass-border)]">
           <h4 className="text-sm font-bold text-[#00e5ff] uppercase tracking-widest">Matrix A Limits</h4>
           <div className="flex items-center gap-4">
             <div className="flex-1">
@@ -50,7 +50,7 @@ export default function MatrixInputParams({
         </div>
 
         {/* Matrix B Dimensions */}
-        <div className="space-y-4 bg-white/5 p-4 rounded-xl border border-white/5">
+        <div className="space-y-4 bg-[var(--glass-bg)] p-4 rounded-xl border border-[var(--glass-border)]">
           <h4 className="text-sm font-bold text-[#6c2bd9] uppercase tracking-widest">Matrix B Limits</h4>
           <div className="flex items-center gap-4">
             <div className="flex-1">

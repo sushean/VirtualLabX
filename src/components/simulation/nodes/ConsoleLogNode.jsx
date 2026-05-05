@@ -18,7 +18,7 @@ export default function ConsoleLogNode({ data }) {
   const logMessage = data.config?.prefix || 'LOG:';
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 w-56 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 w-56 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        <Handle 
          type="target" 
          position={Position.Left} 

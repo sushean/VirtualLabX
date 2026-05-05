@@ -104,12 +104,12 @@ export default function MatrixLearnCodeComponent() {
     const isIncorrect = feedback[inputKey] === 'incorrect';
 
     return (
-      <div className="bg-[#110b27] border border-white/10 rounded-2xl p-6 mb-6 shadow-lg">
+      <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl p-6 mb-6 shadow-lg">
         <h4 className="text-[#00e5ff] font-bold text-lg mb-4 flex items-center gap-2">
           <span className="bg-[#00e5ff]/10 text-[#00e5ff] w-8 h-8 rounded-full flex items-center justify-center border border-[#00e5ff]/30">Q{qNum}</span>
           {title}
         </h4>
-        <div className="bg-black/50 p-4 rounded-xl font-mono text-gray-300 border border-white/5 text-sm leading-8 mb-4 whitespace-pre-wrap">
+        <div className="bg-black/50 p-4 rounded-xl font-mono text-gray-300 border border-[var(--glass-border)] text-sm leading-8 mb-4 whitespace-pre-wrap">
            <span>{preCode}</span>
            <span className="relative inline-block mx-1">
              <input 
@@ -144,7 +144,7 @@ export default function MatrixLearnCodeComponent() {
       <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
       
       {/* Mode Toggle */}
-      <div className="flex bg-[#110b27] border border-white/10 p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
+      <div className="flex bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
         <button 
           onClick={() => setMode('learn')}
           className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
@@ -162,8 +162,8 @@ export default function MatrixLearnCodeComponent() {
       {mode === 'learn' && (
         <div className="space-y-8 animate-page-enter">
           {learnContent.map((item, idx) => (
-             <div key={idx} className="bg-[#110b27] border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(108,43,217,0.2)] transition-shadow">
-                <div className="bg-white/5 p-4 border-b border-white/10">
+             <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(108,43,217,0.2)] transition-shadow">
+                <div className="bg-[var(--glass-bg)] p-4 border-b border-[var(--glass-border)]">
                    <h3 className="text-xl font-bold text-white flex items-center gap-3">
                       <span className="w-2 h-6 bg-[#00e5ff] rounded-full"></span>
                       {item.step}
@@ -171,7 +171,7 @@ export default function MatrixLearnCodeComponent() {
                 </div>
                 <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8">
                    {/* Code Section */}
-                   <div className="flex-1 bg-black/60 rounded-xl p-4 border border-white/5 font-mono text-sm overflow-x-auto shadow-inner">
+                   <div className="flex-1 bg-black/60 rounded-xl p-4 border border-[var(--glass-border)] font-mono text-sm overflow-x-auto shadow-inner">
                       <pre className="text-purple-300/90 leading-loose">
                         {item.code.split('\n').map((line, i) => (
                           <div key={i}><span className="text-gray-600 mr-4 select-none">{String(i+1).padStart(2, '0')}</span><span className="text-gray-300">{line}</span></div>
@@ -187,12 +187,12 @@ export default function MatrixLearnCodeComponent() {
                           <ul className="text-gray-300 space-y-3 text-sm leading-relaxed mb-6">
                              {item.explanation.split('\n').map((line, i) => {
                                const parts = line.split('→');
-                               if(parts.length > 1) return <li key={i}><strong className="text-white text-base bg-white/5 px-2 rounded py-1">{parts[0]}</strong> <br/><span className="text-purple-300 mt-2 block">{parts[1]}</span></li>;
+                               if(parts.length > 1) return <li key={i}><strong className="text-white text-base bg-[var(--glass-bg)] px-2 rounded py-1">{parts[0]}</strong> <br/><span className="text-purple-300 mt-2 block">{parts[1]}</span></li>;
                                return <li key={i}>{line}</li>;
                              })}
                           </ul>
                         </div>
-                        <div className="bg-black/40 border border-white/5 p-4 rounded-xl flex items-start flex-col gap-2">
+                        <div className="bg-black/40 border border-[var(--glass-border)] p-4 rounded-xl flex items-start flex-col gap-2">
                           <span className="text-[#00e5ff] font-bold text-xs uppercase tracking-widest mt-0.5">Summary</span>
                           <p className="text-[#00e5ff] text-sm italic">{item.summary}</p>
                         </div>
@@ -206,7 +206,7 @@ export default function MatrixLearnCodeComponent() {
 
       {mode === 'test' && (
         <div className="animate-page-enter">
-          <p className="text-gray-300 text-center mb-8 text-lg bg-white/5 py-4 rounded-xl border border-white/10">
+          <p className="text-gray-300 text-center mb-8 text-lg bg-[var(--glass-bg)] py-4 rounded-xl border border-[var(--glass-border)]">
             Fill in the blanks to complete the algorithm correctly. You can check your answer or reveal it if stuck.
           </p>
           

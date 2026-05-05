@@ -18,7 +18,7 @@ export default function SimulationControls({ simState }) {
   const hasError = status === STATUS.ERROR || errorMsg !== '';
 
   return (
-    <div className="bg-[#0b0614] border border-white/5 rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
+    <div className="bg-[#0b0614] border border-[var(--glass-border)] rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
        
        {/* Speed Slider */}
        <div className="w-full md:w-1/3 flex flex-col gap-2">
@@ -38,7 +38,7 @@ export default function SimulationControls({ simState }) {
        <div className="flex gap-3 w-full md:w-auto">
           <button 
              onClick={resetSimulation}
-             className="flex-1 md:flex-none border border-white/10 text-gray-400 bg-white/5 hover:bg-white/10 hover:text-white px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all flex justify-center items-center gap-2"
+             className="flex-1 md:flex-none border border-[var(--glass-border)] text-gray-400 bg-[var(--glass-bg)] hover:bg-white/10 hover:text-white px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all flex justify-center items-center gap-2"
           >
              <RestartAltIcon fontSize="small"/> {isFinished ? "Retry" : "Reset"}
           </button>

@@ -69,32 +69,32 @@ export default function ProfilePage() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen text-white flex items-center justify-center pt-24 font-sans">
-        <div className="w-12 h-12 border-4 border-[#00e5ff] border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen text-[var(--page-text)] flex items-center justify-center pt-24 font-sans">
+        <div className="w-12 h-12 border-4 border-[var(--accent-cyan)] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen text-white relative font-sans flex items-center justify-center pt-32 pb-12 px-6 overflow-hidden">
+    <div className="min-h-screen text-[var(--page-text)] relative font-sans flex items-center justify-center pt-32 pb-12 px-6 overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#6c2bd9]/20 rounded-full blur-[100px] pointer-events-none -z-10"></div>
-      <div className="absolute bottom-10 left-10 w-125 h-125 bg-[#00e5ff]/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="absolute bottom-10 left-10 w-125 h-125 bg-[var(--accent-cyan)]/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
       
       <div className="w-full max-w-2xl z-10 animate-page-enter">
-        <div className="glass-card p-10 md:p-14 relative overflow-hidden backdrop-blur-2xl bg-[#0a0510]/80 border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.6)]">
+        <div className="glass-card p-10 md:p-14 relative overflow-hidden backdrop-blur-2xl bg-[var(--panel-bg)] border border-[var(--glass-border)] rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.6)]">
           
           <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent"></div>
 
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
-            <div className="w-28 h-28 rounded-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
+            <div className="w-28 h-28 rounded-full bg-linear-to-r from-[#6c2bd9] to-[var(--accent-cyan)] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
               {user.firstName?.charAt(0).toUpperCase()}
             </div>
             <div className="text-center md:text-left">
-              <h1 className="text-3xl font-bold text-white mb-2">{user.firstName} {user.lastName}</h1>
-              <p className="text-[#00e5ff] font-medium">{user.email}</p>
-              <p className="text-gray-500 text-sm mt-1">Member since {new Date(user.createdAt).toLocaleDateString()}</p>
+              <h1 className="text-3xl font-bold text-[var(--page-text)] mb-2">{user.firstName} {user.lastName}</h1>
+              <p className="text-[var(--accent-cyan)] font-medium">{user.email}</p>
+              <p className="text-[var(--muted-text)] text-sm mt-1">Member since {new Date(user.createdAt).toLocaleDateString()}</p>
             </div>
           </div>
 
@@ -105,12 +105,12 @@ export default function ProfilePage() {
           )}
 
           {/* Details & Edit Form */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-8">
+          <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 md:p-8 mb-8">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold tracking-wide uppercase text-gray-300">Profile Details</h2>
+              <h2 className="text-lg font-bold tracking-wide uppercase text-[var(--muted-text)]">Profile Details</h2>
               <button 
                 onClick={() => setIsEditing(!isEditing)}
-                className="text-sm font-semibold text-[#00e5ff] hover:text-white transition-colors"
+                className="text-sm font-semibold text-[var(--accent-cyan)] hover:text-[var(--page-text)] transition-colors"
                >
                  {isEditing ? 'Cancel' : 'Edit Profile'}
               </button>
@@ -120,28 +120,28 @@ export default function ProfilePage() {
               <form onSubmit={handleSave} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">First Name</label>
+                    <label className="text-xs font-bold text-[var(--muted-text)] uppercase tracking-widest ml-1">First Name</label>
                     <input 
                       type="text" value={firstName} onChange={e => setFirstName(e.target.value)} required
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-all"
+                      className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl px-5 py-3 text-[var(--page-text)] focus:outline-none focus:border-[var(--accent-cyan)]/50 transition-all"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Last Name</label>
+                    <label className="text-xs font-bold text-[var(--muted-text)] uppercase tracking-widest ml-1">Last Name</label>
                     <input 
                       type="text" value={lastName} onChange={e => setLastName(e.target.value)} required
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-all"
+                      className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl px-5 py-3 text-[var(--page-text)] focus:outline-none focus:border-[var(--accent-cyan)]/50 transition-all"
                     />
                   </div>
                 </div>
                 {/* Email is static */}
                 <div className="space-y-2 opacity-50 cursor-not-allowed">
-                   <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Email (Unchangeable)</label>
-                   <input type="email" value={user.email} disabled className="w-full bg-transparent border border-white/5 rounded-xl px-5 py-3 text-white" />
+                   <label className="text-xs font-bold text-[var(--muted-text)] uppercase tracking-widest ml-1">Email (Unchangeable)</label>
+                   <input type="email" value={user.email} disabled className="w-full bg-transparent border border-[var(--glass-border)] rounded-xl px-5 py-3 text-[var(--page-text)]" />
                 </div>
                 <button 
                   type="submit" disabled={isSaving}
-                  className="w-full bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] py-3 rounded-xl font-bold mt-4 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all disabled:opacity-50"
+                  className="w-full bg-linear-to-r from-[#6c2bd9] to-[var(--accent-cyan)] py-3 rounded-xl font-bold mt-4 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all disabled:opacity-50"
                  >
                    {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -149,39 +149,39 @@ export default function ProfilePage() {
             ) : (
               <div className="space-y-6">
                 <div>
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Full Name</p>
-                  <p className="text-white text-lg">{user.firstName} {user.lastName}</p>
+                  <p className="text-xs font-bold text-[var(--muted-text)] uppercase tracking-widest mb-1">Full Name</p>
+                  <p className="text-[var(--page-text)] text-lg">{user.firstName} {user.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Email Address</p>
-                  <p className="text-white text-lg">{user.email}</p>
+                  <p className="text-xs font-bold text-[var(--muted-text)] uppercase tracking-widest mb-1">Email Address</p>
+                  <p className="text-[var(--page-text)] text-lg">{user.email}</p>
                 </div>
               </div>
             )}
           </div>
 
           {/* Certificates Section */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-bold tracking-wide uppercase text-gray-300 mb-6 border-b border-white/10 pb-2">My Certificates</h2>
+          <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 md:p-8 mb-8">
+            <h2 className="text-lg font-bold tracking-wide uppercase text-[var(--muted-text)] mb-6 border-b border-[var(--glass-border)] pb-2">My Certificates</h2>
             <div className="space-y-4">
               {certificates.length > 0 ? certificates.map(cert => (
-                 <div key={cert._id} className="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col md:flex-row justify-between md:items-center group hover:bg-white/5 transition">
+                 <div key={cert._id} className="bg-[var(--panel-bg)] border border-[var(--glass-border)] rounded-xl p-4 flex flex-col md:flex-row justify-between md:items-center group hover:bg-[var(--glass-bg)] transition">
                     <div className="flex-1 min-w-0 pr-4">
-                      <h3 className="text-white font-bold truncate">{cert.examName}</h3>
-                      <p className="text-[10px] text-[#00e5ff] font-mono mt-1 break-all">ID: {cert.certificateId}</p>
+                      <h3 className="text-[var(--page-text)] font-bold truncate">{cert.examName}</h3>
+                      <p className="text-[10px] text-[var(--accent-cyan)] font-mono mt-1 break-all">ID: {cert.certificateId}</p>
                     </div>
                     <div className="md:text-right mt-4 md:mt-0 flex flex-col md:items-end shrink-0">
-                      <p className="text-green-400 font-bold mb-2">{cert.score} / {cert.maxScore} <span className="text-xs text-gray-500 uppercase ml-1">Score</span></p>
+                      <p className="text-green-400 font-bold mb-2">{cert.score} / {cert.maxScore} <span className="text-xs text-[var(--muted-text)] uppercase ml-1">Score</span></p>
                       <div className="flex flex-wrap gap-2 md:justify-end">
                         <button 
                           onClick={() => window.open(`http://localhost:5000/api/certificate/view/${cert.certificateId}`, '_blank')}
-                          className="bg-[#00e5ff]/10 hover:bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
+                          className="bg-[var(--accent-cyan)]/10 hover:bg-[var(--accent-cyan)]/20 text-[var(--accent-cyan)] border border-[var(--accent-cyan)]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
                         >
                           View
                         </button>
                         <button 
                           onClick={() => window.open(`http://localhost:5000/api/certificate/download/${cert.certificateId}`, '_blank')}
-                          className="bg-[#00e5ff]/10 hover:bg-[#00e5ff]/20 text-[#00e5ff] border border-[#00e5ff]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
+                          className="bg-[var(--accent-cyan)]/10 hover:bg-[var(--accent-cyan)]/20 text-[var(--accent-cyan)] border border-[var(--accent-cyan)]/30 text-xs px-3 py-1.5 rounded font-bold transition-all"
                         >
                           PDF
                         </button>
@@ -192,11 +192,11 @@ export default function ProfilePage() {
                           Verify
                         </button>
                       </div>
-                      <p className="text-gray-500 text-[10px] uppercase mt-2">Issued {new Date(cert.date).toLocaleDateString()}</p>
+                      <p className="text-[var(--muted-text)] text-[10px] uppercase mt-2">Issued {new Date(cert.date).toLocaleDateString()}</p>
                     </div>
                  </div>
               )) : (
-                 <p className="text-gray-500 text-sm italic text-center py-6">You have not securely earned any certificates yet. Take an exam to build your profile.</p>
+                 <p className="text-[var(--muted-text)] text-sm italic text-center py-6">You have not securely earned any certificates yet. Take an exam to build your profile.</p>
               )}
             </div>
           </div>

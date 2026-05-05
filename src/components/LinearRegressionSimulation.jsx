@@ -211,12 +211,12 @@ export default function LinearRegressionSimulation() {
   const CustomScatterTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-[#110b27] border border-white/10 p-4 rounded-xl shadow-2xl glass-card">
+        <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-4 rounded-xl shadow-2xl glass-card">
           <p className="text-gray-300 font-mono mb-2"><span className="text-[#00e5ff] font-bold">X:</span> {payload[0].payload.x.toFixed(2)}</p>
           {payload[0].payload.pointY !== null && (
              <p className="text-gray-300 font-mono"><span className="text-purple-400 font-bold">Y:</span> {payload[0].payload.pointY}</p>
           )}
-          <p className="text-gray-300 font-mono mt-2 pt-2 border-t border-white/10">
+          <p className="text-gray-300 font-mono mt-2 pt-2 border-t border-[var(--glass-border)]">
              <span className="text-purple-500 font-bold">prediction:</span> {payload[0].payload.lineY.toFixed(2)}
           </p>
         </div>
@@ -243,11 +243,11 @@ export default function LinearRegressionSimulation() {
     <div className="flex flex-col gap-6 animate-page-enter max-w-[1400px] mx-auto w-full px-2">
       
       {/* 1. Engineering Controls Top Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#0b0612] p-6 md:p-8 rounded-3xl border border-white/5 shadow-2xl relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#0b0612] p-6 md:p-8 rounded-3xl border border-[var(--glass-border)] shadow-2xl relative overflow-hidden">
         
         {/* Dataset Controls (Col 8) */}
         <div className="lg:col-span-7 flex flex-col gap-4 z-10">
-          <h3 className="text-xl font-bold text-[#00e5ff] flex items-center justify-between border-b border-white/5 pb-2">
+          <h3 className="text-xl font-bold text-[#00e5ff] flex items-center justify-between border-b border-[var(--glass-border)] pb-2">
              <span>Data Input Vector</span>
              <button 
                onClick={randomizeData}
@@ -263,7 +263,7 @@ export default function LinearRegressionSimulation() {
                 type="text" 
                 value={inputX} 
                 onChange={(e) => setInputX(e.target.value)}
-                className="flex-1 w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white font-mono focus:outline-none focus:border-[#00e5ff]/50 transition-colors text-sm tracking-wide"
+                className="flex-1 w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-lg px-4 py-2 text-white font-mono focus:outline-none focus:border-[#00e5ff]/50 transition-colors text-sm tracking-wide"
               />
             </div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-3 w-full">
@@ -272,15 +272,15 @@ export default function LinearRegressionSimulation() {
                 type="text" 
                 value={inputY} 
                 onChange={(e) => setInputY(e.target.value)}
-                className="flex-1 w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white font-mono focus:outline-none focus:border-purple-500/50 transition-colors text-sm tracking-wide"
+                className="flex-1 w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-lg px-4 py-2 text-white font-mono focus:outline-none focus:border-purple-500/50 transition-colors text-sm tracking-wide"
               />
             </div>
           </div>
         </div>
 
         {/* Hyperparameter Controls (Col 5) */}
-        <div className="lg:col-span-5 flex flex-col gap-4 z-10 border-l border-white/5 lg:pl-6 pt-6 lg:pt-0 border-t lg:border-t-0">
-          <h3 className="text-xl font-bold text-purple-400 border-b border-white/5 pb-2">Hyperparameters Optimizer</h3>
+        <div className="lg:col-span-5 flex flex-col gap-4 z-10 border-l border-[var(--glass-border)] lg:pl-6 pt-6 lg:pt-0 border-t lg:border-t-0">
+          <h3 className="text-xl font-bold text-purple-400 border-b border-[var(--glass-border)] pb-2">Hyperparameters Optimizer</h3>
           
           <div className="flex flex-col gap-2 mt-2">
             <div className="flex justify-between items-center text-gray-400 text-sm font-bold uppercase tracking-widest">
@@ -336,10 +336,10 @@ export default function LinearRegressionSimulation() {
       <div className="flex flex-col gap-8 w-full items-stretch mt-4">
         
         {/* Primary Scatter Plane (Line Graph) */}
-        <div className={`bg-[#0b0614] border rounded-2xl p-6 shadow-2xl flex flex-col relative transition-colors duration-[1s] w-full ${isExploded ? 'border-red-500 shadow-[0_0_50px_rgba(239,68,68,0.2)]' : 'border-white/10'}`}>
-           <h4 className="flex justify-between items-center w-full mb-6 z-10 text-sm font-bold tracking-widest uppercase border-b border-white/5 pb-3">
+        <div className={`bg-[#0b0614] border rounded-2xl p-6 shadow-2xl flex flex-col relative transition-colors duration-[1s] w-full ${isExploded ? 'border-red-500 shadow-[0_0_50px_rgba(239,68,68,0.2)]' : 'border-[var(--glass-border)]'}`}>
+           <h4 className="flex justify-between items-center w-full mb-6 z-10 text-sm font-bold tracking-widest uppercase border-b border-[var(--glass-border)] pb-3">
              <span className="text-gray-400">Target (Y)</span>
-             <span className="text-white font-mono bg-black/40 px-3 py-1 rounded shadow-inner border border-white/5">
+             <span className="text-white font-mono bg-black/40 px-3 py-1 rounded shadow-inner border border-[var(--glass-border)]">
                 y' = {Number.isNaN(trueA) ? 'NaN' : trueA.toFixed(3)}x {trueB >= 0 ? '+' : '-'} {Number.isNaN(trueB) ? 'NaN' : Math.abs(trueB).toFixed(3)}
              </span>
            </h4>
@@ -363,8 +363,8 @@ export default function LinearRegressionSimulation() {
         </div>
 
         {/* Live Loss Monitoring Plane */}
-        <div className={`bg-[#0b0614] border rounded-2xl p-6 shadow-2xl flex flex-col relative transition-colors duration-[1s] w-full ${isExploded ? 'border-red-500 shadow-[0_0_50px_rgba(239,68,68,0.2)]' : 'border-white/10'}`}>
-           <h4 className="flex justify-between items-center w-full mb-6 z-10 text-sm font-bold tracking-widest uppercase border-b border-white/5 pb-3">
+        <div className={`bg-[#0b0614] border rounded-2xl p-6 shadow-2xl flex flex-col relative transition-colors duration-[1s] w-full ${isExploded ? 'border-red-500 shadow-[0_0_50px_rgba(239,68,68,0.2)]' : 'border-[var(--glass-border)]'}`}>
+           <h4 className="flex justify-between items-center w-full mb-6 z-10 text-sm font-bold tracking-widest uppercase border-b border-[var(--glass-border)] pb-3">
              <span className="text-gray-400">Live Loss Tracking</span>
              <div className="flex gap-4">
                 <span className="text-gray-500">Epoch: <span className="text-white ml-1">{epoch}</span></span>

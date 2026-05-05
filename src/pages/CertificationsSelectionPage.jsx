@@ -72,20 +72,20 @@ export default function CertificationsSelectionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0510] pt-32 pb-24 px-6 overflow-hidden relative">
+    <div className="min-h-screen bg-[var(--panel-bg)] pt-32 pb-24 px-6 overflow-hidden relative">
       {/* Background Ambience */}
       <div className="absolute top-0 left-0 w-full h-125 bg-linear-to-b from-purple-900/10 to-transparent pointer-events-none" />
-      <div className="absolute -top-40 -right-40 w-[600px] h-150 bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" />
-      <div className="absolute top-40 -left-60 w-[700px] h-[700px] bg-[#00e5ff] rounded-full blur-[250px] opacity-[0.1] pointer-events-none" />
+      <div className="absolute -top-40 -right-40 bg-[#6c2bd9] rounded-full blur-[200px] opacity-[0.15] pointer-events-none" style={{ width: '600px', height: '600px' }} />
+      <div className="absolute top-40 -left-60 bg-[#00e5ff] rounded-full blur-[250px] opacity-[0.1] pointer-events-none" style={{ width: '700px', height: '700px' }} />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         <div ref={headerRef} className="text-center mb-24">
           <h1 className="text-5xl md:text-7xl font-black mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-[#00e5ff] to-blue-500 drop-shadow-[0_0_25px_rgba(108,43,217,0.4)] tracking-tight">
-            Certification Matrix
+            Certification Exams
           </h1>
           <p className="text-gray-300 text-xl font-medium max-w-3xl mx-auto leading-relaxed">
-            Provision and mount an enterprise-grade evaluation module. We deploy real-time ML monitoring and DOM sandboxing to mathematically verify academic integrity.
+            Choose an exam, review the requirements, and start when you are ready.
           </p>
         </div>
 
@@ -100,10 +100,10 @@ export default function CertificationsSelectionPage() {
                 <div className="absolute top-0 right-0 w-40 h-40 bg-linear-to-br from-[#6c2bd9] to-[#00e5ff] rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition duration-500 pointer-events-none" />
                 
                 <div className="flex justify-between items-start mb-8 relative z-10">
-                  <div className="bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] p-[1px] rounded-full">
+                  <div className="bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] rounded-full" style={{ padding: '1px' }}>
                     <div className="bg-black px-4 py-1.5 rounded-full">
                       <span className="text-xs font-black uppercase tracking-widest text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-blue-400">
-                        Live Status
+                        Available
                       </span>
                     </div>
                   </div>
@@ -119,17 +119,17 @@ export default function CertificationsSelectionPage() {
                 </p>
 
                 <div className="space-y-3 mb-10 relative z-10">
-                  <div className="flex items-center text-sm font-medium text-gray-300 bg-white/5 rounded-xl p-3 border border-white/5">
+                  <div className="flex items-center text-sm font-medium text-gray-300 bg-[var(--glass-bg)] rounded-xl p-3 border border-[var(--glass-border)]">
                     <FiClock className="mr-3 text-[#00e5ff]" />
-                    Flexible Pool
+                    Open Enrollment
                   </div>
-                  <div className="flex items-center text-sm font-medium text-gray-300 bg-white/5 rounded-xl p-3 border border-white/5">
+                  <div className="flex items-center text-sm font-medium text-gray-300 bg-[var(--glass-bg)] rounded-xl p-3 border border-[var(--glass-border)]">
                     <FiFileText className="mr-3 text-purple-400" />
                     MCQ / MULTI / NUMERICAL
                   </div>
                   <div className="flex items-center text-sm font-bold text-green-400 bg-green-900/10 rounded-xl p-3 border border-green-500/20">
                     <FiCamera className="mr-3 text-green-400" />
-                    ML Face Array Required
+                    Webcam and Microphone Required
                   </div>
                 </div>
 
@@ -144,19 +144,19 @@ export default function CertificationsSelectionPage() {
                   }}
                   className="w-full py-4 bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] hover:from-[#5a20b8] hover:to-[#00cce5] rounded-xl font-black uppercase tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.4)] transition-all duration-300 transform active:scale-95 relative z-10"
                 >
-                  Enter Secured Lobby
+                  Start Exam
                 </button>
               </div>
              ) : (
                 <div 
                   key={item._id}
                   ref={el => cardsRef.current[idx] = el}
-                  className="group relative bg-[#0a0510] border border-white/5 rounded-3xl p-8 opacity-60 hover:opacity-100 hover:border-gray-700 transition-all duration-500 flex flex-col"
+                  className="group relative bg-[var(--panel-bg)] border border-[var(--glass-border)] rounded-3xl p-8 opacity-60 hover:opacity-100 hover:border-gray-700 transition-all duration-500 flex flex-col"
                 >
                   <div className="flex justify-between items-start mb-8">
                     <div className="bg-gray-900 border border-gray-800 px-4 py-1.5 rounded-full">
                       <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
-                        Encrypted • UPCOMING
+                        Coming Soon
                       </span>
                     </div>
                     <FiLock className="text-2xl text-gray-600" />
@@ -166,19 +166,19 @@ export default function CertificationsSelectionPage() {
                   <p className="text-gray-500 text-sm leading-relaxed mb-6 grow">{item.description}</p>
 
                   <button disabled className="w-full py-4 bg-[#0d071a] border border-gray-800 text-gray-600 rounded-xl font-bold uppercase tracking-widest cursor-not-allowed">
-                    Sub-routine Locked
+                    Locked
                   </button>
                 </div>
              )
           ))}
           {loading && (
-             <div className="col-span-3 text-center text-gray-500 py-20 animate-pulse font-bold tracking-widest uppercase">Loading evaluation matrices...</div>
+             <div className="col-span-3 text-center text-gray-500 py-20 animate-pulse font-bold tracking-widest uppercase">Loading exams...</div>
           )}
           {!loading && collections.length === 0 && (
-             <div className="col-span-3 text-center py-20 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm">
+             <div className="col-span-3 text-center py-20 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-3xl backdrop-blur-sm">
                 <FiLock className="text-4xl text-gray-400 mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-bold text-gray-300 mb-2">Systems Unprovisioned</h3>
-                <p className="text-gray-500 max-w-lg mx-auto text-sm">Administrators have not yet integrated active examination containers into this deployment matrix. Await further network instructions.</p>
+                <h3 className="text-xl font-bold text-gray-300 mb-2">No Exams Available</h3>
+                <p className="text-gray-500 max-w-lg mx-auto text-sm">There are no active certification exams available right now. Please check back later.</p>
              </div>
           )}
         </div>

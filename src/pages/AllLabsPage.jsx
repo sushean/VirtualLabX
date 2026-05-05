@@ -65,7 +65,7 @@ export default function AllLabsPage() {
             const isUpcoming = lab.status === 'UPCOMING';
             
             return (
-            <div key={lab._id || lab.slug} className={`glass-card flex flex-col p-0 overflow-hidden text-left border ${isUpcoming ? 'border-[#00e5ff] shadow-[0_0_20px_rgba(0,229,255,0.2)]' : 'border-white/5'} ${isLocked ? 'opacity-60 cursor-not-allowed grayscale-[50%]' : 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer'} transition-all group bg-[#0a0510]/60 relative`}>
+            <div key={lab._id || lab.slug} className={`glass-card flex flex-col p-0 overflow-hidden text-left border ${isUpcoming ? 'border-[#00e5ff] shadow-[0_0_20px_rgba(0,229,255,0.2)]' : 'border-[var(--glass-border)]'} ${isLocked ? 'opacity-60 cursor-not-allowed grayscale-[50%]' : 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer'} transition-all group bg-[var(--panel-bg)]/60 relative`}>
               
               <div className="p-8 pb-2">
                  <div className="flex flex-wrap gap-2 mb-4">
@@ -84,7 +84,7 @@ export default function AllLabsPage() {
                       if (!isLocked) navigate(`/labs/${lab.slug}`);
                    }}
                    disabled={isLocked}
-                   className={`text-sm px-6 font-bold shadow-lg transition-transform ${isLocked ? 'bg-black/80 text-gray-500 border border-white/10 py-2 rounded pointer-events-none' : 'btn-primary hover:scale-105'}`}
+                   className={`text-sm px-6 font-bold shadow-lg transition-transform ${isLocked ? 'bg-black/80 text-gray-500 border border-[var(--glass-border)] py-2 rounded pointer-events-none' : 'btn-primary hover:scale-105'}`}
                  >
                    {isLocked ? 'Unavailable' : isUpcoming ? 'Preview Prototype' : 'Launch Lab'}
                  </button>

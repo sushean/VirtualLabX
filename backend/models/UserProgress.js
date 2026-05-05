@@ -39,16 +39,7 @@ const UserProgressSchema = new mongoose.Schema({
 
   // Cached AI Evaluation to avoid burning tokens
   aiFeedbackCache: {
-    summary: { type: String },
-    strengths: [{ type: String }],
-    weaknesses: [{ type: String }],
-    recommendations: [{ type: String }],
-    examReadiness: [{ 
-       examName: { type: String }, 
-       probability: { type: Number } 
-    }],
-    suggestedCertifications: [{ type: String }],
-    lastGenerated: { type: Date }
+    type: mongoose.Schema.Types.Mixed
   }
 
 }, { timestamps: true });

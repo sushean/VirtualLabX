@@ -126,8 +126,8 @@ export default function QuizComponent() {
   if (quizState === 'intro') {
     return (
       <div className="animate-page-enter max-w-3xl mx-auto flex flex-col items-center justify-center text-center mt-8">
-        <div className="bg-[#110b27] border border-white/10 p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden w-full">
-           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+        <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden w-full">
+           <div className="absolute top-0 right-0 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none -z-10" style={{ width: '400px', height: '400px' }}></div>
            
            <div className="w-20 h-20 bg-linear-to-br from-purple-500 to-[#00e5ff] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/30">
              <QuizIcon className="text-white" style={{ fontSize: 40 }} />
@@ -137,15 +137,15 @@ export default function QuizComponent() {
            <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">Validate your understanding of Machine Learning math, Least Squares, and linear dependencies before continuing.</p>
            
            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10 w-full">
-             <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center">
+             <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-4 flex flex-col items-center">
                <span className="text-2xl font-bold text-[#00e5ff] mb-1">10</span>
                <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">Questions</span>
              </div>
-             <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center">
+             <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-4 flex flex-col items-center">
                <span className="text-2xl font-bold text-purple-400 mb-1">5:00</span>
                <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">Minutes</span>
              </div>
-             <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center col-span-2 md:col-span-1">
+             <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-4 flex flex-col items-center col-span-2 md:col-span-1">
                <span className="text-lg font-bold text-green-400 mb-1 leading-tight mt-1">Foundational ML</span>
                <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">Pre-Requisite</span>
              </div>
@@ -155,7 +155,7 @@ export default function QuizComponent() {
              onClick={startQuiz}
              className="w-full md:w-auto px-12 py-4 bg-linear-to-r from-purple-600 to-[#00e5ff] text-white font-bold text-lg rounded-full shadow-[0_0_30px_rgba(0,229,255,0.3)] hover:shadow-[0_0_40px_rgba(0,229,255,0.5)] hover:-translate-y-1 transition-all duration-300"
            >
-             Start the Quiz
+             Start Assessment
            </button>
         </div>
       </div>
@@ -166,14 +166,14 @@ export default function QuizComponent() {
     return (
       <div className="animate-page-enter max-w-4xl mx-auto flex flex-col pt-4 relative">
         {/* Sticky Timer Header */}
-        <div className="sticky top-20 z-50 bg-[#140d20]/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 mb-8 flex justify-between items-center shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <div className="sticky top-20 z-50 bg-[#140d20]/90 backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-4 mb-8 flex justify-between items-center shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
            <div className="flex items-center gap-4">
-             <div className="bg-white/5 p-2 rounded-lg border border-white/10">
+             <div className="bg-[var(--glass-bg)] p-2 rounded-lg border border-[var(--glass-border)]">
                <QuizIcon className="text-purple-400"/>
              </div>
              <div>
-               <h3 className="font-bold text-white leading-tight">Test Your Knowledge</h3>
-               <p className="text-xs text-gray-400">Answer all questions to proceed.</p>
+               <h3 className="font-bold text-white leading-tight">Assessment in Progress</h3>
+               <p className="text-xs text-gray-400">Answer all questions before submitting.</p>
              </div>
            </div>
            
@@ -186,7 +186,7 @@ export default function QuizComponent() {
         {/* Questions Loop */}
         <div className="flex flex-col gap-8 pb-10">
           {questionsData.map((q, qIndex) => (
-            <div key={qIndex} className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+            <div key={qIndex} className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
                <h4 className="text-xl font-bold text-white mb-6 pr-8">
                  <span className="text-purple-400 mr-2">Q{qIndex + 1}.</span> {q.q}
                </h4>
@@ -197,7 +197,7 @@ export default function QuizComponent() {
                    const isAnswered = answers[qIndex] !== undefined;
                    const isCorrectOpt = optIndex === q.correct;
                    
-                   let bgClass = "bg-black/40 border-white/5 hover:border-white/20 hover:bg-white/5 text-gray-400";
+                   let bgClass = "bg-black/40 border-[var(--glass-border)] hover:border-white/20 hover:bg-[var(--glass-bg)] text-gray-400";
                    let ringClass = "border-gray-500 bg-transparent";
                    let innerNode = null;
                    
@@ -257,9 +257,9 @@ export default function QuizComponent() {
            gravity={0.15}
         />
         
-        <div className="bg-[#110b27] border border-white/10 p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full flex flex-col items-center">
-           <h2 className="text-3xl font-bold text-white mb-2">Quiz Completed!</h2>
-           <p className="text-gray-400 mb-10">Here is your final performance metric.</p>
+        <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full flex flex-col items-center">
+           <h2 className="text-3xl font-bold text-white mb-2">Assessment Completed</h2>
+           <p className="text-gray-400 mb-10">Here is your score summary.</p>
            
            <div className="relative w-48 h-48 mb-10 flex items-center justify-center">
               <svg className="absolute inset-0 w-full h-full -rotate-90">
@@ -283,15 +283,15 @@ export default function QuizComponent() {
            <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
               <button 
                 onClick={startQuiz}
-                className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-bold hover:bg-white/10 transition-all"
+                className="px-6 py-3 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl text-white font-bold hover:bg-white/10 transition-all"
               >
-                Retake Quiz
+                Retake Assessment
               </button>
               <button 
                 onClick={() => setQuizState('review')}
                 className="px-8 py-3 bg-linear-to-r from-purple-600 to-[#00e5ff] text-white font-bold rounded-xl shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] transition-all flex items-center justify-center gap-2"
               >
-                <AnalyticsIcon /> Analyze Performance
+                <AnalyticsIcon /> Review Results
               </button>
            </div>
         </div>
@@ -303,13 +303,13 @@ export default function QuizComponent() {
     return (
       <div className="animate-page-enter max-w-4xl mx-auto flex flex-col pt-4 relative pb-20">
         
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-[var(--glass-border)]">
            <div>
-             <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Performance Analysis</h2>
+             <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Results Review</h2>
              <p className="text-gray-400 mt-1">Review your selections and learn from the correct logical explanations.</p>
            </div>
            
-           <div className="bg-[#110b27] border border-white/10 rounded-full w-20 h-20 flex items-center justify-center flex-col shadow-inner">
+           <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-full w-20 h-20 flex items-center justify-center flex-col shadow-inner">
              <span className="text-2xl font-black text-white leading-none">{score}</span>
              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Score</span>
            </div>
@@ -322,7 +322,7 @@ export default function QuizComponent() {
             const isUnanswered = userAns === undefined;
 
             return (
-              <div key={qIndex} className={`bg-white/5 border rounded-2xl p-6 shadow-xl relative overflow-hidden transition-all ${isCorrect ? 'border-green-500/30' : 'border-red-500/30'}`}>
+              <div key={qIndex} className={`bg-[var(--glass-bg)] border rounded-2xl p-6 shadow-xl relative overflow-hidden transition-all ${isCorrect ? 'border-green-500/30' : 'border-red-500/30'}`}>
                  
                  <div className="absolute top-6 right-6 flex items-center">
                     {isCorrect ? (
@@ -341,7 +341,7 @@ export default function QuizComponent() {
                      const isThisCorrect = optIndex === q.correct;
                      const isThisSelected = userAns === optIndex;
                      
-                     let bgClass = "bg-black/40 border-white/5";
+                     let bgClass = "bg-black/40 border-[var(--glass-border)]";
                      let textClass = "text-gray-500";
                      let icon = null;
 
@@ -367,7 +367,7 @@ export default function QuizComponent() {
                  </div>
 
                  {/* Explanation Box */}
-                 <div className="bg-[#110b27] border border-white/5 p-5 rounded-xl border-l-4 border-l-purple-500 shadow-inner">
+                 <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-5 rounded-xl border-l-4 border-l-purple-500 shadow-inner">
                    <p className="text-xs text-purple-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
                      <AnalyticsIcon fontSize="small"/> Concept Explanation
                    </p>

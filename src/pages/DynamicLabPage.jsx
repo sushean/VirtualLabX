@@ -26,28 +26,28 @@ const GenericFeedbackForm = () => {
     return (
       <div className="animate-page-enter max-w-2xl mx-auto bg-green-500/10 border border-green-500/50 p-10 rounded-2xl text-center shadow-[0_0_30px_rgba(34,197,94,0.2)]">
         <h3 className="text-3xl font-bold text-green-400 mb-4">Feedback Received!</h3>
-        <p className="text-gray-300 text-lg">Thank you for helping us improve this Virtual Lab. Your response has been securely logged.</p>
+        <p className="text-[var(--muted-text)] text-lg">Thank you for helping us improve this Virtual Lab. Your response has been securely logged.</p>
       </div>
     );
   }
 
   return (
     <div className="animate-page-enter max-w-3xl mx-auto">
-      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Experiment Feedback</h2>
-      <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-2xl relative">
-         <p className="text-gray-300 text-lg mb-8 text-center font-bold">How would you rate your experience with this simulation module?</p>
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Experiment Feedback</h2>
+      <div className="bg-[var(--panel-bg-strong)] backdrop-blur-md border border-[var(--glass-border)] rounded-3xl p-8 shadow-2xl relative">
+         <p className="text-[var(--muted-text)] text-lg mb-8 text-center font-bold">How would you rate your experience with this simulation module?</p>
          <div className="flex gap-2 mb-10 justify-center">
             {[1, 2, 3, 4, 5].map((star) => (
                <button 
                  key={star} onClick={() => setRating(star)} onMouseEnter={() => setHover(star)} onMouseLeave={() => setHover(rating)}
-                 className={`text-6xl transition-all ${star <= (hover || rating) ? 'text-yellow-400 scale-110 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600 hover:text-gray-500'}`}
+                 className={`text-6xl transition-all ${star <= (hover || rating) ? 'text-yellow-400 scale-110 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-[var(--muted-text)] hover:text-[var(--muted-text)]'}`}
                >★</button>
             ))}
          </div>
          <div className="flex flex-col gap-4">
-            <textarea value={feedbackText} onChange={(e) => setFeedbackText(e.target.value)} className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-[#00e5ff]/50 h-32 resize-none" placeholder="Let us know what you think..." />
+            <textarea value={feedbackText} onChange={(e) => setFeedbackText(e.target.value)} className="w-full bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-xl p-4 text-[var(--page-text)] focus:outline-none focus:border-[var(--accent-cyan)]/50 h-32 resize-none" placeholder="Let us know what you think..." />
          </div>
-         <button disabled={rating === 0} onClick={() => setSubmitted(true)} className={`w-full mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white hover:-translate-y-1'}`}>Submit Feedback</button>
+         <button disabled={rating === 0} onClick={() => setSubmitted(true)} className={`w-full mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-[var(--glass-bg)] text-[var(--muted-text)] cursor-not-allowed' : 'bg-linear-to-r from-purple-600 to-[var(--accent-cyan)] text-[var(--page-text)] hover:-translate-y-1'}`}>Submit Feedback</button>
       </div>
     </div>
   );
@@ -101,7 +101,7 @@ export default function DynamicLabPage() {
      }
   }, [activeTab, lab, slug, viewedTabs]);
 
-  if (loading) return <div className="pt-32 text-center text-white h-screen">Compiling Lab Interface...</div>;
+  if (loading) return <div className="pt-32 text-center text-[var(--page-text)] h-screen">Compiling Lab Interface...</div>;
   if (!lab) return <div className="pt-32 text-center text-red-500 h-screen">Lab could not be found or access is restricted.</div>;
 
   const tabsConfig = [
@@ -121,21 +121,21 @@ export default function DynamicLabPage() {
     if (!content) return null;
     
     if (typeof content === 'string') {
-       return <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-gray-300 text-lg leading-relaxed whitespace-pre-wrap">{content}</div>;
+       return <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-8 text-[var(--muted-text)] text-lg leading-relaxed whitespace-pre-wrap">{content}</div>;
     }
     
     if (Array.isArray(content)) {
        // Support raw string arrays (like legacy Objective list)
        if (content.length > 0 && typeof content[0] === 'string') {
           return (
-            <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-75 h-75 bg-[#00e5ff]/10 blur-[100px] rounded-full pointer-events-none"></div>
-               <p className="text-xl font-semibold text-white mb-8 leading-relaxed">By the end of this experiment, students will be able to:</p>
+            <div className="bg-[var(--panel-bg-strong)] backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-75 h-75 bg-[var(--accent-cyan)]/10 blur-[100px] rounded-full pointer-events-none"></div>
+               <p className="text-xl font-semibold text-[var(--page-text)] mb-8 leading-relaxed">By the end of this experiment, students will be able to:</p>
                <ul className="space-y-6 relative z-10">
                  {content.map((str, idx) => (
                    <li key={idx} className="flex items-start gap-4">
-                      <span className="shrink-0 w-8 h-8 rounded-full bg-[#00e5ff]/10 border border-[#00e5ff]/30 flex items-center justify-center text-[#00e5ff] font-bold shadow-[0_0_15px_rgba(0,229,255,0.2)]">{idx + 1}</span>
-                      <span className="text-lg text-gray-300 pt-1 leading-snug font-medium">{str}</span>
+                      <span className="shrink-0 w-8 h-8 rounded-full bg-[var(--accent-cyan)]/10 border border-[var(--accent-cyan)]/30 flex items-center justify-center text-[var(--accent-cyan)] font-bold shadow-[0_0_15px_rgba(0,229,255,0.2)]">{idx + 1}</span>
+                      <span className="text-lg text-[var(--muted-text)] pt-1 leading-snug font-medium">{str}</span>
                    </li>
                  ))}
                </ul>
@@ -147,25 +147,25 @@ export default function DynamicLabPage() {
           switch(block.type) {
              case 'header-cyan':
                return (
-                 <h3 key={idx} className="text-3xl font-bold text-white mt-10 mb-6 border-b border-white/10 pb-4 flex items-center gap-3">
-                    <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
+                 <h3 key={idx} className="text-3xl font-bold text-[var(--page-text)] mt-10 mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
+                    <span className="w-2 h-8 bg-[var(--accent-cyan)] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
                     {block.text}
                  </h3>
                );
              case 'header-purple':
                return (
-                 <h3 key={idx} className="text-3xl font-bold text-white mt-10 mb-6 border-b border-white/10 pb-4 flex items-center gap-3">
+                 <h3 key={idx} className="text-3xl font-bold text-[var(--page-text)] mt-10 mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
                     <span className="w-2 h-8 bg-purple-500 rounded-full inline-block shadow-[0_0_10px_#a855f7]"></span>
                     {block.text}
                  </h3>
                );
              case 'paragraph':
-               return <p key={idx} className="text-gray-300 text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{__html: block.text}}></p>;
+               return <p key={idx} className="text-[var(--muted-text)] text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{__html: block.text}}></p>;
              case 'glass-box':
                return (
-                  <div key={idx} className="bg-[#110b27] border border-white/10 p-6 flex flex-col md:flex-row items-center gap-6 rounded-2xl mb-8 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                     <div className="flex-1 text-gray-300" dangerouslySetInnerHTML={{__html: block.text}}></div>
-                     {block.imageUrl && <div className="w-full md:w-1/3 p-2 bg-white rounded-xl shadow-lg border border-white/20"><img src={block.imageUrl} alt="Diagram" className="w-full h-auto object-contain rounded-lg" /></div>}
+                  <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 flex flex-col md:flex-row items-center gap-6 rounded-2xl mb-8 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                     <div className="flex-1 text-[var(--muted-text)]" dangerouslySetInnerHTML={{__html: block.text}}></div>
+                     {block.imageUrl && <div className="w-full md:w-1/3 p-2 bg-white rounded-xl shadow-lg border border-[var(--glass-border)]"><img src={block.imageUrl} alt="Diagram" className="w-full h-auto object-contain rounded-lg" /></div>}
                   </div>
                );
              case 'alert-red':
@@ -177,9 +177,9 @@ export default function DynamicLabPage() {
                            <span className="text-3xl">⚠️</span> {block.title}
                          </h4>
                       )}
-                      {block.text && <p className="text-gray-300 font-semibold mb-4" dangerouslySetInnerHTML={{__html: block.text}}></p>}
+                      {block.text && <p className="text-[var(--muted-text)] font-semibold mb-4" dangerouslySetInnerHTML={{__html: block.text}}></p>}
                       {block.highlight && (
-                         <p className="text-lg font-bold bg-black/60 p-4 border border-red-500/30 rounded-xl text-red-400">
+                         <p className="text-lg font-bold bg-[var(--panel-bg-strong)] p-4 border border-red-500/30 rounded-xl text-red-400">
                            👉 {block.highlight}
                          </p>
                       )}
@@ -193,22 +193,22 @@ export default function DynamicLabPage() {
                );
              case 'split-image':
                return (
-                 <div key={idx} className="bg-[#110b27] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-shadow mb-8">
+                 <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-shadow mb-8">
                    <div className="flex-1">
-                     {block.title && <p className="mb-4 text-gray-300" dangerouslySetInnerHTML={{__html: block.title}}></p>}
+                     {block.title && <p className="mb-4 text-[var(--muted-text)]" dangerouslySetInnerHTML={{__html: block.title}}></p>}
                      {block.codeSnippet && (
-                       <p className="mb-4 font-mono text-[#00e5ff] bg-black/50 p-4 rounded-xl border border-white/5 inline-block whitespace-pre-wrap">
+                       <p className="mb-4 font-mono text-[var(--accent-cyan)] bg-[var(--panel-bg-strong)] p-4 rounded-xl border border-[var(--glass-border)] inline-block whitespace-pre-wrap">
                          {block.codeSnippet}
                        </p>
                      )}
                      {block.list && (
-                       <ul className="text-sm space-y-2 text-gray-300">
+                       <ul className="text-sm space-y-2 text-[var(--muted-text)]">
                          {block.list.map((item, i) => (
                             <li key={i} dangerouslySetInnerHTML={{__html: item}} />
                          ))}
                        </ul>
                      )}
-                     {block.subtext && <p className="mt-4 italic text-gray-400">{block.subtext}</p>}
+                     {block.subtext && <p className="mt-4 italic text-[var(--muted-text)]">{block.subtext}</p>}
                    </div>
                    {block.imageUrl && (
                      <div className="w-full md:w-1/2 p-2 relative bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]">
@@ -237,7 +237,7 @@ export default function DynamicLabPage() {
       case 'Introduction':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">{lab.title}</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">{lab.title}</h2>
             {renderRichBlocks(t.introduction || lab.description || 'Welcome to this interactive learning experience.')}
           </div>
         );
@@ -245,26 +245,26 @@ export default function DynamicLabPage() {
       case 'Pre-Requisites':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto pb-12">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Pre-Requisites</h2>
-            <p className="text-gray-300 mb-8 text-lg">Before executing the simulation, ensure you have a strong intuition of the fundamental concepts. Click any topic to explore further.</p>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Pre-Requisites</h2>
+            <p className="text-[var(--muted-text)] mb-8 text-lg">Before executing the simulation, ensure you have a strong intuition of the fundamental concepts. Click any topic to explore further.</p>
             <div className="space-y-4">
               {t.prerequisites && t.prerequisites.length > 0 ? t.prerequisites.map((req, idx) => (
-                <div key={idx} className="bg-[#110b27] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
+                <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
                    <button 
                      onClick={() => setExpandedTopic(expandedTopic === idx ? null : idx)}
-                     className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-white/5 transition-colors focus:outline-none"
+                     className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-[var(--glass-bg)] transition-colors focus:outline-none"
                    >
                      <div className="flex items-center gap-4">
-                       <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
-                       <span className="text-xl md:text-2xl font-bold text-white tracking-wide group-hover:text-[#00e5ff] transition-colors">{req.title}</span>
+                       <span className="w-2 h-8 bg-[var(--accent-cyan)] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
+                       <span className="text-xl md:text-2xl font-bold text-[var(--page-text)] tracking-wide group-hover:text-[var(--accent-cyan)] transition-colors">{req.title}</span>
                      </div>
-                     <span className={`text-[#00e5ff] text-2xl transition-transform duration-300 ${expandedTopic === idx ? 'rotate-180' : ''}`}>▼</span>
+                     <span className={`text-[var(--accent-cyan)] text-2xl transition-transform duration-300 ${expandedTopic === idx ? 'rotate-180' : ''}`}>▼</span>
                    </button>
                    
-                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === idx ? 'max-h-500 opacity-100 border-t border-white/10' : 'max-h-0 opacity-0'}`}>
-                     <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 items-start bg-black/40">
+                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === idx ? 'max-h-500 opacity-100 border-t border-[var(--glass-border)]' : 'max-h-0 opacity-0'}`}>
+                     <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 items-start bg-[var(--panel-bg)]">
                        {req.image && (
-                         <div className="w-full xl:w-2/5 shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
+                         <div className="w-full xl:w-2/5 shrink-0 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
                            <img src={req.image} alt={req.title} className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
                          </div>
                        )}
@@ -274,7 +274,7 @@ export default function DynamicLabPage() {
                      </div>
                    </div>
                 </div>
-              )) : <p className="text-gray-500">No prerequisites specified. You are good to go!</p>}
+              )) : <p className="text-[var(--muted-text)]">No prerequisites specified. You are good to go!</p>}
             </div>
           </div>
         );
@@ -282,7 +282,7 @@ export default function DynamicLabPage() {
       case 'Objective':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Lab Objective</h2>
+            <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Lab Objective</h2>
             {renderRichBlocks(t.objective || ['Objectives dynamically compiling...'])}
           </div>
         );
@@ -296,17 +296,17 @@ export default function DynamicLabPage() {
       case 'Target Audience':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Target Audience</h2>
+             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Target Audience</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                {t.targetAudience && t.targetAudience.length > 0 ? t.targetAudience.map((aud, idx) => (
-                 <div key={idx} className="bg-[#110b27] border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-all cursor-default shadow-lg hover:-translate-y-1">
-                    <h3 className="text-[#00e5ff] font-bold text-xl mb-3 flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-[#00e5ff] shadow-[0_0_10px_#00e5ff]"></span>
+                 <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-xl p-8 hover:bg-[var(--glass-bg)] transition-all cursor-default shadow-lg hover:-translate-y-1">
+                    <h3 className="text-[var(--accent-cyan)] font-bold text-xl mb-3 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-[var(--accent-cyan)] shadow-[0_0_10px_#00e5ff]"></span>
                       {aud.title}
                     </h3>
-                    <p className="text-gray-400 text-lg">{aud.desc}</p>
+                    <p className="text-[var(--muted-text)] text-lg">{aud.desc}</p>
                  </div>
-               )) : <p className="col-span-2 text-gray-500">Generally accessible.</p>}
+               )) : <p className="col-span-2 text-[var(--muted-text)]">Generally accessible.</p>}
              </div>
           </div>
         );
@@ -314,13 +314,13 @@ export default function DynamicLabPage() {
       case 'Course Alignment':
         return (
           <div className="animate-page-enter max-w-4xl mx-auto">
-             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Course Alignment</h2>
-             <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
-               <h3 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">This experiment aligns with:</h3>
+             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Course Alignment</h2>
+             <div className="bg-[var(--panel-bg-strong)] backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
+               <h3 className="text-xl font-bold text-[var(--page-text)] mb-6 border-b border-[var(--glass-border)] pb-4">This experiment aligns with:</h3>
                <div className="flex flex-wrap gap-4">
                  {t.courseAlignment?.alignment?.map((course, idx) => (
-                   <span key={idx} className="bg-[#00e5ff]/10 text-[#00e5ff] border border-[#00e5ff]/30 px-6 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(0,229,255,0.1)] hover:bg-[#00e5ff]/20 transition-colors">{course}</span>
-                 )) || <span className="text-gray-500">Agnostic topics</span>}
+                   <span key={idx} className="bg-[var(--accent-cyan)]/10 text-[var(--accent-cyan)] border border-[var(--accent-cyan)]/30 px-6 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(0,229,255,0.1)] hover:bg-[var(--accent-cyan)]/20 transition-colors">{course}</span>
+                 )) || <span className="text-[var(--muted-text)]">Agnostic topics</span>}
                </div>
              </div>
              
@@ -330,8 +330,8 @@ export default function DynamicLabPage() {
                    <span className="text-3xl">🎓</span>
                  </div>
                  <div>
-                   <h4 className="text-2xl font-bold text-white mb-4">It is typically part of:</h4>
-                   <ul className="list-disc pl-6 text-gray-300 space-y-3 text-xl font-medium">
+                   <h4 className="text-2xl font-bold text-[var(--page-text)] mb-4">It is typically part of:</h4>
+                   <ul className="list-disc pl-6 text-[var(--muted-text)] space-y-3 text-xl font-medium">
                      {t.courseAlignment.typicalPart.map((part, i) => <li key={i}>{part}</li>)}
                    </ul>
                  </div>
@@ -343,18 +343,18 @@ export default function DynamicLabPage() {
       case 'Resources':
         return (
           <div className="animate-page-enter max-w-5xl mx-auto pb-12">
-             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learning Resources</h2>
+             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Learning Resources</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {t.resources && t.resources.length > 0 ? t.resources.map((res, idx) => (
-                  <a href={res.link || '#'} target="_blank" rel="noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                  <a href={res.link || '#'} target="_blank" rel="noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-[var(--glass-border)] transition-all hover:-translate-y-1 block group shadow-lg">
                      <div className="flex justify-between items-start mb-4">
                         <span className="text-3xl">{res.icon || '📘'}</span>
-                        <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color || 'text-[#00e5ff]'}`}>{res.type || 'Link'}</span>
+                        <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color || 'text-[var(--accent-cyan)]'}`}>{res.type || 'Link'}</span>
                      </div>
-                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
-                     <p className="text-gray-400 text-sm">{res.author ? `By ${res.author}` : ''}</p>
+                     <h3 className="text-xl font-bold text-[var(--page-text)] group-hover:text-[var(--accent-cyan)] transition-colors mb-2 leading-tight">{res.title}</h3>
+                     <p className="text-[var(--muted-text)] text-sm">{res.author ? `By ${res.author}` : ''}</p>
                   </a>
-                )) : <p className="col-span-full text-gray-500">No external resources mapped.</p>}
+                )) : <p className="col-span-full text-[var(--muted-text)]">No external resources mapped.</p>}
              </div>
           </div>
         );
@@ -363,24 +363,24 @@ export default function DynamicLabPage() {
         return <GenericFeedbackForm />;
         
       default:
-        return <div className="text-gray-400 italic">Work in progress...</div>;
+        return <div className="text-[var(--muted-text)] italic">Work in progress...</div>;
     }
   };
 
   return (
-    <div className="min-h-screen text-white relative font-sans flex flex-col pt-32 animate-page-enter">
+    <div className="min-h-screen text-[var(--page-text)] relative font-sans flex flex-col pt-32 animate-page-enter">
       <div className="absolute top-0 right-0 w-125 h-125 bg-purple-900/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
       
-      <div className="px-8 max-w-7xl mx-auto mb-12 relative w-full border-b border-white/5 pb-8">
+      <div className="px-8 max-w-7xl mx-auto mb-12 relative w-full border-b border-[var(--glass-border)] pb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-lg">
-          {lab.title} <span className="font-light text-gray-400 opacity-60 ml-2">| Interactive Lab</span>
+          {lab.title} <span className="font-light text-[var(--muted-text)] opacity-60 ml-2">| Interactive Lab</span>
         </h1>
-        {lab.status === 'UPCOMING' && <div className="mt-4 bg-[#00e5ff]/20 text-[#00e5ff] inline-block px-4 py-1 rounded-full font-bold shadow-[0_0_15px_rgba(0,229,255,0.3)]">PROTOTYPE: THIS LAB IS IN ACTIVE DEVELOPMENT</div>}
+        {lab.status === 'UPCOMING' && <div className="mt-4 bg-[var(--accent-cyan)]/20 text-[var(--accent-cyan)] inline-block px-4 py-1 rounded-full font-bold shadow-[0_0_15px_rgba(0,229,255,0.3)]">PROTOTYPE: THIS LAB IS IN ACTIVE DEVELOPMENT</div>}
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 px-8 max-w-7xl mx-auto w-full mb-32 flex-1 z-10">
         <div className="w-full md:w-64 shrink-0 flex flex-col">
-          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[#110b27]">
+          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[var(--panel-bg-strong)]">
             {tabsConfig.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -388,10 +388,10 @@ export default function DynamicLabPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full text-left px-5 py-3.5 mb-1 rounded-lg transition-all duration-300 flex items-center gap-3 font-semibold text-sm ${
-                    isActive ? 'bg-linear-to-r from-[#6c2bd9] to-[#4a1bb8] text-white shadow-[0_4px_20px_rgba(108,43,217,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    isActive ? 'bg-linear-to-r from-[#6c2bd9] to-[#4a1bb8] text-[var(--page-text)] shadow-[0_4px_20px_rgba(108,43,217,0.4)]' : 'text-[var(--muted-text)] hover:text-[var(--page-text)] hover:bg-[var(--glass-bg)]'
                   }`}
                 >
-                  <span className={`${isActive ? 'text-[#00e5ff]' : 'text-gray-500'}`}>{tab.icon}</span>
+                  <span className={`${isActive ? 'text-[var(--accent-cyan)]' : 'text-[var(--muted-text)]'}`}>{tab.icon}</span>
                   {tab.id}
                 </button>
               );
@@ -399,7 +399,7 @@ export default function DynamicLabPage() {
           </div>
         </div>
 
-        <div className="flex-1 glass-card p-8 md:p-12 min-h-150 border border-white/5 bg-[#0a0510]/80 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div className="flex-1 glass-card p-8 md:p-12 min-h-150 border border-[var(--glass-border)] bg-[var(--panel-bg)] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
           {renderContent()}
         </div>
       </div>

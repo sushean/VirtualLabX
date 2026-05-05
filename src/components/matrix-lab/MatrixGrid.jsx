@@ -20,7 +20,7 @@ export default function MatrixGrid({
     const isColActive = c === activeCol;
     
     // Base style
-    classes += "bg-[#0a0510]/50 text-white border-white/10 ";
+    classes += "bg-[var(--panel-bg)]/50 text-white border-[var(--glass-border)] ";
 
     if (themeColor === 'cyan') {
       if (isCellActive) classes += "bg-[#00e5ff] text-black border-[#00e5ff] shadow-[0_0_20px_#00e5ff] scale-110 z-10 ";
@@ -46,7 +46,7 @@ export default function MatrixGrid({
      if (themeColor === 'cyan' && activeRow !== -1) return "shadow-[0_0_30px_rgba(0,229,255,0.15)] border-[#00e5ff]/30";
      if (themeColor === 'purple' && activeCol !== -1) return "shadow-[0_0_30px_rgba(108,43,217,0.15)] border-[#6c2bd9]/30";
      if (themeColor === 'green' && activeRow !== -1 && activeCol !== -1) return "shadow-[0_0_30px_rgba(74,222,128,0.15)] border-[#4ade80]/30";
-     return "border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.4)]";
+     return "border-[var(--glass-border)] shadow-[0_0_20px_rgba(0,0,0,0.4)]";
   };
 
   return (

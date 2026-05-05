@@ -178,11 +178,11 @@ export default function FlowRenderer({ config }) {
   };
 
   return (
-    <div className="w-full h-full bg-[#120a1f]/30 relative rounded-xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(108,43,217,0.1)]">
+    <div className="w-full h-full bg-[#120a1f]/30 relative rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-[0_0_30px_rgba(108,43,217,0.1)]">
       
       {/* Floating Control Dashboard */}
-      <div className="absolute top-6 right-6 z-10 flex gap-4 bg-[#0a0510]/80 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-         <div className="flex flex-col justify-center px-2 border-r border-white/10 mr-2">
+      <div className="absolute top-6 right-6 z-10 flex gap-4 bg-[var(--panel-bg)] backdrop-blur-md p-4 rounded-2xl border border-[var(--glass-border)] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+         <div className="flex flex-col justify-center px-2 border-r border-[var(--glass-border)] mr-2">
             <h3 className="text-sm font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff] uppercase tracking-wider mb-1 flex items-center gap-2">
                <AutoFixHighIcon fontSize="small"/> Flow Engine
             </h3>
@@ -191,7 +191,7 @@ export default function FlowRenderer({ config }) {
          <button 
            onClick={resetSimulation}
            disabled={isExecuting || nodes.length === 0}
-           className={`px-4 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center ${isExecuting ? 'bg-gray-800 text-gray-500 cursor-not-allowed border-none' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30'}`}
+           className={`px-4 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center ${isExecuting ? 'bg-gray-800 text-gray-500 cursor-not-allowed border-none' : 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-gray-300 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30'}`}
            title="Reset Engine State"
          >
             <ReplayIcon />
@@ -218,7 +218,7 @@ export default function FlowRenderer({ config }) {
         panOnDrag={!isExecuting} // Strictly enforcing freeze rules requested
         zoomOnScroll={!isExecuting}
       >
-        <Controls className="bg-[#110b27] border border-white/20 fill-white custom-react-flow-controls shadow-xl" showInteractive={false} />
+        <Controls className="bg-[var(--panel-bg-strong)] border border-white/20 fill-white custom-react-flow-controls shadow-xl" showInteractive={false} />
         <MiniMap nodeStrokeColor="#6865A5" nodeColor="#A855F7" maskColor="rgba(0,0,0,0.5)" style={{ backgroundColor: '#0a0510' }} />
         <Background variant="dots" gap={12} size={1} color="#374151" />
       </ReactFlow>

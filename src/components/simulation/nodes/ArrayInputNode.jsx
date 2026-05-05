@@ -22,7 +22,7 @@ export default function ArrayInputNode({ data }) {
   };
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 w-56 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 w-56 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        
        <div className="flex justify-between items-center mb-2">
          <span className="text-xs uppercase tracking-widest font-bold text-amber-500">Array Block</span>
@@ -33,7 +33,7 @@ export default function ArrayInputNode({ data }) {
        <div className="bg-black/50 p-2 rounded-lg border border-amber-500/20 mb-2">
           <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Comma Formatted</div>
           <input 
-            className="nodrag bg-[#110b27] border border-amber-500/20 rounded p-2 text-white w-full text-sm placeholder-amber-500/30 focus:outline-none focus:border-amber-400 shadow-inner"
+            className="nodrag bg-[var(--panel-bg-strong)] border border-amber-500/20 rounded p-2 text-white w-full text-sm placeholder-amber-500/30 focus:outline-none focus:border-amber-400 shadow-inner"
             value={data.value || ''}
             onChange={onChange}
             disabled={isRunning || isComplete}

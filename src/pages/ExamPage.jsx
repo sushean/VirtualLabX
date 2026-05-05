@@ -136,7 +136,7 @@ export default function ExamPage() {
 
   if (!examSession && !examResult) {
     return (
-      <div className="min-h-screen bg-[#0a0510] pt-24 pb-12 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--panel-bg)] pt-24 pb-12 text-white flex items-center justify-center">
          <div className="w-12 h-12 border-4 border-[#00e5ff] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -144,14 +144,14 @@ export default function ExamPage() {
 
   if (examResult) {
     return (
-      <div className="min-h-screen bg-[#0a0510] p-8 flex flex-col items-center justify-center text-white relative z-[100]">
-        <div className="bg-white/5 border border-white/10 p-10 rounded-3xl max-w-lg w-full text-center shadow-[0_0_50px_rgba(108,43,217,0.15)] backdrop-blur-xl relative overflow-hidden">
+      <div className="min-h-screen bg-[var(--panel-bg)] p-8 flex flex-col items-center justify-center text-white relative z-100">
+        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] p-10 rounded-3xl max-w-lg w-full text-center shadow-[0_0_50px_rgba(108,43,217,0.15)] backdrop-blur-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#00e5ff] rounded-full blur-[80px] opacity-20 transform translate-x-12 -translate-y-12"></div>
           
           <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-[#00e5ff] to-[#6c2bd9]">Exam Submitted</h2>
           <div className="space-y-4 text-lg text-gray-300 font-medium">
-            <div className="flex justify-between border-b border-white/10 pb-2"><p>Final Score</p> <span className="text-white font-black">{examResult.score} <span className="text-sm font-bold text-gray-500">/ {examResult.maxScore}</span></span></div>
-            <div className="flex justify-between border-b border-white/10 pb-2"><p>Proctor Flags</p> <span className="text-red-400 font-bold tracking-widest">{examResult.cheatingScore}</span></div>
+            <div className="flex justify-between border-b border-[var(--glass-border)] pb-2"><p>Final Score</p> <span className="text-white font-black">{examResult.score} <span className="text-sm font-bold text-gray-500">/ {examResult.maxScore}</span></span></div>
+            <div className="flex justify-between border-b border-[var(--glass-border)] pb-2"><p>Proctor Flags</p> <span className="text-red-400 font-bold tracking-widest">{examResult.cheatingScore}</span></div>
             <div className="flex justify-between items-center pb-2"><p>Certification Status</p> <span className={`px-4 py-1 rounded-full text-xs uppercase tracking-widest font-black ${examResult.status === 'DISQUALIFIED' ? 'bg-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.3)] text-red-400' : 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.3)] text-green-300'}`}>{examResult.status}</span></div>
           </div>
 
@@ -159,7 +159,7 @@ export default function ExamPage() {
              <div className="mt-10 p-6 border border-[#00e5ff]/30 bg-[#00e5ff]/5 rounded-xl block">
                <h3 className="text-xl text-[#00e5ff] font-bold mb-2">Verification Complete</h3>
                <p className="text-sm text-gray-400 mb-3">Your credentials have successfully entered the vault.</p>
-               <p className="font-mono text-xs mt-2 font-bold text-gray-200 select-all border border-white/10 bg-black/40 p-2 rounded wrap-break-word">{examResult.certificate.certificateId}</p>
+               <p className="font-mono text-xs mt-2 font-bold text-gray-200 select-all border border-[var(--glass-border)] bg-black/40 p-2 rounded wrap-break-word">{examResult.certificate.certificateId}</p>
              </div>
           )}
           <button 
@@ -175,21 +175,21 @@ export default function ExamPage() {
 
   // Active UI View
   return (
-    <div className="min-h-screen bg-[#0a0510] pt-24 pb-12 px-6 relative z-[100] font-sans user-select-none animate-fade-in overflow-hidden">
+    <div className="min-h-screen bg-[var(--panel-bg)] pt-24 pb-12 px-6 relative z-100 font-sans user-select-none animate-fade-in overflow-hidden">
       
       {/* Background Visual Enhancements */}
       <div className="absolute top-[20%] left-[-10%] w-96 h-96 bg-[#6c2bd9] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-125 h-125 bg-[#00e5ff] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
 
       {/* Top Bar Navigation */}
-      <div className="max-w-5xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6 flex justify-between items-center mb-8 shadow-xl backdrop-blur-md relative overflow-visible z-10">
-        <div className="absolute -inset-[1px] bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-2xl opacity-[0.1] -z-10 blur-sm"></div>
+      <div className="max-w-5xl mx-auto bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 flex justify-between items-center mb-8 shadow-xl backdrop-blur-md relative overflow-visible z-10">
+        <div className="absolute -inset-px bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-2xl opacity-[0.1] -z-10 blur-sm"></div>
         <h1 className="text-xl md:text-2xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-gray-100 to-gray-400 tracking-wide uppercase shrink-0 truncate">
           {examSession.title || 'Certification Node'}
         </h1>
         
         {warningMessage && (
-          <div className="animate-pulse bg-red-900/60 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.3)] text-red-200 px-6 py-2 rounded-xl text-sm font-bold absolute left-1/2 -translate-x-1/2 top-[-20px] z-50">
+          <div className="animate-pulse bg-red-900/60 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.3)] text-red-200 px-6 py-2 rounded-xl text-sm font-bold absolute left-1/2 -translate-x-1/2 -top-5 z-50">
             {warningMessage}
           </div>
         )}
@@ -202,7 +202,7 @@ export default function ExamPage() {
              </span>
            </div>
            
-           <div className="w-[1px] h-8 bg-white/10 hidden md:block"></div>
+           <div className="w-px h-8 bg-white/10 hidden md:block"></div>
 
            <div className="flex flex-col text-right">
              <span className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">TTL</span>
@@ -217,7 +217,7 @@ export default function ExamPage() {
       <div className="max-w-5xl mx-auto flex gap-6 relative z-10">
         
         {/* Working Space */}
-        <div className="flex-1 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl relative flex flex-col min-h-125">
+        <div className="flex-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl relative flex flex-col min-h-125">
           
           {currentQuestion ? (
             <div className="animate-fade-in flex flex-col flex-1 h-full">
@@ -246,7 +246,7 @@ export default function ExamPage() {
                     {currentQuestion.options.map((opt, idx) => (
                       <label 
                         key={idx} 
-                        className={`block w-full p-5 rounded-2xl border backdrop-blur-md ${selectedOption === opt ? 'border-[#00e5ff] bg-[#00e5ff]/10 shadow-[0_0_15px_rgba(0,229,255,0.15)] transform scale-[1.01]' : 'border-white/10 hover:border-white/30 hover:bg-white/5'} cursor-pointer transition-all duration-300 flex items-center group`}
+                        className={`block w-full p-5 rounded-2xl border backdrop-blur-md ${selectedOption === opt ? 'border-[#00e5ff] bg-[#00e5ff]/10 shadow-[0_0_15px_rgba(0,229,255,0.15)] transform scale-[1.01]' : 'border-[var(--glass-border)] hover:border-white/30 hover:bg-[var(--glass-bg)]'} cursor-pointer transition-all duration-300 flex items-center group`}
                       >
                         <input 
                           type="radio" 
@@ -273,7 +273,7 @@ export default function ExamPage() {
                       return (
                         <label 
                           key={idx} 
-                          className={`block w-full p-5 rounded-2xl border backdrop-blur-md ${isChecked ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.15)] transform scale-[1.01]' : 'border-white/10 hover:border-white/30 hover:bg-white/5'} cursor-pointer transition-all duration-300 flex items-center group`}
+                          className={`block w-full p-5 rounded-2xl border backdrop-blur-md ${isChecked ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.15)] transform scale-[1.01]' : 'border-[var(--glass-border)] hover:border-white/30 hover:bg-[var(--glass-bg)]'} cursor-pointer transition-all duration-300 flex items-center group`}
                         >
                           <input 
                             type="checkbox" 
@@ -301,13 +301,13 @@ export default function ExamPage() {
                 {currentQuestion.questionType === 'NUMERICAL' && (
                   <div className="flex justify-center items-center h-full pb-10">
                     <div className="w-full max-w-sm relative group">
-                       <div className="absolute -inset-[2px] bg-linear-to-r from-yellow-500 to-orange-500 rounded-2xl opacity-20 blur-sm group-focus-within:opacity-50 transition-opacity pointer-events-none"></div>
+                       <div className="absolute -inset-0.5 bg-linear-to-r from-yellow-500 to-orange-500 rounded-2xl opacity-20 blur-sm group-focus-within:opacity-50 transition-opacity pointer-events-none"></div>
                        <input 
                          type="text" 
                          value={selectedOption}
                          onChange={(e) => setSelectedOption(e.target.value)}
                          placeholder="Enter exact matched value..."
-                         className="w-full bg-[#0a0510] text-center text-3xl font-mono text-white p-6 border-2 border-white/10 focus:border-yellow-500 rounded-2xl outline-none placeholder:text-gray-700 placeholder:text-xl transition-all relative z-10"
+                         className="w-full bg-[var(--panel-bg)] text-center text-3xl font-mono text-white p-6 border-2 border-[var(--glass-border)] focus:border-yellow-500 rounded-2xl outline-none placeholder:text-gray-700 placeholder:text-xl transition-all relative z-10"
                        />
                     </div>
                   </div>
@@ -315,14 +315,14 @@ export default function ExamPage() {
               </div>
               
               {/* Action Ribbon */}
-              <div className="mt-8 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="mt-8 pt-8 border-t border-[var(--glass-border)] flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="text-gray-500 text-xs font-bold uppercase tracking-widest hidden md:block">
-                   Encryption Validating • Realtime Protection ON
+                   Integrity checks active • Real-time protection on
                 </div>
                 <div className="flex gap-4 w-full md:w-auto">
                    <button 
                      onClick={() => submitAnswer(sessionId, currentQuestion.id, 'SKIPPED')}
-                     className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold uppercase text-sm tracking-widest text-gray-400 hover:text-white transition-all duration-300 w-full md:w-auto"
+                     className="px-6 py-4 bg-[var(--glass-bg)] hover:bg-white/10 border border-[var(--glass-border)] rounded-xl font-bold uppercase text-sm tracking-widest text-gray-400 hover:text-white transition-all duration-300 w-full md:w-auto"
                    >
                      Skip Question
                    </button>
@@ -331,7 +331,7 @@ export default function ExamPage() {
                      disabled={!isAnswerValid()}
                      className="px-10 py-4 w-full md:w-auto bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] disabled:from-gray-800 disabled:to-gray-800 disabled:text-gray-600 rounded-xl font-black uppercase text-sm tracking-widest text-white shadow-[0_0_20px_rgba(108,43,217,0.3)] disabled:shadow-none transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
                    >
-                     {currentQuestion.currentIndex === currentQuestion.totalQuestions - 1 ? 'Final Commit' : 'Sync & Next Block'}
+                     {currentQuestion.currentIndex === currentQuestion.totalQuestions - 1 ? 'Submit Exam' : 'Save & Next'}
                    </button>
                 </div>
               </div>
@@ -340,7 +340,7 @@ export default function ExamPage() {
           ) : (
             <div className="flex flex-col justify-center items-center h-full text-white/50 animate-pulse">
               <div className="w-8 h-8 border-4 border-[#00e5ff]/50 border-t-transparent rounded-full animate-spin mb-4"></div>
-              <span className="tracking-widest uppercase text-xs font-bold">Assembling Data Structure</span>
+              <span className="tracking-widest uppercase text-xs font-bold">Loading question</span>
             </div>
           )}
         </div>

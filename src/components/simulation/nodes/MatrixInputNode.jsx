@@ -39,7 +39,7 @@ export default function MatrixInputNode({ data }) {
   const matrix = Array.isArray(data.value) ? data.value : [];
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 min-w-[200px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 min-w-[200px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        
        <div className="flex justify-between items-center mb-2">
          <span className="text-xs uppercase tracking-widest font-bold text-pink-400">Matrix Source</span>
@@ -60,7 +60,7 @@ export default function MatrixInputNode({ data }) {
                         disabled={isRunning || isComplete}
                         value={matrix[r]?.[c] ?? 0}
                         onChange={e => updateCell(r, c, e.target.value)}
-                        className="nodrag w-12 h-10 bg-[#110b27] border border-white/10 rounded text-center text-[#ff79c6] font-mono text-sm focus:border-pink-500 focus:outline-none transition-colors"
+                        className="nodrag w-12 h-10 bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded text-center text-[#ff79c6] font-mono text-sm focus:border-pink-500 focus:outline-none transition-colors"
                       />
                    ))}
                 </div>

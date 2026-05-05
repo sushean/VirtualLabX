@@ -160,7 +160,7 @@ export default function AdminLabBuilder() {
   return (
     <div className="flex flex-col h-screen pt-20 bg-[#05010a] text-white animate-page-enter">
       {/* Header bar */}
-      <div className="px-6 py-4 flex justify-between items-center border-b border-white/10 bg-[#0a0510]/80 z-20">
+      <div className="px-6 py-4 flex justify-between items-center border-b border-[var(--glass-border)] bg-[var(--panel-bg)] z-20">
         <div>
           <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Dynamic Lab Builder</h1>
           <p className="text-xs text-gray-400">Design your simulation visually</p>

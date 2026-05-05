@@ -29,6 +29,7 @@ app.use('/api/verify', require('./routes/verify'));
 app.use('/api/labs', require('./routes/labs'));
 app.use('/api/progress', require('./routes/progress'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/telemetry', require('./routes/telemetry'));
 
 // Start Server
 const PORT = process.env.PORT || 5000;

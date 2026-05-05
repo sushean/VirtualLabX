@@ -90,7 +90,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         <div className="text-center mb-20 features-header relative">
-          <h2 className="text-4xl md:text-5xl font-black mb-6 text-transparent bg-clip-text bg-linear-to-r from-white via-gray-200 to-gray-500 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-black mb-6 text-transparent bg-clip-text bg-linear-to-r from-[var(--page-text)] via-[var(--muted-text)] to-gray-500 tracking-tight">
             Ecosystem Core Capabilities
           </h2>
           <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 w-24 h-1.5 bg-linear-to-r from-[#00e5ff] to-[#6c2bd9] rounded-full blur-[2px]"></div>
@@ -106,7 +106,7 @@ export default function FeaturesSection() {
               key={idx}
               ref={el => cardsRef.current[idx] = el}
               onClick={() => navigate(feature.path)}
-              className={`group flex flex-col p-8 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md cursor-pointer hover:-translate-y-3 transition-all duration-500 ${feature.glow} h-full relative overflow-hidden`}
+              className={`group flex flex-col p-8 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-3xl backdrop-blur-md cursor-pointer hover:-translate-y-3 transition-all duration-500 ${feature.glow} h-full relative overflow-hidden`}
             >
               {/* Internal Accent Glow */}
               <div className={`absolute top-0 right-0 w-32 h-32 bg-linear-to-br ${feature.color} rounded-full blur-[70px] opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none`} />
@@ -115,15 +115,15 @@ export default function FeaturesSection() {
                 {feature.icon}
               </div>
               
-              <h3 className="text-xl font-bold mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-white group-hover:to-gray-400 transition-colors">
+              <h3 className="text-xl font-bold mb-4 text-[var(--page-text)] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-[var(--page-text)] group-hover:to-gray-400 transition-colors">
                 {feature.title}
               </h3>
               
-              <p className="text-gray-400 text-sm leading-relaxed grow mb-8 group-hover:text-gray-300 transition-colors">
+              <p className="text-[var(--muted-text)] text-sm leading-relaxed grow mb-8 transition-colors opacity-90">
                 {feature.description}
               </p>
               
-              <div className="mt-auto flex items-center text-sm font-bold tracking-widest uppercase transition-colors text-white/50 group-hover:text-[#00e5ff]">
+              <div className="mt-auto flex items-center text-sm font-bold tracking-widest uppercase transition-colors text-[var(--page-text)] opacity-60 group-hover:opacity-100 group-hover:text-[var(--accent-cyan)]">
                 <span>Access Node</span>
                 <FiArrowRight className="ml-2 transform group-hover:translate-x-2 transition-transform duration-300 text-lg" />
               </div>

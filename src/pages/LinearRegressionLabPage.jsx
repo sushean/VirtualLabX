@@ -44,7 +44,7 @@ const FeedbackForm = () => {
   return (
     <div className="animate-page-enter max-w-3xl mx-auto">
       <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Experiment Feedback</h2>
-      <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
          <div className="absolute top-0 right-0 w-75 h-75 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none"></div>
          <p className="text-gray-300 text-lg mb-8 relative z-10 text-center font-bold">How would you rate your experience with the Linear Regression simulation?</p>
          
@@ -68,7 +68,7 @@ const FeedbackForm = () => {
             <textarea 
                value={feedbackText}
                onChange={(e) => setFeedbackText(e.target.value)}
-               className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors h-32 resize-none shadow-inner"
+               className="w-full bg-black/50 border border-[var(--glass-border)] rounded-xl p-4 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors h-32 resize-none shadow-inner"
                placeholder="Tell us what you loved or what we could improve..."
             />
          </div>
@@ -76,7 +76,7 @@ const FeedbackForm = () => {
          <button 
             disabled={rating === 0}
             onClick={() => setSubmitted(true)}
-            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
+            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-[var(--glass-bg)] text-gray-500 cursor-not-allowed border border-[var(--glass-border)]' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
          >
             Submit Feedback
          </button>
@@ -149,10 +149,10 @@ const PrerequisitesContent = () => {
       
       <div className="space-y-4">
         {topics.map((topic) => (
-          <div key={topic.id} className="bg-[#110b27] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
+          <div key={topic.id} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
             <button 
               onClick={() => setExpandedTopic(expandedTopic === topic.id ? null : topic.id)}
-              className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-white/5 transition-colors focus:outline-none"
+              className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-[var(--glass-bg)] transition-colors focus:outline-none"
             >
               <div className="flex items-center gap-4">
                 <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
@@ -163,9 +163,9 @@ const PrerequisitesContent = () => {
               </span>
             </button>
             
-            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === topic.id ? 'max-h-[1000px] opacity-100 border-t border-white/10' : 'max-h-0 opacity-0'}`}>
+            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === topic.id ? 'max-h-[1000px] opacity-100 border-t border-[var(--glass-border)]' : 'max-h-0 opacity-0'}`}>
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start bg-black/40">
-                <div className="w-full md:w-2/5 shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
+                <div className="w-full md:w-2/5 shrink-0 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
                   <img src={topic.image} alt={topic.title} className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="flex-1">
@@ -277,12 +277,12 @@ const LearnCodeComponent = () => {
     const isIncorrect = feedback[inputKey] === 'incorrect';
 
     return (
-      <div className="bg-[#110b27] border border-white/10 rounded-2xl p-6 mb-6 shadow-lg">
+      <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl p-6 mb-6 shadow-lg">
         <h4 className="text-[#00e5ff] font-bold text-lg mb-4 flex items-center gap-2">
           <span className="bg-[#00e5ff]/10 text-[#00e5ff] w-8 h-8 rounded-full flex items-center justify-center border border-[#00e5ff]/30">Q{qNum}</span>
           {title}
         </h4>
-        <div className="bg-black/50 p-4 rounded-xl font-mono text-gray-300 border border-white/5 text-sm leading-8 mb-4 whitespace-pre-wrap">
+        <div className="bg-black/50 p-4 rounded-xl font-mono text-gray-300 border border-[var(--glass-border)] text-sm leading-8 mb-4 whitespace-pre-wrap">
            <span>{preCode}</span>
            <span className="relative inline-block mx-1">
              <input 
@@ -317,7 +317,7 @@ const LearnCodeComponent = () => {
       <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learn Code</h2>
       
       {/* Mode Toggle */}
-      <div className="flex bg-[#110b27] border border-white/10 p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
+      <div className="flex bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-1 rounded-xl mb-10 mx-auto w-fit shadow-lg shadow-purple-500/10">
         <button 
           onClick={() => setMode('learn')}
           className={`px-8 py-3 rounded-lg font-bold transition-all duration-300 ${mode === 'learn' ? 'bg-linear-to-r from-purple-500 to-[#00e5ff] text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'text-gray-400 hover:text-white'}`}
@@ -335,8 +335,8 @@ const LearnCodeComponent = () => {
       {mode === 'learn' && (
         <div className="space-y-8 animate-page-enter">
           {learnContent.map((item, idx) => (
-             <div key={idx} className="bg-[#110b27] border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(108,43,217,0.2)] transition-shadow">
-                <div className="bg-white/5 p-4 border-b border-white/10">
+             <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(108,43,217,0.2)] transition-shadow">
+                <div className="bg-[var(--glass-bg)] p-4 border-b border-[var(--glass-border)]">
                    <h3 className="text-xl font-bold text-white flex items-center gap-3">
                       <span className="w-2 h-6 bg-purple-500 rounded-full"></span>
                       {item.step}
@@ -344,7 +344,7 @@ const LearnCodeComponent = () => {
                 </div>
                 <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8">
                    {/* Code Section */}
-                   <div className="flex-1 bg-black/60 rounded-xl p-4 border border-white/5 font-mono text-sm overflow-x-auto shadow-inner">
+                   <div className="flex-1 bg-black/60 rounded-xl p-4 border border-[var(--glass-border)] font-mono text-sm overflow-x-auto shadow-inner">
                       <pre className="text-green-400/80">
                         {item.code.split('\n').map((line, i) => (
                           <div key={i}><span className="text-gray-600 mr-4 select-none">{String(i+1).padStart(2, '0')}</span><span className="text-gray-300">{line}</span></div>
@@ -377,7 +377,7 @@ const LearnCodeComponent = () => {
 
       {mode === 'test' && (
         <div className="animate-page-enter">
-          <p className="text-gray-300 text-center mb-8 text-lg bg-white/5 py-4 rounded-xl border border-white/10">
+          <p className="text-gray-300 text-center mb-8 text-lg bg-[var(--glass-bg)] py-4 rounded-xl border border-[var(--glass-border)]">
             Fill in the blanks to complete the code snippets correctly. You can check your answer or reveal it if stuck.
           </p>
           
@@ -460,9 +460,9 @@ export default function LinearRegressionLabPage() {
                 As another example, let's say you want to predict how much money you will make based on how many hours you work. To do this, you would collect data and then use linear regression to find a line that best fits the data. Once you have this line, you can use it to predict how much money you will make for any number of hours you work.
               </p>
 
-              <div className="my-8 bg-white/5 border border-white/10 rounded-xl p-6 shadow-inner">
+              <div className="my-8 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-6 shadow-inner">
                 <p className="mb-4 font-semibold text-white">To demonstrate linear regression, let's look at the following example of data for the variables x and y:</p>
-                <div className="font-mono text-base bg-black/50 p-4 rounded-lg border border-white/5">
+                <div className="font-mono text-base bg-black/50 p-4 rounded-lg border border-[var(--glass-border)]">
                   <span className="text-[#00e5ff] font-bold">x:</span> 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150<br/><br/>
                   <span className="text-[#00e5ff] font-bold">y:</span> 7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15
                 </div>
@@ -470,7 +470,7 @@ export default function LinearRegressionLabPage() {
 
               <p>Let's assume that this data can be represented in the form of a line equation like the following:</p>
               
-              <div className="text-center font-mono text-2xl text-purple-300 font-bold tracking-widest my-6 py-4 bg-[#110b27] rounded-lg border border-purple-500/20 shadow-[0_0_15px_rgba(108,43,217,0.2)]">
+              <div className="text-center font-mono text-2xl text-purple-300 font-bold tracking-widest my-6 py-4 bg-[var(--panel-bg-strong)] rounded-lg border border-purple-500/20 shadow-[0_0_15px_rgba(108,43,217,0.2)]">
                 y' = ax + b
               </div>
 
@@ -478,7 +478,7 @@ export default function LinearRegressionLabPage() {
 
               <p>Let's say we initialize the line equation with some arbitrary parameter values of a and b, as follows:</p>
               
-              <div className="font-mono text-lg bg-black/50 p-4 rounded-lg my-4 inline-block w-full text-center border border-white/5 text-gray-200">
+              <div className="font-mono text-lg bg-black/50 p-4 rounded-lg my-4 inline-block w-full text-center border border-[var(--glass-border)] text-gray-200">
                 a = 0.02<br/>
                 b = 8.78
               </div>
@@ -492,7 +492,7 @@ export default function LinearRegressionLabPage() {
               <p>Now let's plot the x-y values as a 2D scatter plot and the line plot of the above line equation as shown below:</p>
 
               <div className="my-10 flex flex-col items-center">
-                <div className="w-full max-w-2xl bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center mb-4 overflow-hidden group shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                <div className="w-full max-w-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl flex flex-col items-center justify-center mb-4 overflow-hidden group shadow-[0_0_30px_rgba(0,0,0,0.5)]">
                   <img 
                     src={fig1Img} 
                     alt="Initial Regression Model" 
@@ -510,7 +510,7 @@ export default function LinearRegressionLabPage() {
                 Our goal is to use some algorithm to find the values of <code className="text-purple-300 font-semibold">a</code> and <code className="text-purple-300 font-semibold">b</code> that best fit the data. This is where the linear regression technique comes in. The process of finding the most appropriate values of a and b is known as <span className="text-white font-semibold">"fitting the model to the data"</span>. In linear regression, this fitting is usually done using a method called "least squares". This method minimizes the sum of the squares of the differences (called residuals) between the predicted and actual values in the data set.
               </p>
 
-              <h3 className="text-3xl font-bold mt-16 mb-8 text-white border-b border-white/10 pb-4 flex items-center gap-3">
+              <h3 className="text-3xl font-bold mt-16 mb-8 text-white border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
                 <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block"></span>
                 Least Squares Method
               </h3>
@@ -520,7 +520,7 @@ export default function LinearRegressionLabPage() {
               </p>
 
               {/* Math Equation using HTML/CSS */}
-              <div className="bg-[#110b27] border border-white/10 py-10 px-6 rounded-2xl my-8 text-center flex flex-col items-center shadow-2xl relative overflow-hidden">
+              <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] py-10 px-6 rounded-2xl my-8 text-center flex flex-col items-center shadow-2xl relative overflow-hidden">
                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-[#00e5ff]/5 blur-[70px] rounded-full pointer-events-none"></div>
                  <div className="font-serif text-3xl md:text-4xl text-white tracking-wider flex items-center justify-center gap-2">
                     <span className="italic">min<sub className="text-sm text-gray-400 -ml-1 italic">a,b</sub></span> 
@@ -533,12 +533,12 @@ export default function LinearRegressionLabPage() {
                  </div>
               </div>
 
-              <div className="bg-black/60 border border-white/5 p-6 rounded-xl my-6 backdrop-blur-sm">
+              <div className="bg-black/60 border border-[var(--glass-border)] p-6 rounded-xl my-6 backdrop-blur-sm">
                 <p className="mb-4 font-semibold text-gray-300 text-sm uppercase tracking-widest">Where:</p>
                 <ul className="list-disc pl-6 space-y-3 text-base">
-                  <li><code className="text-purple-300 text-lg bg-white/5 px-1.5 rounded">y<sub className="text-sm">i</sub></code> and <code className="text-purple-300 text-lg bg-white/5 px-1.5 rounded">x<sub className="text-sm">i</sub></code> are the actual observed values from the dataset,</li>
-                  <li><code className="text-purple-300 text-lg bg-white/5 px-1.5 rounded">n</code> is the number of observations in the dataset,</li>
-                  <li><code className="text-purple-300 text-lg bg-white/5 px-1.5 rounded">ax<sub className="text-sm">i</sub> + b</code> is the prediction made by our linear model.</li>
+                  <li><code className="text-purple-300 text-lg bg-[var(--glass-bg)] px-1.5 rounded">y<sub className="text-sm">i</sub></code> and <code className="text-purple-300 text-lg bg-[var(--glass-bg)] px-1.5 rounded">x<sub className="text-sm">i</sub></code> are the actual observed values from the dataset,</li>
+                  <li><code className="text-purple-300 text-lg bg-[var(--glass-bg)] px-1.5 rounded">n</code> is the number of observations in the dataset,</li>
+                  <li><code className="text-purple-300 text-lg bg-[var(--glass-bg)] px-1.5 rounded">ax<sub className="text-sm">i</sub> + b</code> is the prediction made by our linear model.</li>
                 </ul>
               </div>
 
@@ -553,7 +553,7 @@ export default function LinearRegressionLabPage() {
               <p>The graph below shows how the above equation, shown as a solid line, appears to fit the input data, shown as dots.</p>
 
               <div className="my-10 flex flex-col items-center">
-                <div className="w-full max-w-2xl bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center mb-4 overflow-hidden group shadow-[0_0_30px_rgba(108,43,217,0.3)]">
+                <div className="w-full max-w-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl flex flex-col items-center justify-center mb-4 overflow-hidden group shadow-[0_0_30px_rgba(108,43,217,0.3)]">
                   <img 
                     src={fig2Img} 
                     alt="Final Regression Model" 
@@ -568,7 +568,7 @@ export default function LinearRegressionLabPage() {
                 This example illustrates how linear regression is used to establish a relationship between two variables in order to make predictions. Specifically, it demonstrates the process of using least squares to fit a linear model to a data set, showing the initial arbitrary line equation and how the optimized parameters improve the fit to the observed data. This basic understanding allows for practical applications in predicting outcomes based on linear relationships.
               </p>
 
-              <h3 className="text-3xl font-bold mt-16 mb-8 text-white border-b border-white/10 pb-4 flex items-center gap-3">
+              <h3 className="text-3xl font-bold mt-16 mb-8 text-white border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
                 <span className="w-2 h-8 bg-green-400 rounded-full inline-block"></span>
                 Summary
               </h3>
@@ -589,7 +589,7 @@ export default function LinearRegressionLabPage() {
           <div className="animate-page-enter max-w-4xl mx-auto">
             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Lab Objective</h2>
             
-            <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
                {/* Decorative Gradient Blob */}
                <div className="absolute top-0 right-0 w-75 h-75 bg-[#00e5ff]/10 blur-[100px] rounded-full pointer-events-none"></div>
 
@@ -633,7 +633,7 @@ export default function LinearRegressionLabPage() {
                 { title: 'Curious Minds', desc: 'Anyone curious about how predictions work' },
                 { title: 'Foundational Seekers', desc: 'Students with little or no prior knowledge' }
               ].map((audience, idx) => (
-                 <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-all cursor-default shadow-lg hover:-translate-y-1">
+                 <div key={idx} className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-8 hover:bg-white/10 transition-all cursor-default shadow-lg hover:-translate-y-1">
                     <h3 className="text-[#00e5ff] font-bold text-xl mb-3 flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-[#00e5ff] shadow-[0_0_10px_#00e5ff]"></span>
                       {audience.title}
@@ -649,8 +649,8 @@ export default function LinearRegressionLabPage() {
           <div className="animate-page-enter max-w-4xl mx-auto">
             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Course Alignment</h2>
             
-            <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
-              <h3 className="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">This experiment aligns with:</h3>
+            <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
+              <h3 className="text-2xl font-bold text-white mb-8 border-b border-[var(--glass-border)] pb-4">This experiment aligns with:</h3>
               <div className="flex flex-wrap gap-4">
                 {['Machine Learning Fundamentals', 'Artificial Intelligence Basics', 'Data Science Introduction', 'Statistics (Correlation Concepts)'].map((course, idx) => (
                   <span key={idx} className="bg-[#00e5ff]/10 text-[#00e5ff] border border-[#00e5ff]/30 px-6 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(0,229,255,0.1)] hover:bg-[#00e5ff]/20 transition-colors">
@@ -688,10 +688,10 @@ export default function LinearRegressionLabPage() {
                  { type: 'Tool', title: 'Interactive ML Visualizer', author: '101AI', link: 'https://101ai.net/linear-regression', icon: '🛠️', color: 'text-[#00e5ff]' },
                  { type: 'Documentation', title: 'Scikit-Learn Regression API', author: 'Official Docs', link: 'https://scikit-learn.org/stable/modules/linear_model.html', icon: '💻', color: 'text-purple-400' }
               ].map((res, idx) => (
-                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">By {res.author}</p>
@@ -699,12 +699,12 @@ export default function LinearRegressionLabPage() {
               ))}
             </div>
             
-            <div className="mt-12 bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-sm">
+            <div className="mt-12 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-sm">
                <div>
                   <h3 className="text-2xl font-bold text-white mb-2">Want to practice code?</h3>
                   <p className="text-gray-400">Join our open source community discord to collaborate on algorithms.</p>
                </div>
-               <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all whitespace-nowrap border border-white/10 hover:border-white/30">
+               <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all whitespace-nowrap border border-[var(--glass-border)] hover:border-white/30">
                   Join Discord Community
                </button>
             </div>
@@ -732,7 +732,7 @@ export default function LinearRegressionLabPage() {
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-cyan-900/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
       {/* Page Header */}
-      <div className="px-8 max-w-7xl mx-auto mb-12 relative w-full border-b border-white/5 pb-8">
+      <div className="px-8 max-w-7xl mx-auto mb-12 relative w-full border-b border-[var(--glass-border)] pb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-lg">
           Linear Regression <span className="font-light text-gray-400 opacity-60 ml-2">| Interactive Lab</span>
         </h1>
@@ -743,7 +743,7 @@ export default function LinearRegressionLabPage() {
         
         {/* Sticky Sidebar Navigation */}
         <div className="w-full md:w-64 shrink-0 flex flex-col">
-          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[#110b27]">
+          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[var(--panel-bg-strong)]">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -753,7 +753,7 @@ export default function LinearRegressionLabPage() {
                   className={`w-full text-left px-5 py-3.5 mb-1 rounded-lg transition-all duration-300 flex items-center gap-3 font-semibold text-sm ${
                     isActive 
                       ? 'bg-linear-to-r from-[#6c2bd9] to-[#4a1bb8] text-white shadow-[0_4px_20px_rgba(108,43,217,0.4)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-gray-400 hover:text-white hover:bg-[var(--glass-bg)]'
                   }`}
                 >
                   <span className={`${isActive ? 'text-[#00e5ff]' : 'text-gray-500'} transition-colors`}>{tab.icon}</span>
@@ -765,7 +765,7 @@ export default function LinearRegressionLabPage() {
         </div>
 
         {/* Dynamic Content Area */}
-        <div className="flex-1 glass-card p-8 md:p-12 min-h-150 border border-white/5 bg-[#0a0510]/80 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div className="flex-1 glass-card p-8 md:p-12 min-h-150 border border-[var(--glass-border)] bg-[var(--panel-bg)] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
           {renderContent()}
         </div>
 

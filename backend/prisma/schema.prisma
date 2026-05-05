@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserLearningSession {
+  id              String   @id @default(cuid())
+  userId          String   
+  startTime       DateTime
+  durationMs      Int
+  abandoned       Boolean  @default(false)
+  focusLossEvents Int      @default(0)
+  metrics         BehavioralMetric[]
+}
+
+model TopicPerformance {
+  id              String   @id @default(cuid())
+  userId          String
+  topic           String   
+  totalAttempts   Int      @default(0)
+  correctAttempts Int      @default(0)
+  weightedScore   Float    
+  confidenceScore Float    
+  lastAssessedAt  DateTime
+  trendEvolution  String   // Stored as serialized JSON string
+}
+
+model BehavioralMetric {
+  id              String   @id @default(cuid())
+  sessionId       String?
+  session         UserLearningSession? @relation(fields: [sessionId], references: [id])
+  metricType      String   
+  value           Float
+  context         String   // Stored as serialized JSON string
+  timestamp       DateTime @default(now())
+}
+
+model AIFeedbackHistory {
+  id              String   @id @default(cuid())
+  userId          String
+  prediction      String
+  score           Float
+  confidence      Float
+  evidenceUsed    String   // Stored as serialized JSON string
+  riskFactors     String   // Stored as serialized JSON string
+  generatedText   String
+  createdAt       DateTime @default(now())
+}
+
+model UserMLFeatures {
+  id                        String   @id @default(cuid())
+  userId                    String   @unique
+  weightedAccuracy          Float    @default(0)
+  advancedLabCompletionRate Float    @default(0)
+  averageTimePerProblem     Float    @default(0)
+  consistencyScore          Float    @default(0)
+  retryRate                 Float    @default(0)
+  retentionScore            Float    @default(0)
+  learningVelocity          Float    @default(0)
+  burnoutRisk               Float    @default(0)
+  lastComputedAt            DateTime @default(now())
+}
+
+model ExamOutcome {
+  id           String   @id @default(cuid())
+  userId       String
+  examName     String
+  passed       Boolean
+  score        Float?
+  attemptDate  DateTime @default(now())
+}
+
+model PredictionTrace {
+  id                     String   @id @default(cuid())
+  userId                 String
+  predictionId           String   @unique
+  overallReadiness       Float
+  overallConfidence      Float
+  reliability            String
+  formulaVersion         String
+  positiveSignals        String   // Serialized JSON Array
+  negativeSignals        String   // Serialized JSON Array
+  topContributors        String   // Serialized JSON Array
+  improvementSuggestions String   // Serialized JSON Array
+  generatedAt            DateTime @default(now())
+}

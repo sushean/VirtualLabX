@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "adm-zip": "^0.5.17",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -22,5 +23,8 @@
     "puppeteer": "^24.41.0",
     "qrcode": "^1.5.4",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
   }
 }

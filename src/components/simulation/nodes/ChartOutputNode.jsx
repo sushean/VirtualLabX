@@ -25,7 +25,7 @@ export default function ChartOutputNode({ data }) {
   const maxVal = chartData.length > 0 ? Math.max(...chartData) : 1;
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 min-w-[240px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 min-w-[240px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        <Handle 
          type="target" 
          position={Position.Left} 

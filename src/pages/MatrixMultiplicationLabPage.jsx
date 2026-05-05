@@ -46,7 +46,7 @@ const FeedbackForm = () => {
   return (
     <div className="animate-page-enter max-w-3xl mx-auto">
       <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Experiment Feedback</h2>
-      <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
          <div className="absolute top-0 right-0 w-75 h-75 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none"></div>
          <p className="text-gray-300 text-lg mb-8 relative z-10 text-center font-bold">How would you rate your experience with the Matrix Multiplication simulation?</p>
          
@@ -70,7 +70,7 @@ const FeedbackForm = () => {
             <textarea 
                value={feedbackText}
                onChange={(e) => setFeedbackText(e.target.value)}
-               className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors h-32 resize-none shadow-inner"
+               className="w-full bg-black/50 border border-[var(--glass-border)] rounded-xl p-4 text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors h-32 resize-none shadow-inner"
                placeholder="Tell us what you loved or what we could improve..."
             />
          </div>
@@ -78,7 +78,7 @@ const FeedbackForm = () => {
          <button 
             disabled={rating === 0}
             onClick={() => setSubmitted(true)}
-            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
+            className={`w-full relative z-10 mt-8 py-4 rounded-xl font-bold text-lg transition-all ${rating === 0 ? 'bg-[var(--glass-bg)] text-gray-500 cursor-not-allowed border border-[var(--glass-border)]' : 'bg-linear-to-r from-purple-600 to-[#00e5ff] text-white shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-1'}`}
          >
             Submit Feedback
          </button>
@@ -96,7 +96,7 @@ const MatrixPrerequisitesContent = () => {
       body: (
         <div className="space-y-4">
            <p className="text-gray-300 text-lg">A matrix is a rectangular arrangement of numbers organized into rows and columns.</p>
-           <div className="bg-black/50 p-4 rounded-xl border border-white/5 font-mono text-[#00e5ff] inline-block">
+           <div className="bg-black/50 p-4 rounded-xl border border-[var(--glass-border)] font-mono text-[#00e5ff] inline-block">
               A = [ 2 &nbsp;5 &nbsp;7 ]<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;[ 1 &nbsp;3 &nbsp;4 ]
            </div>
@@ -104,7 +104,7 @@ const MatrixPrerequisitesContent = () => {
              <li><strong className="text-purple-400">Rows</strong> → Horizontal elements (2, 5, 7)</li>
              <li><strong className="text-[#00e5ff]">Columns</strong> → Vertical elements (2, 1)</li>
            </ul>
-           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-white/10 pb-2">📌 Key Terms</h4>
+           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-[var(--glass-border)] pb-2">📌 Key Terms</h4>
            <ul className="text-gray-400 space-y-2">
              <li><b className="text-white">Element:</b> Each value inside the matrix (e.g., 2, 5, 7)</li>
              <li><b className="text-white">Row index (i):</b> Position of a row</li>
@@ -117,13 +117,13 @@ const MatrixPrerequisitesContent = () => {
       id: "dimensions", title: "2. Matrix Dimensions", image: matrixPrereqDimensionsImg,
       body: (
         <div className="space-y-4">
-           <p className="text-gray-300 text-lg">Every matrix has a defined size expressed mathematically as: <span className="font-bold text-white tracking-widest text-2xl bg-white/5 px-2 py-1 rounded">m × n</span></p>
-           <ul className="text-gray-300 space-y-2 mt-4 text-lg bg-black/40 p-4 rounded-xl border border-white/5">
+           <p className="text-gray-300 text-lg">Every matrix has a defined size expressed mathematically as: <span className="font-bold text-white tracking-widest text-2xl bg-[var(--glass-bg)] px-2 py-1 rounded">m × n</span></p>
+           <ul className="text-gray-300 space-y-2 mt-4 text-lg bg-black/40 p-4 rounded-xl border border-[var(--glass-border)]">
              <li><strong className="text-purple-400">m</strong> = number of rows</li>
              <li><strong className="text-[#00e5ff]">n</strong> = number of columns</li>
            </ul>
-           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-white/10 pb-2">📌 Example</h4>
-           <p className="text-xl font-bold bg-[#110b27] border border-purple-500/30 p-4 rounded inline-block text-purple-300 shadow-lg">A = 2 × 3 matrix</p>
+           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-[var(--glass-border)] pb-2">📌 Example</h4>
+           <p className="text-xl font-bold bg-[var(--panel-bg-strong)] border border-purple-500/30 p-4 rounded inline-block text-purple-300 shadow-lg">A = 2 × 3 matrix</p>
            <p className="text-gray-300 font-semibold mt-4">👉 This means it contains <b className="text-purple-400">2 rows</b> and <b className="text-[#00e5ff]">3 columns</b>.</p>
         </div>
       )
@@ -151,7 +151,7 @@ const MatrixPrerequisitesContent = () => {
               </div>
            </div>
 
-           <h4 className="text-white font-bold mt-6 text-xl border-b border-white/10 pb-2">🧠 Why this condition?</h4>
+           <h4 className="text-white font-bold mt-6 text-xl border-b border-[var(--glass-border)] pb-2">🧠 Why this condition?</h4>
            <p className="text-gray-400">Because matrix multiplication pairs the <b className="text-purple-400">Rows of A</b> with the <b className="text-[#00e5ff]">Columns of B</b>. If their physical lengths don't match exactly, the elements run out, and pairing becomes impossible.</p>
         </div>
       )
@@ -161,15 +161,15 @@ const MatrixPrerequisitesContent = () => {
       body: (
         <div className="space-y-4">
            <p className="text-gray-300 text-lg">If multiplication is mathematically valid, you can instantly predict the dimensions of the final output matrix!</p>
-           <div className="bg-black/50 p-6 rounded-xl border border-white/10 mt-4 text-center font-mono text-xl shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+           <div className="bg-black/50 p-6 rounded-xl border border-[var(--glass-border)] mt-4 text-center font-mono text-xl shadow-[0_0_20px_rgba(0,0,0,0.5)]">
              <span className="text-purple-400">A (<b>m</b> × n)</span> <span className="text-gray-500 text-sm align-middle mx-4">MULTIPLIED BY</span> <span className="text-[#00e5ff]">B (n × <b>p</b>)</span>
            </div>
            <p className="text-center text-white mt-4 font-bold text-lg">👉 Result:</p>
            <div className="text-center">
              <span className="bg-linear-to-r from-purple-500 to-[#00e5ff] text-transparent bg-clip-text font-extrabold text-5xl drop-shadow-lg">C (m × p)</span>
            </div>
-           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-white/10 pb-2">📌 Example</h4>
-           <ul className="text-gray-400 space-y-1 font-mono text-lg bg-[#110b27] p-4 rounded">
+           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-[var(--glass-border)] pb-2">📌 Example</h4>
+           <ul className="text-gray-400 space-y-1 font-mono text-lg bg-[var(--panel-bg-strong)] p-4 rounded">
              <li>A = <b className="text-white">2</b> × <span className="text-gray-600 line-through">3</span></li>
              <li>B = <span className="text-gray-600 line-through">3</span> × <b className="text-white">4</b></li>
              <li className="mt-2 text-[#00e5ff] font-bold">👉 Result = 2 × 4</li>
@@ -182,10 +182,10 @@ const MatrixPrerequisitesContent = () => {
       body: (
         <div className="space-y-4">
            <p className="text-gray-300 text-lg">Matrix multiplication relies entirely on completing <b>dot products</b> iteratively across matrices.</p>
-           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-white/10 pb-2">📌 Definition</h4>
+           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-[var(--glass-border)] pb-2">📌 Definition</h4>
            <p className="text-gray-400">The dot product multiplies corresponding spatial elements in parallel vectors and adds them together into a single scalar value.</p>
            
-           <div className="bg-black/60 border border-white/10 p-6 rounded-2xl overflow-x-auto shadow-inner my-6">
+           <div className="bg-black/60 border border-[var(--glass-border)] p-6 rounded-2xl overflow-x-auto shadow-inner my-6">
               <div className="font-mono text-lg text-white whitespace-nowrap min-w-max flex flex-col items-center gap-4">
                 <div className="flex items-center gap-4">
                   <span className="text-purple-400">[a₁ a₂ a₃]</span>
@@ -193,14 +193,14 @@ const MatrixPrerequisitesContent = () => {
                   <span className="text-[#00e5ff]">[b₁ b₂ b₃]ᵀ</span>
                 </div>
                 <span className="text-yellow-400 font-bold text-2xl">=</span>
-                <span className="bg-white/5 border border-white/10 px-6 py-3 rounded-xl tracking-widest font-bold">
+                <span className="bg-[var(--glass-bg)] border border-[var(--glass-border)] px-6 py-3 rounded-xl tracking-widest font-bold">
                   (a₁<span className="text-gray-500">×</span>b₁) <span className="text-[#00e5ff]">+</span> (a₂<span className="text-gray-500">×</span>b₂) <span className="text-[#00e5ff]">+</span> (a₃<span className="text-gray-500">×</span>b₃)
                 </span>
               </div>
            </div>
 
-           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-white/10 pb-2">📌 Example</h4>
-           <div className="bg-[#110b27] border border-white/5 p-4 rounded-xl font-mono text-gray-300 text-lg">
+           <h4 className="text-white font-bold uppercase tracking-widest mt-6 text-sm border-b border-[var(--glass-border)] pb-2">📌 Example</h4>
+           <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-4 rounded-xl font-mono text-gray-300 text-lg">
              <p>[1 &nbsp;2 &nbsp;3] • [4 &nbsp;5 &nbsp;6]</p>
              <p className="mt-2 text-gray-500">= (1×4) + (2×5) + (3×6)</p>
              <p className="text-gray-500">= 4 + 10 + 18</p>
@@ -218,10 +218,10 @@ const MatrixPrerequisitesContent = () => {
       
       <div className="space-y-4">
         {topics.map((topic) => (
-          <div key={topic.id} className="bg-[#110b27] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
+          <div key={topic.id} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-lg group">
             <button 
               onClick={() => setExpandedTopic(expandedTopic === topic.id ? null : topic.id)}
-              className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-white/5 transition-colors focus:outline-none"
+              className="w-full flex items-center justify-between p-5 md:p-6 hover:bg-[var(--glass-bg)] transition-colors focus:outline-none"
             >
               <div className="flex items-center gap-4">
                 <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block shadow-[0_0_10px_#00e5ff]"></span>
@@ -232,9 +232,9 @@ const MatrixPrerequisitesContent = () => {
               </span>
             </button>
             
-            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === topic.id ? 'max-h-[1500px] opacity-100 border-t border-white/10' : 'max-h-0 opacity-0'}`}>
+            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedTopic === topic.id ? 'max-h-[1500px] opacity-100 border-t border-[var(--glass-border)]' : 'max-h-0 opacity-0'}`}>
               <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 items-start bg-black/40">
-                <div className="w-full xl:w-2/5 shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
+                <div className="w-full xl:w-2/5 shrink-0 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-[0_0_30px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-shadow duration-500">
                   <img src={topic.image} alt={topic.title} className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="flex-1 w-full">
@@ -297,17 +297,17 @@ export default function MatrixMultiplicationLabPage() {
                 Matrix multiplication is one of the most fundamental operations in linear algebra, forming the backbone of modern fields such as data science, artificial intelligence, computer graphics, and scientific computing. Unlike simple arithmetic multiplication, matrix multiplication follows a structured and rule-based process that combines rows and columns to produce meaningful results.
               </p>
               
-              <h3 className="text-3xl font-bold text-white mt-10 border-b border-white/10 pb-4 flex items-center gap-3">
+              <h3 className="text-3xl font-bold text-white mt-10 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
                  <span className="w-2 h-8 bg-purple-500 rounded-full inline-block"></span>
                  🔍 What is a Matrix?
               </h3>
               
-              <div className="bg-[#110b27] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-shadow">
+              <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-shadow">
                 <div className="flex-1">
                   <p className="mb-4">
                     A matrix is a rectangular arrangement of numbers organized into <b>rows</b> and <b>columns</b>. It is commonly used to represent structured data or mathematical relationships.
                   </p>
-                  <p className="mb-4 font-mono text-[#00e5ff] bg-black/50 p-4 rounded-xl border border-white/5 inline-block">
+                  <p className="mb-4 font-mono text-[#00e5ff] bg-black/50 p-4 rounded-xl border border-[var(--glass-border)] inline-block">
                     A = [ 1  2 ]<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;[ 3  4 ]
                   </p>
@@ -322,12 +322,12 @@ export default function MatrixMultiplicationLabPage() {
                 </div>
               </div>
 
-              <h3 className="text-3xl font-bold text-white mt-10 border-b border-white/10 pb-4 flex items-center gap-3">
+              <h3 className="text-3xl font-bold text-white mt-10 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3">
                  <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block"></span>
                  🔍 What is Matrix Multiplication?
               </h3>
 
-              <div className="bg-[#110b27] border border-white/10 py-10 px-6 rounded-2xl my-8 text-center flex flex-col xl:flex-row items-center shadow-2xl relative overflow-hidden gap-8">
+              <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] py-10 px-6 rounded-2xl my-8 text-center flex flex-col xl:flex-row items-center shadow-2xl relative overflow-hidden gap-8">
                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-[#00e5ff]/5 blur-[70px] rounded-full pointer-events-none"></div>
                  <div className="flex-1 text-left z-10">
                    <p className="mb-6">
@@ -358,39 +358,39 @@ export default function MatrixMultiplicationLabPage() {
                  </div>
               </div>
 
-              <h3 className="text-3xl font-bold text-white mt-12 mb-6 border-b border-white/10 pb-4">🧠 Intuition Behind Matrix Multiplication</h3>
+              <h3 className="text-3xl font-bold text-white mt-12 mb-6 border-b border-[var(--glass-border)] pb-4">🧠 Intuition Behind Matrix Multiplication</h3>
               <p>Matrix multiplication can be understood as a process of transforming data.</p>
               <ul className="mb-6 space-y-4">
                  <li className="flex gap-4 items-center"><span className="text-xl bg-purple-500 w-8 h-8 rounded flex items-center justify-center font-bold">A</span> <span>represents <b>input values</b> or features</span></li>
                  <li className="flex gap-4 items-center"><span className="text-xl bg-[#00e5ff] text-black w-8 h-8 rounded flex items-center justify-center font-bold">B</span> <span>represents <b>rules, weights, or transformations</b></span></li>
               </ul>
-              <p className="bg-white/5 border border-white/10 p-6 rounded-xl font-bold text-[#00e5ff] text-xl text-center shadow-inner">
+              <p className="bg-[var(--glass-bg)] border border-[var(--glass-border)] p-6 rounded-xl font-bold text-[#00e5ff] text-xl text-center shadow-inner">
                  👉 The result (A × B) represents the final transformed output
               </p>
               <p className="mt-4 italic text-sm text-gray-400 text-center">This is why matrix multiplication is heavily used in systems where inputs are processed through a set of rules.</p>
 
-              <h3 className="text-3xl font-bold text-white mt-12 mb-8 border-b border-white/10 pb-4">🌍 Real-World Applications</h3>
+              <h3 className="text-3xl font-bold text-white mt-12 mb-8 border-b border-[var(--glass-border)] pb-4">🌍 Real-World Applications</h3>
               <p className="mb-6">Matrix multiplication is not just theoretical—it powers many real-world systems:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-[#00e5ff]">
+                 <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-[#00e5ff]">
                     <h4 className="text-xl font-bold text-white mb-2">🤖 AI & Machine Learning</h4>
                     <p className="text-gray-400 text-sm">Used to compute outputs in neural networks (input × weights)</p>
                  </div>
-                 <div className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-purple-500">
+                 <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-purple-500">
                     <h4 className="text-xl font-bold text-white mb-2">🎮 Computer Graphics</h4>
                     <p className="text-gray-400 text-sm">Used for rotating, scaling, and transforming 2D/3D objects</p>
                  </div>
-                 <div className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-green-400">
+                 <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-green-400">
                     <h4 className="text-xl font-bold text-white mb-2">📊 Data Science</h4>
                     <p className="text-gray-400 text-sm">Used in feature transformations and data manipulation</p>
                  </div>
-                 <div className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-yellow-400">
+                 <div className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:-translate-y-1 transition-transform border-l-4 border-l-yellow-400">
                     <h4 className="text-xl font-bold text-white mb-2">📡 Engineering & Physics</h4>
                     <p className="text-gray-400 text-sm">Used to model systems, signals, and mathematical transformations</p>
                  </div>
               </div>
 
-              <h3 className="text-3xl font-bold text-white mt-16 mb-8 border-b border-white/10 pb-4">🧩 Why This Lab is Important</h3>
+              <h3 className="text-3xl font-bold text-white mt-16 mb-8 border-b border-[var(--glass-border)] pb-4">🧩 Why This Lab is Important</h3>
               <p className="mb-6 text-xl">
                  Understanding matrix multiplication conceptually is often challenging because students only see the final result, not the process.
               </p>
@@ -402,7 +402,7 @@ export default function MatrixMultiplicationLabPage() {
                    'Allow you to experiment with different matrices',
                    'Build strong intuition through step-by-step simulation'
                  ].map((pt, i) => (
-                    <li key={i} className="flex gap-3 items-center bg-white/5 p-4 rounded-xl border border-white/5">
+                    <li key={i} className="flex gap-3 items-center bg-[var(--glass-bg)] p-4 rounded-xl border border-[var(--glass-border)]">
                        <span className="text-[#00e5ff]">✦</span>
                        <span className="font-semibold text-gray-300">{pt}</span>
                     </li>
@@ -437,7 +437,7 @@ export default function MatrixMultiplicationLabPage() {
           <div className="animate-page-enter max-w-4xl mx-auto">
             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Lab Objective</h2>
             
-            <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
                {/* Decorative Gradient Blob */}
                <div className="absolute top-0 right-0 w-75 h-75 bg-[#00e5ff]/10 blur-[100px] rounded-full pointer-events-none"></div>
 
@@ -483,7 +483,7 @@ export default function MatrixMultiplicationLabPage() {
                 { title: 'Graphics Developers', desc: 'Designers building 3D spatial grid transformations.' },
                 { title: 'Data Scientists', desc: 'Engineers working with deep neural network input weights.' }
               ].map((audience, idx) => (
-                 <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-all cursor-default shadow-lg hover:-translate-y-1">
+                 <div key={idx} className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-xl p-8 hover:bg-white/10 transition-all cursor-default shadow-lg hover:-translate-y-1">
                     <h3 className="text-[#00e5ff] font-bold text-xl mb-3 flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-[#00e5ff] shadow-[0_0_10px_#00e5ff]"></span>
                       {audience.title}
@@ -499,8 +499,8 @@ export default function MatrixMultiplicationLabPage() {
           <div className="animate-page-enter max-w-4xl mx-auto">
             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Course Alignment</h2>
             
-            <div className="bg-[#110b27]/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
-              <h3 className="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">This experiment aligns with:</h3>
+            <div className="bg-[var(--panel-bg-strong)]/80 backdrop-blur-md border border-[var(--glass-border)] rounded-2xl p-8 md:p-12 shadow-2xl mb-8">
+              <h3 className="text-2xl font-bold text-white mb-8 border-b border-[var(--glass-border)] pb-4">This experiment aligns with:</h3>
               <div className="flex flex-wrap gap-4">
                 {['Linear Algebra Fundamentals', 'Data Structures & Algorithms', 'Machine Learning Foundations', 'Computer Graphics Math'].map((course, idx) => (
                   <span key={idx} className="bg-[#00e5ff]/10 text-[#00e5ff] border border-[#00e5ff]/30 px-6 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(0,229,255,0.1)] hover:bg-[#00e5ff]/20 transition-colors">
@@ -529,7 +529,7 @@ export default function MatrixMultiplicationLabPage() {
           <div className="animate-page-enter max-w-5xl mx-auto pb-12">
             <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Learning Resources</h2>
             
-            <div className="bg-[#110b27]/80 border border-white/10 rounded-2xl p-6 md:p-8 shadow-xl mb-10">
+            <div className="bg-[var(--panel-bg-strong)]/80 border border-[var(--glass-border)] rounded-2xl p-6 md:p-8 shadow-xl mb-10">
                <p className="text-gray-300 text-lg leading-relaxed mb-4">
                  The curriculum content for this lab is mapped directly to the mathematical foundational syllabus of linear algebra. The learning experience is further enhanced through interactive simulation using the matrix renderer, enabling step-by-step visualization of matrix operations.
                </p>
@@ -539,7 +539,7 @@ export default function MatrixMultiplicationLabPage() {
             </div>
 
             {/* 1. Conceptual Learning */}
-            <h3 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-3 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3 mt-12">
               <span className="w-2 h-8 bg-purple-500 rounded-full inline-block"></span>1. Conceptual Learning (Mathematics)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -548,10 +548,10 @@ export default function MatrixMultiplicationLabPage() {
                  { type: 'Lectures', title: 'Linear Algebra Lectures', author: 'MIT OpenCourseWare', link: 'https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/', icon: '📖', color: 'text-blue-400' },
                  { type: 'Notes', title: 'Matrices Notes', author: 'Paul\'s Online Math Notes', link: 'https://tutorial.math.lamar.edu/Classes/Alg/Matrices.aspx', icon: '📖', color: 'text-green-400' }
               ].map((res, idx) => (
-                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">{res.author}</p>
@@ -560,7 +560,7 @@ export default function MatrixMultiplicationLabPage() {
             </div>
 
             {/* 2. Programming & Implementation */}
-            <h3 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-3 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3 mt-12">
               <span className="w-2 h-8 bg-[#00e5ff] rounded-full inline-block"></span>2. Programming & Implementation
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -569,10 +569,10 @@ export default function MatrixMultiplicationLabPage() {
                  { type: 'Tutorial', title: 'Matrix Multiplication in Python', author: 'GeeksforGeeks', link: 'https://www.geeksforgeeks.org/python-program-multiply-two-matrices/', icon: '💻', color: 'text-green-400' },
                  { type: 'Guide', title: 'NumPy Matrices', author: 'W3Schools', link: 'https://www.w3schools.com/python/numpy/numpy_matrices.asp', icon: '💻', color: 'text-yellow-400' }
               ].map((res, idx) => (
-                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">{res.author}</p>
@@ -581,7 +581,7 @@ export default function MatrixMultiplicationLabPage() {
             </div>
 
             {/* 3. Visualization & Interactive Tools */}
-            <h3 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-3 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3 mt-12">
               <span className="w-2 h-8 bg-pink-500 rounded-full inline-block"></span>3. Visualization & Interactive Tools
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -589,10 +589,10 @@ export default function MatrixMultiplicationLabPage() {
                  { type: 'Tool', title: 'Matrix Calculator', author: 'Desmos', link: 'https://www.desmos.com/matrix', icon: '🎯', color: 'text-pink-400' },
                  { type: 'Tool', title: 'Linear Algebra Tools', author: 'GeoGebra', link: 'https://www.geogebra.org/matrix', icon: '🎯', color: 'text-purple-400' }
               ].map((res, idx) => (
-                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">{res.author}</p>
@@ -601,7 +601,7 @@ export default function MatrixMultiplicationLabPage() {
             </div>
 
             {/* 4. Real-World Applications */}
-            <h3 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-3 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3 mt-12">
               <span className="w-2 h-8 bg-orange-500 rounded-full inline-block"></span>4. Real-World Applications
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -609,10 +609,10 @@ export default function MatrixMultiplicationLabPage() {
                  { type: 'Course', title: 'Machine Learning Courses', author: 'Coursera', link: 'https://www.coursera.org/learn/machine-learning', icon: '🤖', color: 'text-orange-400' },
                  { type: 'Graphics', title: 'Transformations', author: 'LearnOpenGL', link: 'https://learnopengl.com/Getting-started/Transformations', icon: '🎮', color: 'text-red-400' }
               ].map((res, idx) => (
-                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
+                 <a href={res.link} target="_blank" rel="noopener noreferrer" key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl hover:border-white/20 transition-all hover:-translate-y-1 block group shadow-lg">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-3xl">{res.icon}</span>
-                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-white/5 rounded shrink-0 ${res.color}`}>{res.type}</span>
+                       <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 bg-[var(--glass-bg)] rounded shrink-0 ${res.color}`}>{res.type}</span>
                     </div>
                     <h3 className="text-xl font-bold text-white group-hover:text-[#00e5ff] transition-colors mb-2 leading-tight">{res.title}</h3>
                     <p className="text-gray-400 text-sm">{res.author}</p>
@@ -621,7 +621,7 @@ export default function MatrixMultiplicationLabPage() {
             </div>
 
             {/* 5. Reference Books */}
-            <h3 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-3 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6 border-b border-[var(--glass-border)] pb-4 flex items-center gap-3 mt-12">
               <span className="w-2 h-8 bg-green-500 rounded-full inline-block"></span>5. Reference Books
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -629,7 +629,7 @@ export default function MatrixMultiplicationLabPage() {
                  { type: 'Book', title: 'Introduction to Linear Algebra', author: 'Gilbert Strang', link: '#', icon: '📘', color: 'text-green-400' },
                  { type: 'Book', title: 'Linear Algebra and Its Applications', author: 'David C. Lay', link: '#', icon: '📘', color: 'text-green-400' }
               ].map((res, idx) => (
-                 <div key={idx} className="bg-[#110b27] border border-white/5 p-6 rounded-2xl shadow-lg flex items-center gap-6">
+                 <div key={idx} className="bg-[var(--panel-bg-strong)] border border-[var(--glass-border)] p-6 rounded-2xl shadow-lg flex items-center gap-6">
                     <span className="text-5xl">{res.icon}</span>
                     <div>
                        <span className={`text-xs font-bold uppercase tracking-widest ${res.color} mb-1 block`}>{res.type}</span>
@@ -639,12 +639,12 @@ export default function MatrixMultiplicationLabPage() {
               ))}
             </div>
             
-            <div className="mt-12 bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-sm">
+            <div className="mt-12 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 backdrop-blur-sm">
                <div>
                   <h3 className="text-2xl font-bold text-white mb-2">Want to practice code?</h3>
                   <p className="text-gray-400">Join our open source community discord to collaborate on algorithms.</p>
                </div>
-               <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all whitespace-nowrap border border-white/10 hover:border-white/30">
+               <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all whitespace-nowrap border border-[var(--glass-border)] hover:border-white/30">
                   Join Discord Community
                </button>
             </div>
@@ -666,7 +666,7 @@ export default function MatrixMultiplicationLabPage() {
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" style={{backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
 
       {/* Page Header */}
-      <div className="px-8 max-w-[1500px] mx-auto mb-12 relative w-full border-b border-white/5 pb-8">
+      <div className="px-8 max-w-[1500px] mx-auto mb-12 relative w-full border-b border-[var(--glass-border)] pb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-lg flex items-center">
           Matrix Multiplication <span className="font-light text-gray-400 opacity-60 ml-3 text-3xl">| Interactive Lab</span>
         </h1>
@@ -677,7 +677,7 @@ export default function MatrixMultiplicationLabPage() {
         
         {/* Sticky Sidebar Navigation */}
         <div className="w-full md:w-64 shrink-0 flex flex-col">
-          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[#110b27] border-white/5 border">
+          <div className="sticky top-32 glass-card p-2 shadow-2xl overflow-hidden bg-[var(--panel-bg-strong)] border-[var(--glass-border)] border">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -687,7 +687,7 @@ export default function MatrixMultiplicationLabPage() {
                   className={`w-full text-left px-5 py-3.5 mb-1 rounded-lg transition-all duration-300 flex items-center gap-3 font-semibold text-sm ${
                     isActive 
                       ? 'bg-linear-to-r from-[#6c2bd9] to-[#00e5ff] text-white shadow-[0_4px_20px_rgba(0,229,255,0.3)]' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-gray-400 hover:text-white hover:bg-[var(--glass-bg)]'
                   }`}
                 >
                   <span className={`${isActive ? 'text-white' : 'text-gray-500'} transition-colors`}>{tab.icon}</span>
@@ -699,7 +699,7 @@ export default function MatrixMultiplicationLabPage() {
         </div>
 
         {/* Dynamic Content Area (No padding enforced wrapper if it's the simulation to maximize space) */}
-        <div className={`flex-1 glass-card border border-white/5 bg-[#0a0510]/80 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${activeTab === 'Simulation' ? 'p-0 pb-16 border-none bg-transparent shadow-none' : 'p-8 md:p-12 min-h-150'}`}>
+        <div className={`flex-1 glass-card border border-[var(--glass-border)] bg-[var(--panel-bg)] shadow-[0_0_50px_rgba(0,0,0,0.5)] ${activeTab === 'Simulation' ? 'p-0 pb-16 border-none bg-transparent shadow-none' : 'p-8 md:p-12 min-h-150'}`}>
           {renderContent()}
         </div>
 

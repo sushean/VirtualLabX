@@ -20,7 +20,7 @@ export default function ProcessNode({ data }) {
   const opSymbol = op === 'add' ? '+' : op === 'subtract' ? '-' : op === 'multiply' ? '×' : '÷';
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        <Handle 
          type="target" 
          position={Position.Left} 
@@ -33,7 +33,7 @@ export default function ProcessNode({ data }) {
        </div>
        <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Compute Node'}</div>
        
-       <div className="bg-black/50 p-3 rounded-lg border border-white/10 flex items-center justify-center gap-3">
+       <div className="bg-black/50 p-3 rounded-lg border border-[var(--glass-border)] flex items-center justify-center gap-3">
           <div className="w-8 h-8 rounded-full bg-blue-500/20 flex shrink-0 items-center justify-center border border-blue-500/50 text-blue-400 font-extrabold text-xl shadow-[0_0_10px_rgba(59,130,246,0.5)]">
             {opSymbol}
           </div>

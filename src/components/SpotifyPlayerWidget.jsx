@@ -52,13 +52,13 @@ export default function SpotifyPlayerWidget() {
       <div className="absolute inset-0 bg-linear-to-br from-[#1db954]/60 via-purple-500/20 to-black/90 rounded-[24px] p-[1px] -z-10"></div>
       
       {/* Inner Container */}
-      <div className="bg-[#0a0510]/80 backdrop-blur-3xl w-full h-full rounded-[23px] flex flex-col relative overflow-hidden">
+      <div className="bg-[var(--panel-bg)] backdrop-blur-3xl w-full h-full rounded-[23px] flex flex-col relative overflow-hidden">
         
         {/* Ambient Top Glow */}
         <div className="absolute top-0 inset-x-0 h-32 bg-[#1db954]/10 blur-[60px] pointer-events-none rounded-t-[23px]"></div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 relative z-10">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--glass-border)] relative z-10">
           <h3 className="text-white font-extrabold tracking-widest flex items-center gap-2 text-xs uppercase">
             <MusicNoteIcon sx={{ color: '#1db954', fontSize: 18 }} className={isPlaying ? 'animate-bounce' : ''} /> 
             Focus Player
@@ -95,7 +95,7 @@ export default function SpotifyPlayerWidget() {
                   placeholder="Search and queue tracks..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-black/50 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-white text-sm focus:outline-none focus:border-[#1db954]/60 focus:bg-white/5 focus:shadow-[0_0_20px_rgba(29,185,84,0.15)] transition-all"
+                  className="w-full bg-black/50 border border-[var(--glass-border)] rounded-2xl py-3 pl-12 pr-4 text-white text-sm focus:outline-none focus:border-[#1db954]/60 focus:bg-[var(--glass-bg)] focus:shadow-[0_0_20px_rgba(29,185,84,0.15)] transition-all"
                 />
               </div>
 
@@ -113,7 +113,7 @@ export default function SpotifyPlayerWidget() {
                           playTrack(urisArray, idx);
                           setSearchQuery('');
                         }}
-                        className="flex items-center gap-4 p-2 hover:bg-white/5 rounded-xl cursor-pointer transition-all hover:scale-[1.02] group/track"
+                        className="flex items-center gap-4 p-2 hover:bg-[var(--glass-bg)] rounded-xl cursor-pointer transition-all hover:scale-[1.02] group/track"
                       >
                         <img src={track.album.images[2]?.url || track.album.images[0]?.url} alt="" className="w-12 h-12 rounded-lg shadow-md group-hover/track:shadow-[#1db954]/40 transition-shadow" />
                         <div className="overflow-hidden">
@@ -140,7 +140,7 @@ export default function SpotifyPlayerWidget() {
                        <img 
                          src={currentTrack.album.images[0]?.url} 
                          alt="" 
-                         className={`w-40 h-40 rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.6)] mb-5 border border-white/5 z-10 transition-all duration-700 ${isPlaying ? 'scale-100 hover:scale-105 hover:shadow-[0_20px_50px_rgba(29,185,84,0.3)]' : 'scale-95 grayscale-[30%]'}`} 
+                         className={`w-40 h-40 rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.6)] mb-5 border border-[var(--glass-border)] z-10 transition-all duration-700 ${isPlaying ? 'scale-100 hover:scale-105 hover:shadow-[0_20px_50px_rgba(29,185,84,0.3)]' : 'scale-95 grayscale-[30%]'}`} 
                        />
                        <div className="text-center w-full overflow-hidden z-10">
                          <h4 className="text-white text-lg font-extrabold truncate drop-shadow-md">{currentTrack.name}</h4>
@@ -154,7 +154,7 @@ export default function SpotifyPlayerWidget() {
                    )}
 
                    {/* Playback Controls Area */}
-                   <div className="flex flex-col w-full bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-white/5 transition-all">
+                   <div className="flex flex-col w-full bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-[var(--glass-border)] transition-all">
                      {/* Seek Bar */}
                      <div className="flex items-center gap-3 text-[10px] text-gray-400 font-mono mb-3">
                        <span className="w-8 text-right">{formatTime(position)}</span>
@@ -191,7 +191,7 @@ export default function SpotifyPlayerWidget() {
                           <button 
                             onClick={togglePlayPause}
                             disabled={!isReady || (!currentTrack && !isPlaying)}
-                            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 ${isReady && (currentTrack || isPlaying) ? 'bg-white text-black hover:bg-[#1db954] shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(29,185,84,0.6)]' : 'bg-white/5 text-gray-600 cursor-not-allowed'}`}
+                            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 ${isReady && (currentTrack || isPlaying) ? 'bg-white text-black hover:bg-[#1db954] shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(29,185,84,0.6)]' : 'bg-[var(--glass-bg)] text-gray-600 cursor-not-allowed'}`}
                           >
                             {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" className="ml-0.5" />}
                           </button>

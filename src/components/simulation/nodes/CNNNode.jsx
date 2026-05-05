@@ -20,7 +20,7 @@ export default function CNNNode({ data }) {
   const nodeCount = data.config?.nodes || 32;
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 min-w-[220px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 min-w-[220px] border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        <Handle 
          type="target" 
          position={Position.Left} 

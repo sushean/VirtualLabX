@@ -26,14 +26,14 @@ export default function InputNode({ data, id }) {
   }
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        <div className="flex justify-between items-center mb-2">
          <span className="text-xs uppercase tracking-widest font-bold text-gray-400">Input Node</span>
          {isComplete && <span className="text-green-400 text-sm">✓</span>}
        </div>
        <div className="text-white font-bold text-sm mb-3 wrap-break-word">{data.label || 'Default Input'}</div>
        
-       <div className="bg-black/50 p-2 rounded-lg border border-white/10">
+       <div className="bg-black/50 p-2 rounded-lg border border-[var(--glass-border)]">
           <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1">Injection Value</label>
           <input 
             type="number" 

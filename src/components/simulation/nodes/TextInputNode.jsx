@@ -22,7 +22,7 @@ export default function TextInputNode({ data }) {
   };
 
   return (
-    <div className={`bg-[#0a0510]/80 backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
+    <div className={`bg-[var(--panel-bg)] backdrop-blur-md rounded-xl p-4 w-48 border-2 transition-all duration-300 ${borderStyle} ${flowFx}`}>
        
        <div className="flex justify-between items-center mb-2">
          <span className="text-xs uppercase tracking-widest font-bold text-cyan-400">String Gen</span>
@@ -32,7 +32,7 @@ export default function TextInputNode({ data }) {
        
        <div className="flex items-center gap-2 mb-2">
           <input 
-            className="nodrag bg-[#110b27] border border-cyan-500/20 rounded p-2 text-white w-full text-sm placeholder-cyan-500/30 focus:outline-none focus:border-cyan-400 shadow-inner"
+            className="nodrag bg-[var(--panel-bg-strong)] border border-cyan-500/20 rounded p-2 text-white w-full text-sm placeholder-cyan-500/30 focus:outline-none focus:border-cyan-400 shadow-inner"
             value={data.value || ''}
             onChange={onChange}
             disabled={isRunning || isComplete}

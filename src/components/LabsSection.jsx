@@ -20,9 +20,9 @@ export default function LabsSection() {
           <div className="px-8 pb-6">
              <button onClick={() => navigate('/labs/linear-regression')} className="btn-primary text-sm px-6">Try Now</button>
           </div>
-          <div className="relative h-56 bg-gradient-to-t from-black/80 to-black/20 mt-auto overflow-hidden">
-             <img src={linearRegressionImg} alt="Linear Regression" className="w-full h-full object-cover mix-blend-screen opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
-             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f0a20] to-transparent"></div>
+          <div className="relative h-56 bg-gradient-to-t from-[var(--panel-bg-strong)] to-[var(--panel-bg)] mt-auto overflow-hidden">
+             <img src={linearRegressionImg} alt="Linear Regression" className="w-full h-full object-cover opacity-70 mix-blend-normal group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
+             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--panel-bg-strong)] to-transparent"></div>
           </div>
         </div>
         
@@ -34,26 +34,26 @@ export default function LabsSection() {
           <div className="px-8 pb-6">
              <button className="btn-primary text-sm px-6">Try Now</button>
           </div>
-          <div className="relative h-56 bg-gradient-to-t from-black/80 to-black/20 mt-auto overflow-hidden">
-             <img src={nfaImg} alt="NFA Simulator" className="w-full h-full object-cover mix-blend-screen opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
-             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f0a20] to-transparent"></div>
+          <div className="relative h-56 bg-gradient-to-t from-[var(--panel-bg-strong)] to-[var(--panel-bg)] mt-auto overflow-hidden">
+             <img src={nfaImg} alt="NFA Simulator" className="w-full h-full object-cover opacity-70 mix-blend-normal group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
+             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--panel-bg-strong)] to-transparent"></div>
           </div>
         </div>
 
         {/* Card 3: Explore All Labs */}
         <div 
           onClick={() => navigate('/labs')}
-          className="glass-card flex flex-col p-0 overflow-hidden text-left border-white/10 hover:border-[#00e5ff]/50 transition-colors group cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(0,229,255,0.2)]"
+          className="glass-card flex flex-col p-0 overflow-hidden text-left hover:border-[var(--accent-cyan)] transition-colors group cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(0,229,255,0.2)]"
         >
           <div className="p-8 pb-2">
-             <h3 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[#00e5ff]">Explore All Labs</h3>
+             <h3 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-[var(--accent-cyan)]">Explore All Labs</h3>
           </div>
           <div className="px-8 pb-6">
-             <button className="bg-transparent border border-[#00e5ff]/50 text-[#00e5ff] hover:bg-[#00e5ff]/10 text-sm font-semibold py-2 px-6 rounded-full transition-all">View Gallery &rarr;</button>
+             <button className="bg-transparent border border-[var(--accent-cyan)] text-[var(--accent-cyan)] hover:bg-[#00e5ff]/10 text-sm font-semibold py-2 px-6 rounded-full transition-all">View Gallery &rarr;</button>
           </div>
-          <div className="relative h-56 bg-gradient-to-t from-black/80 to-black/20 mt-auto overflow-hidden">
-             <img src={exploreImg} alt="Explore All Labs" className="w-full h-full object-cover mix-blend-screen opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
-             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f0a20] to-transparent"></div>
+          <div className="relative h-56 bg-gradient-to-t from-[var(--panel-bg-strong)] to-[var(--panel-bg)] mt-auto overflow-hidden">
+             <img src={exploreImg} alt="Explore All Labs" className="w-full h-full object-cover opacity-70 mix-blend-normal group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 pt-2" />
+             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--panel-bg-strong)] to-transparent"></div>
           </div>
         </div>
 

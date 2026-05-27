@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   email: {
@@ -20,7 +20,15 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false
+  },
+  photoURL: {
+    type: String,
+    required: false
+  },
+  firebaseUid: {
+    type: String,
+    required: false
   },
   role: {
     type: String,

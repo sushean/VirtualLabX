@@ -88,13 +88,24 @@ export default function ProfilePage() {
 
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
-            <div className="w-28 h-28 rounded-full bg-linear-to-r from-[#6c2bd9] to-[var(--accent-cyan)] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
-              {user.firstName?.charAt(0).toUpperCase()}
-            </div>
+            {user.photoURL ? (
+              <img 
+                src={user.photoURL} 
+                alt="Profile Avatar" 
+                className="w-28 h-28 rounded-full object-cover border-2 border-[var(--accent-cyan)] shadow-[0_0_30px_rgba(0,229,255,0.4)]"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-28 h-28 rounded-full bg-linear-to-r from-[#6c2bd9] to-[var(--accent-cyan)] flex items-center justify-center text-5xl font-bold shadow-[0_0_30px_rgba(108,43,217,0.4)]">
+                {user.firstName?.charAt(0).toUpperCase()}
+              </div>
+            )}
             <div className="text-center md:text-left">
               <h1 className="text-3xl font-bold text-[var(--page-text)] mb-2">{user.firstName} {user.lastName}</h1>
               <p className="text-[var(--accent-cyan)] font-medium">{user.email}</p>
-              <p className="text-[var(--muted-text)] text-sm mt-1">Member since {new Date(user.createdAt).toLocaleDateString()}</p>
+              <p className="text-[var(--muted-text)] text-sm mt-1">
+                Member since {user.createdAt && !isNaN(new Date(user.createdAt).getTime()) ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+              </p>
             </div>
           </div>
 

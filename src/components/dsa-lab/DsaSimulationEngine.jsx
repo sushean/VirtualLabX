@@ -2010,6 +2010,9 @@ export default function DsaSimulationEngine({ slug, topicTitle }) {
                 {greedyCoins.length === 0 && (
                   <div className="text-gray-600 font-mono text-sm">No coins selected yet.</div>
                 )}
+              </div>
+            </div>
+          )}
           {['trees', 'bst', 'avl-trees', 'heap', 'trie'].includes(slug) && (
             <div className="flex flex-col items-center gap-6 w-full h-full justify-center">
               
@@ -2325,16 +2328,26 @@ export default function DsaSimulationEngine({ slug, topicTitle }) {
               </h3>
 
               <div className="space-y-4">
-                <div>
-                  <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest block mb-1">Data / Key Parameter</label>
-                  <input 
-                    type="number" 
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className="w-full bg-black/60 border border-[var(--glass-border)] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors"
-                    placeholder="Enter value (e.g. 23)"
-                  />
-                </div>
+                {!['sorting', 'graphs', 'backtracking', 'dynamic-programming'].includes(slug) && (
+                  <div>
+                    <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest block mb-1">
+                      {slug === 'trie' ? 'Prefix Word Parameter' : slug === 'greedy' ? 'Target Change Amount' : 'Data / Key Parameter'}
+                    </label>
+                    <input 
+                      type={slug === 'trie' ? 'text' : 'number'} 
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      className="w-full bg-black/60 border border-[var(--glass-border)] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#00e5ff]/50 transition-colors"
+                      placeholder={
+                        slug === 'trie' 
+                          ? 'Enter search prefix (e.g. CAT)' 
+                          : slug === 'greedy' 
+                            ? 'Enter amount (e.g. 43)' 
+                            : 'Enter value (e.g. 23)'
+                      }
+                    />
+                  </div>
+                )}
 
                 {['arrays'].includes(slug) && (
                   <div>

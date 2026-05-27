@@ -28,12 +28,11 @@ export default function HeroSection() {
         </h1>
         
         <h2 className="text-2xl md:text-3xl font-semibold text-[var(--accent-cyan)] mb-8 drop-shadow-[0_0_15px_rgba(0,229,255,0.5)]">
-          Learn by Doing, Not Just Reading
+          The Next Generation of Interactive Technical Education
         </h2>
         
         <p className="text-[var(--muted-text)] bg-[var(--panel-bg)] backdrop-blur-md px-6 py-4 rounded-xl border border-[var(--panel-border)] max-w-2xl mb-12 text-base md:text-lg leading-relaxed drop-shadow-sm font-medium shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-          Interactive simulations to master Theory of Computation concepts.
-          Visualize complex automata like DFA, NFA, PDA, and Turing Machines effortlessly.
+          Master complex computer science concepts through immersive, real-time simulations. From Data Structures and Machine Learning to algorithmic optimization—visualize the abstract and build intuition effortlessly.
         </p>
         
         <button 

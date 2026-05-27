@@ -51,7 +51,7 @@ router.post('/signup', async (req, res) => {
       { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role } });
+        res.json({ token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, createdAt: user.createdAt } });
       }
     );
 
@@ -104,13 +104,89 @@ router.post('/login', async (req, res) => {
       { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role } });
+        res.json({ token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, createdAt: user.createdAt } });
       }
     );
 
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
+  }
+});
+
+// @route   POST /api/auth/social-login
+// @desc    Register or login social user
+// @access  Public
+router.post('/social-login', async (req, res) => {
+  const { email, firstName, lastName, photoURL, uid } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ msg: 'Email is required' });
+  }
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = new User({
+        firstName: firstName || 'User',
+        lastName: lastName || '',
+        email,
+        password: '', // No password required for social users
+        photoURL: photoURL || '',
+        firebaseUid: uid || '',
+        role: 'USER'
+      });
+      await user.save();
+    } else {
+      // Update existing user with photo/UID if not present
+      let updated = false;
+      if (!user.firebaseUid && uid) {
+        user.firebaseUid = uid;
+        updated = true;
+      }
+      if (!user.photoURL && photoURL) {
+        user.photoURL = photoURL;
+        updated = true;
+      }
+      if (updated) {
+        await user.save();
+      }
+    }
+
+    if (user.isSuspended) {
+      return res.status(403).json({ msg: 'Account Suspended by Administration' });
+    }
+
+    const payload = {
+      user: {
+        id: user.id
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: '5h' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({
+          token,
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role,
+            photoURL: user.photoURL || photoURL,
+            createdAt: user.createdAt
+          }
+        });
+      }
+    );
+  } catch (err) {
+    console.error('SOCIAL LOGIN ERROR:', err);
+    res.status(500).json({ msg: 'Server error: ' + (err.message || String(err)) });
   }
 });
 

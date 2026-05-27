@@ -68,9 +68,18 @@ export default function Navbar() {
           {isAuthenticated ? (
             <Link to="/profile">
                <button className="flex items-center gap-2 bg-[var(--glass-bg)] hover:bg-white/10 text-white text-sm font-semibold py-2 px-4 rounded-full transition-all border border-[var(--glass-border)] hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                 <div className="w-6 h-6 rounded-full bg-linear-to-r from-purple-500 to-[var(--accent-cyan)] flex items-center justify-center text-xs text-white font-bold">
-                   {user?.firstName?.charAt(0) || 'U'}
-                 </div>
+                 {user?.photoURL ? (
+                   <img 
+                     src={user.photoURL} 
+                     alt="Avatar" 
+                     className="w-6 h-6 rounded-full object-cover border border-white/20"
+                     referrerPolicy="no-referrer"
+                   />
+                 ) : (
+                   <div className="w-6 h-6 rounded-full bg-linear-to-r from-purple-500 to-[var(--accent-cyan)] flex items-center justify-center text-xs text-white font-bold">
+                     {user?.firstName?.charAt(0) || 'U'}
+                   </div>
+                 )}
                  <span>Profile</span>
                </button>
             </Link>

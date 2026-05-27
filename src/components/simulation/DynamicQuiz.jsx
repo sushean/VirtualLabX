@@ -9,8 +9,9 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default function DynamicQuiz({ questions = [], category = 'General', settings = { timeLimit: 10 } }) {
-  const { slug } = useParams();
+export default function DynamicQuiz({ questions = [], category = 'General', settings = { timeLimit: 10 }, topicSlug }) {
+  const { slug: paramSlug } = useParams();
+  const slug = topicSlug || paramSlug;
   const [quizState, setQuizState] = useState('intro'); // 'intro', 'active', 'finished', 'review'
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState((settings.timeLimit || 10) * 60);

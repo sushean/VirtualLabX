@@ -1,6 +1,8 @@
 import React from 'react';
 import FlowRenderer from './FlowRenderer';
 import MatrixWrapper from './MatrixWrapper';
+import SortingSimulationHub from '../sorting-lab/SortingSimulationHub';
+import QuantumSimulationHub from '../quantum-lab/QuantumSimulationHub';
 
 export default function SimulationRenderer({ lab }) {
   const type = lab.simulationType || 'flow';
@@ -21,6 +23,10 @@ export default function SimulationRenderer({ lab }) {
       );
     case 'matrix-multiplication':
       return <MatrixWrapper config={config} />;
+    case 'sorting-algorithms':
+      return <SortingSimulationHub />;
+    case 'quantum-computing':
+      return <QuantumSimulationHub />;
     case 'cnn':
       return <div className="h-full flex items-center justify-center text-gray-400">CNN Simulation Engine (Coming Soon)</div>;
     case 'blockchain':

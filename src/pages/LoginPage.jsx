@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, githubProvider, isFirebaseConfigured } from '../firebase';
+import axios from 'axios';
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -20,6 +22,36 @@ export default function LoginPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
+
+  const handleGoogleLogin = async () => {
+    if (!isFirebaseConfigured) return;
+    setErrorMsg('');
+    setLoading(true);
+    try {
+      await signInWithPopup(auth, googleProvider);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.message || 'Google Authentication failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    if (!isFirebaseConfigured) return;
+    setErrorMsg('');
+    setLoading(true);
+    try {
+      await signInWithPopup(auth, githubProvider);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.message || 'GitHub Authentication failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen text-white relative font-sans flex items-center justify-center pt-48 pb-12 px-6 overflow-hidden">
@@ -46,22 +78,36 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {!isFirebaseConfigured && (
+            <div className="bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs p-4 rounded-xl text-center shadow-inner leading-relaxed mb-6">
+              <strong>Firebase Setup Required:</strong> To enable Google, GitHub, and email login, please configure your Firebase credentials in the <code>.env</code> file.
+            </div>
+          )}
+
           <form className="space-y-5 animate-page-enter" onSubmit={async (e) => {
              e.preventDefault();
              setErrorMsg('');
              setLoading(true);
              try {
                 if(isLogin) {
-                   const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-                   await login(res.data.token);
+                   await login(email, password);
                    navigate('/');
                 } else {
-                   const res = await axios.post('http://localhost:5000/api/auth/signup', { firstName, lastName, email, password });
-                   await login(res.data.token);
+                   const res = await axios.post('http://localhost:5000/api/auth/signup', {
+                      firstName,
+                      lastName,
+                      email,
+                      password
+                   });
+                   const { token, user: dbUser } = res.data;
+                   localStorage.setItem('token', token);
+                   localStorage.setItem('authType', 'local');
+                   // Log in user on context
+                   login(email, password); // We can just log them in using the login method
                    navigate('/');
                 }
              } catch(err) {
-                setErrorMsg(err.response?.data?.msg || 'An error occurred during authentication.');
+                setErrorMsg(err.response?.data?.msg || err.message || 'An error occurred during authentication.');
              } finally {
                 setLoading(false);
              }
@@ -144,7 +190,11 @@ export default function LoginPage() {
 
           {/* Social Logins */}
           <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 bg-[var(--glass-bg)] hover:bg-white/10 border border-[var(--glass-border)] py-3 rounded-xl transition-all">
+            <button 
+              onClick={handleGoogleLogin} 
+              disabled={loading || !isFirebaseConfigured}
+              className="flex items-center justify-center gap-2 bg-[var(--glass-bg)] hover:bg-white/10 border border-[var(--glass-border)] py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <svg className="w-5 h-5 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -153,7 +203,11 @@ export default function LoginPage() {
               </svg>
               <span className="text-sm font-semibold text-gray-300">Google</span>
             </button>
-            <button className="flex items-center justify-center gap-2 bg-[var(--glass-bg)] hover:bg-white/10 border border-[var(--glass-border)] py-3 rounded-xl transition-all group">
+            <button 
+              onClick={handleGithubLogin} 
+              disabled={loading || !isFirebaseConfigured}
+              className="flex items-center justify-center gap-2 bg-[var(--glass-bg)] hover:bg-white/10 border border-[var(--glass-border)] py-3 rounded-xl transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
               </svg>

@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage'
 import AllLabsPage from './pages/AllLabsPage'
 import LinearRegressionLabPage from './pages/LinearRegressionLabPage'
 import MatrixMultiplicationLabPage from './pages/MatrixMultiplicationLabPage'
+import DsaLabPage from './pages/DsaLabPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import PerformancePage from './pages/PerformancePage'
@@ -17,7 +18,9 @@ import DynamicLabPage from './pages/DynamicLabPage'
 import FeaturesPage from './pages/FeaturesPage'
 import ExamLobbyPage from './pages/ExamLobbyPage'
 import VerifyCertificatePage from './pages/VerifyCertificatePage'
+import TopicDetailPage from './pages/TopicDetailPage'
 import ScrollToTop from './components/ScrollToTop'
+import PrivateRoute from './routes/PrivateRoute'
 import { AuthProvider } from './context/AuthContext'
 import { SpotifyProvider } from './context/SpotifyContext'
 import { ExamProvider } from './context/ExamContext'
@@ -37,22 +40,30 @@ function App() {
                 <SpotifyPlayerWidget />
                 <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/labs" element={<AllLabsPage />} />
-                <Route path="/labs/linear-regression" element={<LinearRegressionLabPage />} />
-                <Route path="/labs/matrix-multiplication" element={<MatrixMultiplicationLabPage />} />
-                <Route path="/labs/:slug" element={<DynamicLabPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/performance" element={<PerformancePage />} />
-                <Route path="/certifications" element={<CertificationsSelectionPage />} />
-                <Route path="/exam/:sessionId" element={<ExamPage />} />
-                <Route path="/admin/exams" element={<AdminDashboard />} />
-                <Route path="/admin/builder" element={<AdminLabBuilder />} />
-                <Route path="/admin/builder/:slug" element={<AdminLabBuilder />} />
-                <Route path="/admin/lab/create" element={<AdminLabContentEditor />} />
-                <Route path="/admin/lab/:slug/edit" element={<AdminLabContentEditor />} />
+                
+                {/* Protected Routes */}
+                <Route path="/labs" element={<PrivateRoute><AllLabsPage /></PrivateRoute>} />
+                <Route path="/labs/linear-regression" element={<PrivateRoute><LinearRegressionLabPage /></PrivateRoute>} />
+                <Route path="/labs/matrix-multiplication" element={<PrivateRoute><MatrixMultiplicationLabPage /></PrivateRoute>} />
+                <Route path="/labs/dsa" element={<PrivateRoute><DsaLabPage /></PrivateRoute>} />
+                <Route path="/labs/:slug" element={<PrivateRoute><DynamicLabPage /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+                <Route path="/performance" element={<PrivateRoute><PerformancePage /></PrivateRoute>} />
+                <Route path="/certifications" element={<PrivateRoute><CertificationsSelectionPage /></PrivateRoute>} />
+                <Route path="/certifications/lobby" element={<PrivateRoute><ExamLobbyPage /></PrivateRoute>} />
+                <Route path="/exam/:sessionId" element={<PrivateRoute><ExamPage /></PrivateRoute>} />
+                
+                {/* Admin Protected Routes */}
+                <Route path="/admin/exams" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
+                <Route path="/admin/builder" element={<PrivateRoute><AdminLabBuilder /></PrivateRoute>} />
+                <Route path="/admin/builder/:slug" element={<PrivateRoute><AdminLabBuilder /></PrivateRoute>} />
+                <Route path="/admin/lab/create" element={<PrivateRoute><AdminLabContentEditor /></PrivateRoute>} />
+                <Route path="/admin/lab/:slug/edit" element={<PrivateRoute><AdminLabContentEditor /></PrivateRoute>} />
+                
+                {/* Public Details & Verifiers */}
+                <Route path="/topic/:topicName" element={<TopicDetailPage />} />
                 <Route path="/features" element={<FeaturesPage />} />
-                <Route path="/certifications/lobby" element={<ExamLobbyPage />} />
                 <Route path="/verify/:hash" element={<VerifyCertificatePage />} />
                 </Routes>
               </div>

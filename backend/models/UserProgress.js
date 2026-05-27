@@ -40,6 +40,11 @@ const UserProgressSchema = new mongoose.Schema({
   // Cached AI Evaluation to avoid burning tokens
   aiFeedbackCache: {
     type: mongoose.Schema.Types.Mixed
+  },
+
+  coveredTopics: {
+    type: [String],
+    default: []
   }
 
 }, { timestamps: true });

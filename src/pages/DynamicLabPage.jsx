@@ -15,6 +15,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import SimulationRenderer from '../components/simulation/SimulationRenderer';
 import DynamicLearnCode from '../components/simulation/DynamicLearnCode';
 import DynamicQuiz from '../components/simulation/DynamicQuiz';
+import SortingLearnCodeComponent from '../components/sorting-lab/SortingLearnCodeComponent';
 
 const GenericFeedbackForm = () => {
   const [rating, setRating] = useState(0);
@@ -102,7 +103,33 @@ export default function DynamicLabPage() {
   }, [activeTab, lab, slug, viewedTabs]);
 
   if (loading) return <div className="pt-32 text-center text-[var(--page-text)] h-screen">Compiling Lab Interface...</div>;
-  if (!lab) return <div className="pt-32 text-center text-red-500 h-screen">Lab could not be found or access is restricted.</div>;
+  if (!lab) {
+    return (
+      <div className="min-h-screen bg-[var(--background-start)] flex items-center justify-center p-6 animate-page-enter">
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+          <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-red-500/10 rounded-full blur-[120px]"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-125 h-125 bg-purple-500/10 rounded-full blur-[120px]"></div>
+        </div>
+        <div className="bg-[var(--panel-bg-strong)] backdrop-blur-2xl border border-[var(--glass-border)] p-12 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-2xl w-full text-center relative z-10">
+          <div className="w-24 h-24 bg-gradient-to-br from-red-500/20 to-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-inner">
+            <span className="text-5xl">🚧</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black mb-4 text-transparent bg-clip-text bg-linear-to-r from-red-400 to-purple-500">Module Unavailable</h1>
+          <p className="text-[var(--muted-text)] text-lg mb-10 leading-relaxed">
+            The laboratory module <span className="text-[var(--page-text)] font-mono bg-black/30 px-2 py-1 rounded">"{slug}"</span> you are trying to access is currently in development or restricted. Our engineers are actively calibrating this simulation.
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+             <button onClick={() => navigate('/labs')} className="px-8 py-3.5 rounded-xl font-bold text-white bg-linear-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:-translate-y-1 transition-all uppercase tracking-wide">
+                Explore Available Labs
+             </button>
+             <button onClick={() => navigate('/performance')} className="px-8 py-3.5 rounded-xl font-bold text-[var(--page-text)] bg-[var(--glass-bg)] border border-[var(--glass-border)] hover:bg-[var(--panel-bg-strong)] hover:border-purple-500/50 hover:-translate-y-1 transition-all uppercase tracking-wide">
+                Return to Dashboard
+             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const tabsConfig = [
     { id: 'Introduction', icon: <PlayArrowIcon fontSize="small"/> },
@@ -232,7 +259,7 @@ export default function DynamicLabPage() {
     
     switch (activeTab) {
       case 'Simulation':
-        return <div className="h-150 w-full"><SimulationRenderer lab={lab} /></div>;
+        return <div className="min-h-[600px] h-full w-full"><SimulationRenderer lab={lab} /></div>;
       
       case 'Introduction':
         return (
@@ -288,6 +315,7 @@ export default function DynamicLabPage() {
         );
 
       case 'Learn Code':
+        if (lab.slug === 'sorting-algorithms') return <SortingLearnCodeComponent />;
         return <DynamicLearnCode data={t.learnCode} />;
       
       case 'Test your Knowledge':

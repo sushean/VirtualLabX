@@ -45,8 +45,22 @@ const UserProgressSchema = new mongoose.Schema({
   coveredTopics: {
     type: [String],
     default: []
-  }
+  },
+
+  diagnostics: [{
+    topic: { type: String, required: true },
+    score: { type: Number, required: true },
+    feedback: { type: String, required: true },
+    questions: [{
+      question: { type: String, required: true },
+      userAnswer: { type: String, required: true },
+      aiGrade: { type: Number, required: true },
+      aiFeedback: { type: String, required: true }
+    }],
+    date: { type: Date, default: Date.now }
+  }]
 
 }, { timestamps: true });
 
 module.exports = mongoose.model('UserProgress', UserProgressSchema);
+

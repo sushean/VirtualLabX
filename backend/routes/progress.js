@@ -221,7 +221,27 @@ router.get('/performance', auth, async (req, res) => {
       // ------------------------------------
 
       if (cache.lastGenerated && (Date.now() - new Date(cache.lastGenerated).getTime() < 86400000)) {
-         return res.json({ ...cache, userMeta, activityLog, coveredTopics: progress.coveredTopics || [] });
+         const latestDiagnostic = progress.diagnostics && progress.diagnostics.length 
+            ? progress.diagnostics[progress.diagnostics.length - 1] 
+            : null;
+         const diagScore = latestDiagnostic ? latestDiagnostic.score : null;
+         
+         const activeSubDimensions = {
+            conceptualUnderstanding: Math.round(diagScore !== null ? (avgQuizAccuracy * 0.6 + diagScore * 0.4) : (cache.subDimensions?.conceptualUnderstanding || avgQuizAccuracy)),
+            problemSolving: cache.subDimensions?.problemSolving || Math.round(Math.min(100, (advancedLabCompletionRate * 100) + 20)),
+            consistency: cache.subDimensions?.consistency || Math.round(consistencyScore * 100),
+            retention: cache.subDimensions?.retention || Math.round(avgQuizAccuracy * 0.85),
+            speed: cache.subDimensions?.speed || 75
+         };
+
+         return res.json({ 
+            ...cache, 
+            subDimensions: activeSubDimensions,
+            userMeta, 
+            activityLog, 
+            coveredTopics: progress.coveredTopics || [], 
+            diagnostics: progress.diagnostics || [] 
+         });
       }
 
       // Fetch Statistical Analytics Engine Data
@@ -276,8 +296,13 @@ router.get('/performance', auth, async (req, res) => {
 
       const evidenceCoverage = Math.min(100, Math.round(labCompletions * 5 + topicStats.length * 10));
 
+      const latestDiagnostic = progress.diagnostics && progress.diagnostics.length 
+         ? progress.diagnostics[progress.diagnostics.length - 1] 
+         : null;
+      const diagScore = latestDiagnostic ? latestDiagnostic.score : null;
+
       const subDimensions = {
-         conceptualUnderstanding: Math.round(avgQuizAccuracy),
+         conceptualUnderstanding: Math.round(diagScore !== null ? (avgQuizAccuracy * 0.6 + diagScore * 0.4) : avgQuizAccuracy),
          problemSolving: Math.round(Math.min(100, (advancedLabCompletionRate * 100) + 20)),
          consistency: Math.round(consistencyScore * 100),
          retention: Math.round(avgQuizAccuracy * 0.85),
@@ -376,7 +401,10 @@ router.get('/performance', auth, async (req, res) => {
             examReadiness: computedReadiness, 
             userMeta, 
             topicStats,
-            activityLog
+            activityLog,
+            subDimensions,
+            diagnostics: progress.diagnostics || [],
+            coveredTopics: progress.coveredTopics || []
          });
       }
 
@@ -452,7 +480,7 @@ Required JSON Output Schema:
           console.warn("Failed to audit PredictionTrace:", e);
       }
 
-      return res.json({ ...payload, userMeta, topicStats, predictionId, activityLog, coveredTopics: progress.coveredTopics || [] });
+      return res.json({ ...payload, userMeta, topicStats, predictionId, activityLog, coveredTopics: progress.coveredTopics || [], diagnostics: progress.diagnostics || [] });
    } catch (err) {
       console.error(err);
       return res.json({
@@ -981,12 +1009,339 @@ router.post('/topic/cover', auth, async (req, res) => {
              progress.coveredTopics.push(normalized);
           }
        }
+              await progress.save();
+        res.json({ success: true, coveredTopics: progress.coveredTopics });
+    } catch (err) {
+        console.error("Error covering topic:", err);
+        res.status(500).json({ error: "Failed to update topic cover status." });
+    }
+});
+
+
+// ============================================================================
+// --- INTERACTIVE AI DIAGNOSTIC EVALUATION SYSTEM & COPILOT ENDPOINTS ---
+// ============================================================================
+
+const fallbackDiagnosticPool = {
+  "Machine Learning Principles": [
+    { question: "Explain the difference between L1 (Lasso) and L2 (Ridge) regularization. When would you prefer one over the other?" },
+    { question: "What is the purpose of a learning rate in gradient descent, and what happens if it is set too high or too low?" },
+    { question: "Explain the concept of overfitting and how validation datasets help detect it." }
+  ],
+  "Data Structures & Algorithms": [
+    { question: "Why is the worst-case time complexity of Quick Sort O(N^2), and how does choosing a random pivot help avoid this?" },
+    { question: "Explain the difference in space complexity between Merge Sort and Quick Sort. Why does Merge Sort require auxiliary memory?" },
+    { question: "What is the advantage of Binary Search over Linear Search, and what precondition must be met before performing a binary search?" }
+  ],
+  "Blockchain & Security Protocols": [
+    { question: "What are the core properties of a cryptographic hash function, and why are they considered one-way?" },
+    { question: "Explain the concept of Proof of Work. What computational puzzle do miners solve to add a block to the ledger?" },
+    { question: "What is a smart contract, and how does it execute without a central authority?" }
+  ],
+  "Quantum Gates & Linear Algebra": [
+    { question: "What is quantum superposition, and how does it differ from a classical bit's state?" },
+    { question: "Explain quantum entanglement. What happens to the state of one entangled qubit when its partner is measured?" },
+    { question: "What is a quantum gate, and how does it manipulate a qubit's probability amplitude?" }
+  ]
+};
+
+// POST /api/progress/diagnostic-start
+router.post('/diagnostic-start', auth, async (req, res) => {
+   try {
+       const progress = await getProgressDoc(req.user.id);
        
-       await progress.save();
-       res.json({ success: true, coveredTopics: progress.coveredTopics });
+       // Calculate weakest dimension based on current scores
+       const qAccs = progress.quizzes.map(q => q.accuracy);
+       const avgQuizAccuracy = qAccs.length ? (qAccs.reduce((a,b)=>a+b,0) / qAccs.length) : 0;
+       const labCompletions = progress.labs.filter(l => l.completed).length;
+       const availableLabs = await Lab.find({});
+       const labTitles = availableLabs.map(l => l.title);
+       const advancedLabCompletionRate = labCompletions / (labTitles.length || 1);
+       
+       const consistencyScore = qAccs.length > 1 
+          ? 1 - (Math.max(...qAccs) - Math.min(...qAccs)) / 100 
+          : 0.5;
+
+       const dimensions = [
+          { name: "Machine Learning Principles", score: avgQuizAccuracy || 50 },
+          { name: "Data Structures & Algorithms", score: Math.round(Math.min(100, (advancedLabCompletionRate * 100) + 20)) },
+          { name: "Blockchain & Security Protocols", score: Math.round(consistencyScore * 100) },
+          { name: "Quantum Gates & Linear Algebra", score: 75 }
+       ];
+
+       // Sort dimensions to find the weakest (lowest score)
+       dimensions.sort((a, b) => a.score - b.score);
+       const weakestTopic = dimensions[0].name;
+
+       if (openai) {
+          try {
+             const prompt = `You are an AI Learning Mentor. You need to generate exactly 3 deep, advanced, conceptual quiz questions to evaluate the student's mastery in the topic "${weakestTopic}".
+Each question should be highly technical but conceptual, demanding a short typed explanation from the student.
+
+Return the response ONLY as a JSON object matching this exact schema:
+{
+  "topic": "${weakestTopic}",
+  "questions": [
+    { "question": "Question text here..." },
+    { "question": "Question text here..." },
+    { "question": "Question text here..." }
+  ]
+}`;
+             const response = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo",
+                messages: [
+                   { role: "system", content: "You are an expert AI interviewer who only outputs valid, structured JSON." },
+                   { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                response_format: { type: "json_object" }
+             });
+             
+             const parsed = JSON.parse(response.choices[0].message.content);
+             return res.json(parsed);
+          } catch (openaiErr) {
+             console.warn("OpenAI failed to generate diagnostic questions, falling back:", openaiErr);
+          }
+       }
+
+       // Local fallback selection
+       const questions = fallbackDiagnosticPool[weakestTopic] || fallbackDiagnosticPool["Machine Learning Principles"];
+       return res.json({
+          topic: weakestTopic,
+          questions
+       });
    } catch (err) {
-       console.error("Error covering topic:", err);
-       res.status(500).json({ error: "Failed to update topic cover status." });
+       console.error("Error in diagnostic-start:", err);
+       res.status(500).json({ error: "Failed to initiate diagnostic evaluation: " + err.message });
+   }
+});
+
+// Helper for local grading keywords
+const fallbackKeywords = {
+  "L1 (Lasso) and L2 (Ridge)": ["lasso", "ridge", "l1", "l2", "absolute", "squared", "penalty", "zero", "shrink", "variance"],
+  "learning rate": ["step", "speed", "diverge", "oscillate", "minimize", "gradient", "learning rate", "overshoot", "converge"],
+  "overfitting": ["memorize", "noise", "generalization", "validate", "train", "split", "test", "overfit", "complexity"],
+  "worst-case time complexity of Quick Sort": ["pivot", "worst", "quadratic", "n^2", "sorted", "partition", "random", "balance"],
+  "space complexity between Merge Sort and Quick Sort": ["auxiliary", "in-place", "space", "memory", "array", "stack", "allocation", "temp"],
+  "advantage of Binary Search": ["log", "pre-sorted", "sorted", "half", "mid", "divide", "linear", "constant"],
+  "cryptographic hash function": ["one-way", "deterministic", "collision", "avalanche", "fingerprint", "reverse", "fixed"],
+  "Proof of Work": ["miner", "puzzle", "hash", "difficulty", "nonce", "energy", "validate", "consensus"],
+  "smart contract": ["automatic", "code", "decentralized", "blockchain", "trustless", "execution", "self-executing"],
+  "quantum superposition": ["classical", "both", "0 and 1", "qubit", "probability", "collapse", "state", "bloch"],
+  "quantum entanglement": ["bell", "instant", "spooky", "correlated", "measure", "collapse", "distance", "non-local"],
+  "quantum gate": ["unitary", "matrix", "rotation", "qubit", "amplitude", "state", "operation", "phase"]
+};
+
+// POST /api/progress/diagnostic-evaluate
+router.post('/diagnostic-evaluate', auth, async (req, res) => {
+   try {
+       const { topic, answers } = req.body;
+       const progress = await getProgressDoc(req.user.id);
+
+       if (openai) {
+          try {
+             const prompt = `You are an AI Learning Mentor. You need to evaluate a student's answers to a diagnostic quiz on the topic "${topic}".
+Here are the questions and the student's answers:
+${answers.map((a, i) => `Q${i+1}: ${a.question}\nStudent Answer: ${a.answer}`).join('\n\n')}
+
+Please grade each answer out of 100, and provide constructive, detailed feedback for each question explaining what they did well, what was missing, and a brief, precise study recommendation.
+Also provide an overall summary feedback and calculate the average score.
+
+Return the response ONLY as a JSON object matching this exact schema:
+{
+  "score": Number (average score between 0 and 100),
+  "feedback": "Overall high-fidelity summary feedback here.",
+  "questions": [
+    {
+      "question": "Question text here...",
+      "userAnswer": "User's answer here...",
+      "aiGrade": Number (0 to 100),
+      "aiFeedback": "Detailed constructive evaluation and feedback here."
+    }
+  ]
+}`;
+             const response = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo",
+                messages: [
+                   { role: "system", content: "You are an expert AI learning grader who only outputs valid, structured JSON." },
+                   { role: "user", content: prompt }
+                ],
+                temperature: 0.5,
+                response_format: { type: "json_object" }
+             });
+
+             const parsed = JSON.parse(response.choices[0].message.content);
+             
+             // Save to Mongoose Diagnostics history
+             progress.diagnostics.push({
+                topic: topic,
+                score: parsed.score,
+                feedback: parsed.feedback,
+                questions: parsed.questions
+             });
+             
+             progress.aiFeedbackCache = null; // Clear cached mentor text
+             await progress.save();
+
+             return res.json(parsed);
+          } catch (openaiErr) {
+             console.warn("OpenAI evaluation failed, falling back to local grading:", openaiErr);
+          }
+       }
+
+       // Local fall-back grading
+       const evaluatedQuestions = answers.map((item) => {
+          const ansLower = item.answer.toLowerCase();
+          
+          // Match keywords
+          let matchedKeywords = [];
+          Object.keys(fallbackKeywords).forEach(key => {
+             if (item.question.toLowerCase().includes(key.toLowerCase())) {
+                matchedKeywords = fallbackKeywords[key];
+             }
+          });
+          
+          if (matchedKeywords.length === 0) {
+             matchedKeywords = ["concept", "understand", "theory", "logic", "explanation"];
+          }
+
+          let hits = 0;
+          matchedKeywords.forEach(kw => {
+             if (ansLower.includes(kw)) hits++;
+          });
+
+          let grade = 40; // baseline
+          let feedback = "";
+
+          if (ansLower.trim().length < 15) {
+             grade = 25;
+             feedback = "Your answer is extremely brief. To measure performance accurately, please elaborate on the technical principles and show your logical reasoning.";
+          } else if (hits >= 3) {
+             grade = Math.floor(Math.random() * 9) + 90; // 90 to 98
+             feedback = `Excellent explanation! You have accurately captured key technical concepts: [${matchedKeywords.filter(kw => ansLower.includes(kw)).join(', ')}]. You demonstrate strong conceptual depth on this topic. Keep leveraging these techniques in your code.`;
+          } else if (hits === 2) {
+             grade = Math.floor(Math.random() * 14) + 75; // 75 to 88
+             feedback = `Very solid start. You covered important points like [${matchedKeywords.filter(kw => ansLower.includes(kw)).join(', ')}]. However, you could improve by fully explaining the underlying mechanics (e.g. detailed limiting behaviors or mathematical properties).`;
+          } else if (hits === 1) {
+             grade = Math.floor(Math.random() * 15) + 55; // 55 to 69
+             feedback = `Fair attempt. You mentioned [${matchedKeywords.filter(kw => ansLower.includes(kw)).join(', ')}], but the explanation missed major principles of this topic. I recommend reading the related topic guide in the Curriculum Map for a detailed structural overview.`;
+          } else {
+             grade = Math.floor(Math.random() * 15) + 40; // 40 to 54
+             feedback = "Your answer was somewhat generalized. Try to incorporate formal vocabulary and specific terms (e.g. spatial bounds, complexity thresholds, vector mappings) to elevate your technical precision.";
+          }
+
+          return {
+             question: item.question,
+             userAnswer: item.answer,
+             aiGrade: grade,
+             aiFeedback: feedback
+          };
+       });
+
+       const avgScore = Math.round(evaluatedQuestions.reduce((acc, q) => acc + q.aiGrade, 0) / evaluatedQuestions.length);
+       const overallFeedback = `Evaluation complete for ${topic}. You achieved an average score of ${avgScore}%. ${
+          avgScore >= 85 ? "You show an elite command of these theories. Try taking on advanced labs to test your practical speed!" :
+          avgScore >= 70 ? "Good conceptual base. Review your individual question report card to target minor missing details." :
+          "Significant gaps remain. I highly encourage clicking the curriculum nodes on your map to study lesson notes and retaking this assessment."
+       }`;
+
+       const finalResult = {
+          score: avgScore,
+          feedback: overallFeedback,
+          questions: evaluatedQuestions
+       };
+
+       progress.diagnostics.push({
+          topic,
+          score: avgScore,
+          feedback: overallFeedback,
+          questions: evaluatedQuestions
+       });
+
+       progress.aiFeedbackCache = null; // Clear cache
+       await progress.save();
+
+       return res.json(finalResult);
+   } catch (err) {
+       console.error("Error in diagnostic evaluation:", err);
+       res.status(500).json({ error: "Failed to grade diagnostic answers: " + err.message });
+   }
+});
+
+// POST /api/progress/ai-query
+router.post('/ai-query', auth, async (req, res) => {
+   try {
+       const { message } = req.body;
+       const progress = await getProgressDoc(req.user.id);
+       
+       const qAccs = progress.quizzes.map(q => q.accuracy);
+       const avgQuizAccuracy = qAccs.length ? (qAccs.reduce((a,b)=>a+b,0) / qAccs.length) : 0;
+       const labCompletions = progress.labs.filter(l => l.completed).length;
+       
+       const latestDiagnostic = progress.diagnostics && progress.diagnostics.length 
+          ? progress.diagnostics[progress.diagnostics.length - 1] 
+          : null;
+          
+       const context = `You are an expert AI Learning Mentor helping a student in VirtualLabX.
+Student details:
+- Labs completed: ${labCompletions}
+- Quiz Accuracy: ${Math.round(avgQuizAccuracy)}%
+- Latest Diagnostic Evaluation Topic: ${latestDiagnostic ? latestDiagnostic.topic : 'None taken yet'}
+- Latest Diagnostic Score: ${latestDiagnostic ? latestDiagnostic.score : 'N/A'}
+- Latest Diagnostic AI Feedback: ${latestDiagnostic ? latestDiagnostic.feedback : 'N/A'}
+
+Student query: "${message}"
+
+Please respond with helpful, detailed, action-oriented, encouraging feedback. Outline concrete next steps in bullet points. Use standard clean markdown format. Keep your response within 2-3 short, dense paragraphs.`;
+
+       if (openai) {
+          const response = await openai.chat.completions.create({
+             model: "gpt-3.5-turbo",
+             messages: [{ role: "user", content: context }],
+             temperature: 0.7
+          });
+          return res.json({ response: response.choices[0].message.content });
+       } else {
+          // Fallback response generator
+          const msgLower = message.toLowerCase();
+          let responseText = `### AI Mentor Response (Local Pipeline)
+          
+As your VirtualLabX AI Mentor, I have processed your request using our local advisory engine based on your active telemetry metrics.
+
+`;
+          if (msgLower.includes('radar') || msgLower.includes('skill') || msgLower.includes('score') || msgLower.includes('conceptual')) {
+             responseText += `Based on your **Skill Radar**, your current conceptual index is **${Math.round(latestDiagnostic ? (avgQuizAccuracy * 0.6 + latestDiagnostic.score * 0.4) : avgQuizAccuracy)}%**. To optimize this rating:
+* Engage in a fresh conceptual evaluation using the **Interactive Diagnostic Hub** on this page. High scores on these checks will directly scale your radar.
+* Review completed virtual lab quizzes to maximize your baseline conceptual accuracy.
+* Complete additional practical lab simulations to boost your **Problem Solving** rating.`;
+          } else if (msgLower.includes('diagnostic') || msgLower.includes('quiz') || msgLower.includes('eval') || msgLower.includes('test')) {
+             responseText += `Executing **AI Diagnostic Evaluations** is the fastest path to targeted learning:
+* Click the **"Initialize AI Diagnostic Evaluation"** button in the Diagnostic Hub.
+* Make sure you write clear, analytical explanations—our grading engine assesses your logical connections and descriptive depth rather than simple multiple choices.
+* Check your past scorecard logs below the hub for custom constructive study recommendations.`;
+          } else if (msgLower.includes('sort') || msgLower.includes('algorithm') || msgLower.includes('dsa') || msgLower.includes('merge') || msgLower.includes('quick')) {
+             responseText += `For mastering **Data Structures & Algorithms**:
+* Navigate to the **Sorting Algorithms** curriculum map node and read the lesson notes.
+* Compare time/space complexities: remember that Merge Sort guarantees $O(N \\log N)$ runtime at the cost of auxiliary spatial allocation, whereas Quick Sort partitions in-place.
+* Launch the sorting simulator, run both engines side-by-side in dual-mode, and solve the quiz problems.`;
+          } else if (msgLower.includes('regression') || msgLower.includes('gradient') || msgLower.includes('machine') || msgLower.includes('ml')) {
+             responseText += `For mastering **Machine Learning**:
+* Study the **Linear Regression** curriculum nodes to learn about Loss Functions and Gradient Descent equations.
+* Focus on hyperparameters: pay close attention to how too high a learning rate causes divergence, while L1 regularization introduces feature sparsity by driving parameters to absolute zero.
+* Complete the interactive code validation sections in the Machine Learning labs.`;
+          } else {
+             responseText += `You have currently finished **${labCompletions} labs**. Here is my primary study recommendation:
+1. **Target Weak Areas**: Use the curriculum map satellites to read specific study notes on topics where you scored under 80%.
+2. **Take Conceptual Diagnostics**: Execute diagnostics on this page to let the AI pinpoint your specific blindspots.
+3. **Practice Regularly**: Maintain consistency by performing at least 1-2 lab simulations weekly to reinforce your retention metrics.
+
+Is there a specific algorithm, mathematical principle, or error message I can help explain for you?`;
+          }
+          return res.json({ response: responseText });
+       }
+   } catch (err) {
+       console.error("Error in AI query:", err);
+       res.status(500).json({ error: "Failed to query AI Mentor: " + err.message });
    }
 });
 

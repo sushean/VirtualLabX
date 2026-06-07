@@ -201,18 +201,3 @@ npm run dev
    * Output Directory: `dist`
 4. Set up the Environment Variables (e.g. `VITE_FIREBASE_*` keys if Firebase social login is utilized).
 
----
-
-## 👥 Granting Collaborator Access (GitHub)
-
-As part of the submission requirements, you must grant collaborator access to the evaluator email ID: **`summar.adm@mietjammu.in`**.
-
-### Steps to Add Collaborator:
-1. Open your repository page on **GitHub**.
-2. Navigate to the **Settings** tab located in the repository's top navigation bar.
-3. In the left-hand sidebar, under the **Access** category, click on **Collaborators**.
-4. You may be prompted to enter your GitHub password for security verification.
-5. Under the "Manage access" section, click the green **Add people** button.
-6. In the search box, enter the email address: **`summar.adm@mietjammu.in`**.
-7. Select the correct user profile/email and click **Add to this repository**.
-8. The evaluator will receive an invitation to collaborate on the project.
